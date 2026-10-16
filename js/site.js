@@ -165,6 +165,52 @@ function waLink(msg) {
     });
   } else rev.forEach(function (el) { el.classList.add('in'); });
 
+  /* ---------- Pause / play for the whale scene (remembered on this device) ---------- */
+  var SEA = window.WalvisSea = window.WalvisSea || { paused: false, engine: '', renderer: '', tier: 0, calm: reduce };
+  try { SEA.paused = localStorage.getItem('walvis-sea-paused') === '1'; } catch (e) {}
+  var heroSea = document.querySelector('.hero canvas.sea');
+  if (heroSea) {
+    var tg = document.createElement('button');
+    tg.type = 'button'; tg.className = 'sea-toggle';
+    function paintToggle() {
+      tg.setAttribute('aria-pressed', String(SEA.paused));
+      tg.setAttribute('aria-label', SEA.paused ? 'Play the ocean animation' : 'Pause the ocean animation');
+      tg.innerHTML = (SEA.paused ? '<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>'
+                                 : '<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" fill="currentColor"/></svg>') +
+                     '<span>' + (SEA.paused ? 'Play' : 'Pause') + '</span>';
+    }
+    tg.addEventListener('click', function () {
+      SEA.paused = !SEA.paused; paintToggle();
+      try { localStorage.setItem('walvis-sea-paused', SEA.paused ? '1' : '0'); } catch (e) {}
+    });
+    paintToggle();
+    document.querySelector('.hero').appendChild(tg);
+  }
+
+  /* ---------- Diagnostics: add ?debug to the address to see what this computer is doing ---------- */
+  if (/[?&]debug\b/.test(location.search)) {
+    var errs = [];
+    addEventListener('error', function (e) { errs.push((e.message || 'error') + (e.filename ? ' (' + e.filename.split('/').pop() + ':' + e.lineno + ')' : '')); });
+    var dbg = document.createElement('div'); dbg.className = 'debug-panel'; document.body.appendChild(dbg);
+    var frames = 0, fps = 0, t0 = performance.now();
+    (function count(now) { frames++; if (now - t0 >= 1000) { fps = Math.round(frames * 1000 / (now - t0)); frames = 0; t0 = now; } requestAnimationFrame(count); })(t0);
+    setInterval(function () {
+      var rows = [
+        ['Reduced motion setting', reduce ? 'ON (whale moves slower)' : 'off'],
+        ['Animation paused', SEA.paused ? 'yes (press Play)' : 'no'],
+        ['Engine', SEA.engine || 'not started'],
+        ['Why not WebGL', SEA.whyNot || '-'],
+        ['Graphics card', SEA.renderer || 'unknown'],
+        ['Frame rate', fps + ' fps'],
+        ['Quality step', (SEA.tier || 0) + (SEA.calmGlass ? ' + plain glass' : '')],
+        ['Screen', innerWidth + 'x' + innerHeight + ' @' + (devicePixelRatio || 1) + 'x'],
+        ['Browser', navigator.userAgent.replace(/^Mozilla\/5\.0 /, '').slice(0, 90)],
+        ['Errors', errs.length ? errs.slice(-3).join(' | ') : 'none']
+      ];
+      dbg.innerHTML = '<b>Walvis diagnostics</b>' + rows.map(function (r) { return '<div><span>' + r[0] + '</span>' + String(r[1]).replace(/</g, '&lt;') + '</div>'; }).join('');
+    }, 500);
+  }
+
   /* ---------- The ocean (js/ocean.js), only where a whale scene exists ---------- */
   if (document.querySelector('canvas.sea')) {
     var oc = document.createElement('script'); oc.src = 'js/ocean.js'; oc.defer = true; document.body.appendChild(oc);

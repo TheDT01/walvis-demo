@@ -11,7 +11,12 @@
    the water, light, fish and particles.
    ========================================================= */
 (function () {
-  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Visitors whose computer asks for reduced motion (Windows "Animation effects" off, "Adjust for best
+  // performance", macOS "Reduce motion") still see the whale move, but slower and without following the
+  // mouse or scroll. Everyone can pause it with the button on the scene (window.WalvisSea.paused).
+  var calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var reduce = false;
+  var SEA = window.WalvisSea = window.WalvisSea || { paused: false, engine: '', renderer: '', tier: 0, calm: calm };
   var RAD = Math.PI / 180;
   var small = innerWidth < 820;
 
@@ -248,9 +253,9 @@
       var srt = samples.slice().sort(function (a, b) { return a - b; }), med = srt[srt.length >> 1];
       samples.length = 0;
       if (med > .024) {
-        if (!calmGlass && mode === MODES.hero) { calmGlass = true; document.documentElement.classList.add('calm-glass'); }
-        else if (tier < TIERS.length - 1) { tier++; size(); }
-      } else if (med < .0135 && tier > 0) { tier--; size(); }
+        if (!calmGlass && mode === MODES.hero) { calmGlass = true; SEA.calmGlass = true; document.documentElement.classList.add('calm-glass'); }
+        else if (tier < TIERS.length - 1) { tier++; size(); SEA.tier = tier; }
+      } else if (med < .0135 && tier > 0) { tier--; size(); SEA.tier = tier; }
     }
 
     function drawPart(g, sp, pivot, rot, sy) {
@@ -288,11 +293,13 @@
     function frame(now) {
       if (!reduce) requestAnimationFrame(frame);
       var dt = last ? Math.min(.05, (now - last) / 1000) : .016; last = now;
+      if (SEA.paused && drawn) return;                     // paused: keep the last picture
+      if (calm) dt *= .6;                                   // reduced motion: everything drifts slower
       if (!visible || document.hidden || !W) return;
       time += dt;
       if (!reduce) adapt(dt);
       cmx += (mx - cmx) * .03; cmy += (my - cmy) * .03;
-      var sy = mode.scroll ? Math.min(scrollY, H) : 0;
+      var sy = mode.scroll && !calm ? Math.min(scrollY, H) : 0;
       var lx = W * mode.light[0], ly = H * mode.light[1];
 
       // the whale moves on; the moment it leaves, it glides in again
@@ -407,8 +414,11 @@
       ctx.globalAlpha = 1; g.globalAlpha = 1;
     }
 
+    var drawn = false;
+    (function markDrawn() { requestAnimationFrame(function () { if (W) drawn = true; else markDrawn(); }); })();
+
     /* interaction */
-    host.addEventListener('mousemove', function (e) { mx = e.clientX / innerWidth - .5; my = e.clientY / innerHeight - .5; });
+    if (!calm) host.addEventListener('mousemove', function (e) { mx = e.clientX / innerWidth - .5; my = e.clientY / innerHeight - .5; });
     if (mode.ripple) host.addEventListener('click', function (e) {
       if (e.target.closest('a, button')) return;
       var rc = canvas.getBoundingClientRect(), x = e.clientX - rc.left, y = e.clientY - rc.top;
@@ -424,5 +434,6 @@
     if (reduce) still(); else requestAnimationFrame(frame);
   }
 
+  SEA.engine = 'Canvas 2D';
   document.querySelectorAll('canvas.sea').forEach(function (c) { Ocean(c); });
 })();
