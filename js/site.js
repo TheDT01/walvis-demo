@@ -102,6 +102,8 @@ function waLink(msg) {
       '<a class="wa" href="' + waLink() + '" target="_blank" rel="noopener" aria-label="Message Walvis on WhatsApp">' + ic('chat') + '<span>Message us</span></a>';
   }
 
+  document.querySelectorAll('img').forEach(function (im) { im.decoding = 'async'; });
+
   /* ---------- WhatsApp links: <a data-wa="message"> ---------- */
   document.querySelectorAll('[data-wa]').forEach(function (a) {
     a.href = waLink(a.getAttribute('data-wa')); a.target = '_blank'; a.rel = 'noopener';
@@ -125,8 +127,21 @@ function waLink(msg) {
 
   /* ---------- Header turns solid after the hero ---------- */
   var bar = document.getElementById('topbar');
-  function onScroll() { if (bar) bar.classList.toggle('solid', scrollY > innerHeight * .5); }
-  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+  var waBtn = document.querySelector('.wa');
+  function onScroll() {
+    if (bar) bar.classList.toggle('solid', scrollY > innerHeight * .5);
+    // the floating WhatsApp button joins once you start scrolling (it would cover the hero's own buttons)
+    if (waBtn) waBtn.classList.toggle('show', scrollY > Math.min(260, innerHeight * .35));
+  }
+  var scrollQueued = false;
+  addEventListener('scroll', function () { if (scrollQueued) return; scrollQueued = true; requestAnimationFrame(function () { scrollQueued = false; onScroll(); }); }, { passive: true }); onScroll();
+
+  /* ---------- Swipeable rows on phones: a small hint under each ---------- */
+  document.querySelectorAll('.mosaic, .worlds, .rail').forEach(function (row) {
+    if (row.children.length < 2) return;
+    var hint = document.createElement('p'); hint.className = 'swipe-hint'; hint.setAttribute('aria-hidden', 'true'); hint.textContent = 'Swipe';
+    row.parentNode.insertBefore(hint, row.nextSibling);
+  });
 
   /* ---------- Rails ---------- */
   document.querySelectorAll('[data-rail]').forEach(function (w) {
@@ -142,7 +157,12 @@ function waLink(msg) {
     var io = new IntersectionObserver(function (es) {
       es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
     }, { threshold: .12, rootMargin: '0px 0px -50px 0px' });
-    rev.forEach(function (el) { io.observe(el); });
+    rev.forEach(function (el) {
+      // the opening screen of each page always appears straight away (its own delays still apply);
+      // waiting for it to scroll into view could leave a button hidden at the very bottom of a short screen
+      if (el.closest('.hero, .page-hero')) requestAnimationFrame(function () { el.classList.add('in'); });
+      else io.observe(el);
+    });
   } else rev.forEach(function (el) { el.classList.add('in'); });
 
   /* ---------- The ocean (js/ocean.js), only where a whale scene exists ---------- */
@@ -218,7 +238,8 @@ function waLink(msg) {
       img.style.transform = 'translateY(' + ((r.top + r.height / 2 - innerHeight / 2) * -.12) + 'px)';
     });
   }
-  if (bands.length) { addEventListener('scroll', parallax, { passive: true }); parallax(); }
+  var fine = matchMedia('(hover: hover) and (pointer: fine) and (min-width: 1025px)').matches, pQueued = false;
+  if (bands.length && fine) { addEventListener('scroll', function () { if (pQueued) return; pQueued = true; requestAnimationFrame(function () { pQueued = false; parallax(); }); }, { passive: true }); parallax(); }
 
   /* ---------- Musical notes (inside [data-notes]) ---------- */
   var zones = document.querySelectorAll('[data-notes]');

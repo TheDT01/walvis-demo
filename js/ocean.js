@@ -1,14 +1,25 @@
 /* =========================================================
-   WALVIS CONCIERGE · js/ocean.js
+   WALVIS CONCIERGE · js/ocean.js  (WebGL)
    The deep: a dark plum sea, light falling from above, and one
    vast translucent teal whale gliding diagonally overhead, from
    bottom-right to top-left. It is too big to fit on screen at
    once; the moment it leaves, it glides in again.
 
+   Everything is drawn on the graphics card (WebGL), so the
+   computer's processor stays almost idle:
+   - the whale's body parts are painted once into textures,
+     then only moved each frame;
+   - the light on the water and the god rays are computed per
+     pixel by the graphics card;
+   - fish, motes, bubbles and ripples are a single batch.
+   It watches its own frame rate and, only on a machine that is
+   struggling, gently lowers its drawing resolution (and as a last
+   resort turns off the glass blur over the moving sea).
+   Without WebGL it falls back to js/ocean-2d.js.
+
    Every <canvas class="sea" data-mode="hero|lite|faint">
    gets its own ocean. Settings for each mode are in MODES.
-   Only "hero" (the home page) has the whale; the others keep
-   the water, light, fish and particles.
+   Only "hero" (the home page) has the whale.
    ========================================================= */
 (function () {
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -37,9 +48,29 @@
   };
   // colours of the deep: plum water, teal light
   var C = {
-    fish: ['70, 30, 74', '48, 16, 50', '30, 7, 30'],
-    mote: '170, 240, 235', ray: '195, 248, 240', sun: '215, 255, 250', caustic: '205, 255, 248'
+    fish: [[70, 30, 74], [48, 16, 50], [30, 7, 30]],
+    mote: [170, 240, 235], ray: [195, 248, 240], sun: [215, 255, 250], caustic: '205, 255, 248', ring: [205, 250, 245]
   };
+  function rgb(c) { return [c[0] / 255, c[1] / 255, c[2] / 255]; }
+
+  // drawing resolution steps, used only if a machine struggles (1 = full quality)
+  var TIERS = [1, .8, .66, .5];
+
+  /* ---------- WebGL available? Otherwise use the 2D version ---------- */
+  var fellBack = false;
+  function fallback() { if (fellBack) return; fellBack = true; var s = document.createElement('script'); s.src = 'js/ocean-2d.js'; document.body.appendChild(s); }
+  // WebGL only pays off with real graphics acceleration. Without it (old or blocked drivers), browsers
+  // emulate WebGL in software, which is slower than the 2D version, so those machines get 2D.
+  var GL_OPTS = { alpha: true, premultipliedAlpha: true, antialias: false, depth: false, stencil: false, failIfMajorPerformanceCaveat: true };
+  var probeGL = null;
+  try { var probe = document.createElement('canvas'); probeGL = probe.getContext('webgl', GL_OPTS); } catch (e) {}
+  if (probeGL) {
+    var dbg = probeGL.getExtension('WEBGL_debug_renderer_info');
+    var renderer = dbg ? String(probeGL.getParameter(dbg.UNMASKED_RENDERER_WEBGL)) : '';
+    if (/swiftshader|llvmpipe|softpipe|software|basic render/i.test(renderer)) probeGL = null;
+  }
+  if (!probeGL) { fallback(); return; }
+  var lose = probeGL.getExtension('WEBGL_lose_context'); if (lose) lose.loseContext();
 
   /* ---------- Whale shape, seen from below, head up ----------
      Drawn in a 200 x 600 box (fins and flukes reach outside it).
@@ -57,17 +88,20 @@
     rear:  { path: BODY,  box: [24, 282, 176, 514],  clip: [0, 286, 200, 520], pivot: [100, 296], rim: [0, 0, 200, 500] },
     front: { path: BODY,  box: [24, 0, 176, 308],    clip: [0, 0, 200, 306], pleats: true }
   };
+  var PART_ORDER = ['finR', 'finL', 'fluke', 'rear', 'front'];
   var CENTER = [100, 292];
+  // points around the whale's silhouette, for knowing exactly when it is in view
+  var OUTLINE = [[100,6],[137,44],[160,140],[170,262],[160,350],[136,440],[106,505],[2,556],[6,574],[100,566],[194,574],[198,556],[94,505],[64,440],[40,350],[30,262],[40,140],[63,44],[252,345],[241,365],[230,300],[-52,345],[-41,365],[-30,300]];
 
   function mix(a, b, t) { return a + (b - a) * t; }
 
-  /* each whale part is drawn once into a sprite, then only moved each frame */
-  function sprite(part, k, dpr) {
+  /* each whale part is painted once (2D canvas), then uploaded as a texture */
+  function partCanvas(part, k, dpr) {
     var b = part.box, w = (b[2] - b[0]) * k, h = (b[3] - b[1]) * k;
     var c = document.createElement('canvas');
     c.width = Math.max(2, Math.ceil(w * dpr)); c.height = Math.max(2, Math.ceil(h * dpr));
     var g = c.getContext('2d');
-    g.scale(k * dpr, k * dpr); g.translate(-b[0], -b[1]);
+    g.scale(c.width / (b[2] - b[0]), c.height / (b[3] - b[1])); g.translate(-b[0], -b[1]);
     if (part.clip) { g.beginPath(); g.rect(part.clip[0], part.clip[1], part.clip[2] - part.clip[0], part.clip[3] - part.clip[1]); g.clip(); }
     // light catching the outline
     g.lineJoin = 'round'; g.lineWidth = 5 / Math.max(.6, k * 1.2);
@@ -87,14 +121,13 @@
     hl.addColorStop(0, 'rgba(220, 255, 250, .35)'); hl.addColorStop(1, 'rgba(220, 255, 250, 0)');
     g.fillStyle = hl; g.fillRect(-80, -20, 360, 640);
     if (part.pleats) { g.strokeStyle = 'rgba(225, 255, 250, .16)'; g.lineWidth = .9; g.stroke(PLEATS); }
-    return { c: c, box: b };
+    return c;
   }
 
-  /* a seamless caustic texture: the soft, cellular net of light you see under water.
-     Bright where two cells meet, then softened so it reads as light, not lines. */
-  function causticTile(size, rgb) {
+  /* a seamless caustic texture: the soft, cellular net of light you see under water */
+  function causticTile(size, rgbs) {
     var c = document.createElement('canvas'); c.width = c.height = size;
-    var g = c.getContext('2d'), img = g.createImageData(size, size), d = img.data, parts = rgb.split(',').map(Number);
+    var g = c.getContext('2d'), img = g.createImageData(size, size), d = img.data, parts = rgbs.split(',').map(Number);
     var pts = [], n = 14, seed = 7;
     function rnd() { seed = (seed * 16807) % 2147483647; return seed / 2147483647; }
     for (var i = 0; i < n; i++) pts.push([rnd() * size, rnd() * size]);
@@ -111,7 +144,7 @@
       var k = (y * size + x) * 4; d[k] = parts[0]; d[k + 1] = parts[1]; d[k + 2] = parts[2]; d[k + 3] = Math.round(val * 200);
     }
     g.putImageData(img, 0, 0);
-    // soften: shrink and grow back (keeps the tile seamless)
+    // soften: shrink and grow back
     var s2 = document.createElement('canvas'); s2.width = s2.height = size / 4;
     var g2 = s2.getContext('2d'); g2.imageSmoothingQuality = 'high'; g2.drawImage(c, 0, 0, size / 4, size / 4);
     var out = document.createElement('canvas'); out.width = out.height = size;
@@ -120,72 +153,119 @@
     return out;
   }
 
-  function glowSprite(size, rgb) {
-    var c = document.createElement('canvas'); c.width = c.height = size;
-    var g = c.getContext('2d'), r = size / 2, gr = g.createRadialGradient(r, r, 0, r, r, r);
-    gr.addColorStop(0, 'rgba(' + rgb + ',1)'); gr.addColorStop(.25, 'rgba(' + rgb + ',.55)'); gr.addColorStop(1, 'rgba(' + rgb + ',0)');
-    g.fillStyle = gr; g.fillRect(0, 0, size, size); return c;
-  }
-  // a soft shaft of light: bright along its centre, fading at the edges and with depth
-  function raySprite(w, h, rgb) {
-    var c = document.createElement('canvas'); c.width = w; c.height = h;
-    var g = c.getContext('2d'), gx = g.createLinearGradient(0, 0, w, 0);
-    gx.addColorStop(0, 'rgba(' + rgb + ',0)'); gx.addColorStop(.5, 'rgba(' + rgb + ',1)'); gx.addColorStop(1, 'rgba(' + rgb + ',0)');
-    g.fillStyle = gx; g.fillRect(0, 0, w, h);
-    g.globalCompositeOperation = 'destination-in';
-    var gy = g.createLinearGradient(0, 0, 0, h);
-    gy.addColorStop(0, 'rgba(0,0,0,1)'); gy.addColorStop(.45, 'rgba(0,0,0,.35)'); gy.addColorStop(1, 'rgba(0,0,0,0)');
-    g.fillStyle = gy; g.fillRect(0, 0, w, h); return c;
-  }
-  function bubbleSprite(size) {
-    var c = document.createElement('canvas'); c.width = c.height = size;
-    var g = c.getContext('2d'), r = size / 2;
-    g.strokeStyle = 'rgba(225, 255, 250, .75)'; g.lineWidth = size * .07; g.beginPath(); g.arc(r, r, r * .8, 0, 6.283); g.stroke();
-    g.fillStyle = 'rgba(255,255,255,.65)'; g.beginPath(); g.arc(r * .7, r * .68, r * .18, 0, 6.283); g.fill();
-    return c;
-  }
-  function fishSprite(len, rgb) {
-    var c = document.createElement('canvas'); c.width = Math.ceil(len * 2.6); c.height = Math.ceil(len * 1.1);
-    var g = c.getContext('2d'); g.translate(len * 1.55, len * .55); g.fillStyle = 'rgb(' + rgb + ')';
-    g.beginPath(); g.ellipse(0, 0, len, len * .3, 0, 0, 6.283); g.fill();
+  /* one small texture with four little white shapes, tinted when drawn: fish, glow, bubble, ripple ring */
+  function atlasCanvas() {
+    var c = document.createElement('canvas'); c.width = 256; c.height = 64;
+    var g = c.getContext('2d');
+    g.save(); g.translate(36, 32); g.fillStyle = '#fff';
+    var len = 20; g.beginPath(); g.ellipse(0, 0, len, len * .3, 0, 0, 6.283); g.fill();
     g.beginPath(); g.moveTo(-len * .8, 0); g.lineTo(-len * 1.5, -len * .42); g.lineTo(-len * 1.3, 0); g.lineTo(-len * 1.5, len * .42); g.closePath(); g.fill();
+    g.restore();
+    var gr = g.createRadialGradient(96, 32, 0, 96, 32, 32);
+    gr.addColorStop(0, 'rgba(255,255,255,1)'); gr.addColorStop(.25, 'rgba(255,255,255,.55)'); gr.addColorStop(1, 'rgba(255,255,255,0)');
+    g.fillStyle = gr; g.fillRect(64, 0, 64, 64);
+    g.strokeStyle = 'rgba(255,255,255,.75)'; g.lineWidth = 4.5; g.beginPath(); g.arc(160, 32, 25, 0, 6.283); g.stroke();
+    g.fillStyle = 'rgba(255,255,255,.65)'; g.beginPath(); g.arc(154, 26, 6, 0, 6.283); g.fill();
+    g.strokeStyle = '#fff'; g.lineWidth = 2.2; g.beginPath(); g.arc(224, 32, 29, 0, 6.283); g.stroke();
     return c;
   }
-  function layer(cls, after) {
-    var c = document.createElement('canvas'); c.className = cls; c.setAttribute('aria-hidden', 'true');
-    after.parentNode.insertBefore(c, after.nextSibling); return c;
+  var CELL = { fish: 0, glow: 1, bubble: 2, ring: 3 };
+
+  /* ---------- shaders ---------- */
+  var VS_SPRITE =
+    'attribute vec2 a_pos; attribute vec2 a_uv; attribute vec4 a_col;' +
+    'uniform vec2 u_res; varying vec2 v_uv; varying vec4 v_col;' +
+    'void main(){ vec2 c = a_pos / u_res * 2.0 - 1.0; gl_Position = vec4(c.x, -c.y, 0.0, 1.0); v_uv = a_uv; v_col = a_col; }';
+  var FS_SPRITE =
+    'precision mediump float; uniform sampler2D u_tex; varying vec2 v_uv; varying vec4 v_col;' +
+    'void main(){ gl_FragColor = texture2D(u_tex, v_uv) * v_col; }';
+  var VS_FULL =
+    'attribute vec2 a_pos; uniform vec2 u_res; varying vec2 v_px; varying vec2 v_uv;' +
+    'void main(){ gl_Position = vec4(a_pos, 0.0, 1.0); v_uv = a_pos * .5 + .5; v_px = vec2(v_uv.x, 1.0 - v_uv.y) * u_res; }';
+  // the whale layer, laid over the water as see-through glass
+  var FS_COMPOSITE =
+    'precision mediump float; uniform sampler2D u_tex; uniform float u_opacity; varying vec2 v_uv;' +
+    'void main(){ gl_FragColor = texture2D(u_tex, v_uv) * u_opacity; }';
+  // light on the water: two drifting caustic sheets, nine god rays and the glow of the surface
+  var FS_LIGHT =
+    '#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n' +
+    'uniform vec2 u_size; uniform float u_time; uniform vec2 u_sun; uniform float u_sunR; uniform vec2 u_rayO; uniform float u_rayL;' +
+    'uniform vec4 u_ray[9]; uniform sampler2D u_tile; uniform vec3 u_cCol; uniform vec3 u_rCol; uniform vec3 u_sCol; uniform float u_alpha;' +
+    'varying vec2 v_px;' +
+    'void main(){' +
+    '  vec2 p = v_px;' +
+    '  vec2 q1 = (p - u_time * vec2(14.0, 9.0)) / 921.6;' +
+    '  float cs = cos(-0.4887), sn = sin(-0.4887);' +
+    '  vec2 d2 = p - u_time * vec2(-11.0, 6.0); vec2 q2 = vec2(cs * d2.x - sn * d2.y, sn * d2.x + cs * d2.y) / 665.6;' +
+    '  float c = texture2D(u_tile, q1).a * .17 + texture2D(u_tile, q2).a * .10;' +
+    '  float y = p.y / u_size.y; float fade = y < .5 ? mix(1.0, .5, y * 2.0) : mix(.5, .08, (y - .5) * 2.0);' +
+    '  vec3 light = u_cCol * c * fade;' +
+    '  vec2 s = (p - u_sun) / vec2(u_sunR, u_sunR * .55); float sd = length(s);' +
+    '  float sunA = sd < .25 ? mix(1.0, .55, sd / .25) : max(0.0, mix(.55, 0.0, (sd - .25) / .75));' +
+    '  light += u_sCol * sunA * .2;' +
+    '  vec2 d = p - u_rayO; float r = 0.0;' +
+    '  for (int i = 0; i < 9; i++) {' +
+    '    vec4 R = u_ray[i]; vec2 dir = vec2(-sin(R.x), cos(R.x)); vec2 per = vec2(cos(R.x), sin(R.x));' +
+    '    float along = dot(d, dir) / u_rayL; float across = abs(dot(d, per)) / R.y;' +
+    '    float v = along < .45 ? mix(1.0, .35, along / .45) : max(0.0, mix(.35, 0.0, (along - .45) / .55));' +
+    '    r += max(0.0, 1.0 - across) * v * step(0.0, along) * R.z;' +
+    '  }' +
+    '  light += u_rCol * r;' +
+    '  gl_FragColor = vec4(light * u_alpha, 0.0);' +
+    '}';
+
+  function compile(gl, type, src) {
+    var s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s));
+    return s;
+  }
+  function program(gl, vs, fs) {
+    var p = gl.createProgram();
+    gl.attachShader(p, compile(gl, gl.VERTEX_SHADER, vs)); gl.attachShader(p, compile(gl, gl.FRAGMENT_SHADER, fs));
+    gl.linkProgram(p);
+    if (!gl.getProgramParameter(p, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(p));
+    var info = { p: p, a: {}, u: {} };
+    for (var i = 0, n = gl.getProgramParameter(p, gl.ACTIVE_ATTRIBUTES); i < n; i++) { var a = gl.getActiveAttrib(p, i); info.a[a.name] = gl.getAttribLocation(p, a.name); }
+    for (var j = 0, m = gl.getProgramParameter(p, gl.ACTIVE_UNIFORMS); j < m; j++) { var u = gl.getActiveUniform(p, j); info.u[u.name.replace(/\[0\]$/, '')] = gl.getUniformLocation(p, u.name); }
+    return info;
+  }
+  function texture(gl, src, repeat) {
+    var t = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, t);
+    gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, src);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    var wrap = repeat ? gl.REPEAT : gl.CLAMP_TO_EDGE;
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, wrap); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, wrap);
+    return t;
   }
 
-  // the moving water: two caustic sheets drifting past each other (CSS, very light to render)
-  var TILE = causticTile(256, C.caustic), TILE_URL = TILE.toDataURL();
-  function waterSheets(ocean) {
-    if (!ocean || ocean.querySelector('.caustics')) return;
-    var w = document.createElement('div'); w.className = 'caustics'; w.setAttribute('aria-hidden', 'true');
-    w.innerHTML = '<i></i><i></i>';
-    w.querySelectorAll('i').forEach(function (i) { i.style.backgroundImage = 'url(' + TILE_URL + ')'; });
-    ocean.insertBefore(w, ocean.firstChild);
-  }
+  var TILE = causticTile(256, C.caustic), ATLAS = atlasCanvas();
 
   /* ---------- One ocean ---------- */
   function Ocean(canvas) {
     var mode = MODES[canvas.getAttribute('data-mode')] || MODES.hero;
     var host = canvas.closest('section') || canvas.parentElement;
-    var ctx = canvas.getContext('2d');
-    var dpr = Math.min(devicePixelRatio || 1, small ? 1 : 1.25);
-    var W = 0, H = 0, whale = null, fish = [], motes = [], glows = [], bubbles = [], ripples = [], streams = [];
+    var gl = canvas.getContext('webgl', GL_OPTS);
+    if (!gl) return;
+    var baseDpr = Math.min(devicePixelRatio || 1, small ? 1.5 : 1.75), tier = 0;
+    var W = 0, H = 0, PW = 0, PH = 0, whale = null, fish = [], motes = [], glows = [], bubbles = [], ripples = [], streams = [];
     var visible = true, mx = 0, my = 0, cmx = 0, cmy = 0, last = 0, time = 0, nextStream = 2;
-    var fan = null, fanCtx = null, fanAge = 99, fanPat = null;
-    // the whale gets its own layer, shown see-through by the browser: no seams where fins meet the body
-    var wCanvas = null, wctx = ctx, front = 1, ws = small ? .7 : .75, pattern = null;
-    if (mode.whale) {
-      wCanvas = layer('sea-whale', canvas); wctx = wCanvas.getContext('2d');
-      wCanvas.style.opacity = mode.whale.opacity; front = 1 / mode.whale.opacity;
-      pattern = wctx.createPattern(TILE, 'repeat');
-    }
-    var GLOW = glowSprite(64, C.mote), BUB = bubbleSprite(32), SUN = glowSprite(256, C.sun), RAY = raySprite(64, 512, C.ray), rays = [];
-    var FISH = C.fish.map(function (c) { return fishSprite(12, c); });
+    var rays = [];
     for (var ri = 0; ri < 9; ri++) rays.push({ a: (-34 + ri * 8.5 + Math.random() * 4) * RAD, w: .04 + Math.random() * .08, o: .05 + Math.random() * .08,
       sp: .05 + Math.random() * .06, sw: (1.5 + Math.random() * 2.5) * RAD, p: Math.random() * 6.283 });
+
+    var P, buf, quadBuf, tex = {}, fbo = null, fboTex = null, partTex = {}, verts = new Float32Array(1600 * 6 * 8), nv = 0;
+    var rayU = new Float32Array(36);
+
+    function setupGL() {
+      P = { sprite: program(gl, VS_SPRITE, FS_SPRITE), comp: program(gl, VS_FULL, FS_COMPOSITE), light: program(gl, VS_FULL, FS_LIGHT) };
+      buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf); gl.bufferData(gl.ARRAY_BUFFER, verts.byteLength, gl.DYNAMIC_DRAW);
+      quadBuf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, quadBuf); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+      tex.atlas = texture(gl, ATLAS, false); tex.tile = texture(gl, TILE, true);
+      gl.disable(gl.DEPTH_TEST); gl.enable(gl.BLEND);
+      partTex = {}; fbo = null; fboTex = null;
+    }
 
     /* the whale's line across the screen: a slightly different line on each pass */
     function newPass() {
@@ -193,27 +273,53 @@
       whale.ang = (cfg.angle + (Math.random() - .5) * 8) * RAD;
       whale.cx = W * (.42 + Math.random() * .16); whale.cy = H * (.42 + Math.random() * .14);
       whale.jit = .95 + Math.random() * .08;
-      var L = whale.L * whale.jit, R = L * .6, dx = Math.cos(whale.ang), dy = Math.sin(whale.ang);
-      // where it is just out of sight as it arrives (bottom-right) and as it leaves (top-left)
-      function edge(lim, c, d) { return (lim - c) / d; }
-      whale.s0 = Math.max(edge(W + R, whale.cx, dx), edge(H + R, whale.cy, dy));
-      whale.s1 = Math.min(edge(-R, whale.cx, dx), edge(-R, whale.cy, dy));
+      var L = whale.L * whale.jit, dx = Math.cos(whale.ang), dy = Math.sin(whale.ang);
+      // find exactly when the first point of the outline comes into view and the last one leaves,
+      // so the next pass begins the moment the tail is gone
+      var k = L / 560 * 1.03, rot = whale.ang + Math.PI / 2, c = Math.cos(rot), sn = Math.sin(rot), s0 = Infinity, s1 = -Infinity;
+      for (var i = 0; i < OUTLINE.length; i++) {
+        var lx = (OUTLINE[i][0] - CENTER[0]) * k, ly = (OUTLINE[i][1] - CENTER[1]) * k;
+        var ox = whale.cx + lx * c - ly * sn, oy = whale.cy + lx * sn + ly * c;
+        // the stretch of the path during which this point is on screen
+        var ax = (0 - ox) / dx, bx = (W - ox) / dx, ay = (0 - oy) / dy, by = (H - oy) / dy;
+        var lo = Math.max(Math.min(ax, bx), Math.min(ay, by)), hi = Math.min(Math.max(ax, bx), Math.max(ay, by));
+        if (lo < hi) { if (lo < s0) s0 = lo; if (hi > s1) s1 = hi; }
+      }
+      whale.s0 = s0 - 4; whale.s1 = s1 + 4;
       whale.s = whale.s0;
     }
 
-    function build() {
+    function size() {
       W = canvas.clientWidth; H = canvas.clientHeight;
-      if (!W || !H) return;
-      canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
-      if (wCanvas) { wCanvas.width = Math.round(W * dpr * ws); wCanvas.height = Math.round(H * dpr * ws); }
+      if (!W || !H) return false;
+      var scale = TIERS[tier];
+      PW = Math.max(1, Math.round(W * baseDpr * scale)); PH = Math.max(1, Math.round(H * baseDpr * scale));
+      canvas.width = PW; canvas.height = PH;
       if (mode.whale) {
-        var L = H * mode.whale.len, k = L / 560, sp = {};
-        for (var key in PARTS) sp[key] = sprite(PARTS[key], k, dpr * ws);
+        if (!fboTex) { fboTex = gl.createTexture(); fbo = gl.createFramebuffer(); }
+        gl.bindTexture(gl.TEXTURE_2D, fboTex);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, PW, PH, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+        gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
+        gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, fboTex, 0);
+        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+        // paint the whale's parts once, at the resolution they will be shown
+        var L = H * mode.whale.len, k = L / 560, maxT = gl.getParameter(gl.MAX_TEXTURE_SIZE);
+        var res = Math.min(baseDpr * scale, maxT / ((PARTS.front.box[3] - PARTS.front.box[1]) * k * 1.01));
+        PART_ORDER.forEach(function (key) {
+          if (partTex[key]) gl.deleteTexture(partTex[key]);
+          partTex[key] = texture(gl, partCanvas(PARTS[key], k, res), false);
+        });
         var prog = whale ? (whale.s - whale.s0) / (whale.s1 - whale.s0) : .32;   // start partway across, already in view
-        whale = { L: L, sp: sp, ph: Math.random() * 6.283 };
+        whale = { L: L, ph: whale ? whale.ph : Math.random() * 6.283 };
         newPass();
         whale.s = mix(whale.s0, whale.s1, prog);
       }
+      return true;
+    }
+
+    function populate() {
       fish = [];
       var R = Math.min(W, H);
       for (var f = 0; f < mode.fish; f++) {
@@ -225,134 +331,169 @@
       for (var m = 0; m < mode.motes; m++) motes.push({ x: Math.random() * W, y: Math.random() * H, r: .6 + Math.random() * 1.8, v: 2 + Math.random() * 7, p: Math.random() * 6.283, a: .15 + Math.random() * .45 });
       glows = [];
       for (var gq = 0; gq < mode.glowMotes; gq++) glows.push({ x: Math.random() * W, y: Math.random() * H, r: 10 + Math.random() * 26, v: 3 + Math.random() * 6, p: Math.random() * 6.283, a: .05 + Math.random() * .1 });
-      fanAge = 99;
     }
 
-    function drawPart(g, sp, pivot, rot, sy) {
-      var b = sp.box;
-      if (pivot) { g.save(); g.translate(pivot[0], pivot[1]); g.rotate(rot); if (sy) g.scale(1, sy); g.translate(-pivot[0], -pivot[1]); }
-      g.drawImage(sp.c, b[0], b[1], b[2] - b[0], b[3] - b[1]);
-      if (pivot) g.restore();
+    /* ---------- batching quads ---------- */
+    var QX = [-1, 1, 1, -1], QY = [-1, -1, 1, 1], QU = [0, 1, 1, 0], QV = [0, 0, 1, 1], QI = [0, 1, 2, 0, 2, 3];
+    function quad(cx, cy, hw, hh, ang, cell, col, a) {
+      if (a <= 0 || nv + 6 > verts.length / 8) return;
+      var c = Math.cos(ang), s = Math.sin(ang), u0 = cell * .25;
+      var pr = col[0] * a, pg = col[1] * a, pb = col[2] * a;
+      for (var i = 0; i < 6; i++) {
+        var j = QI[i], o = (nv + i) * 8, x = QX[j] * hw, y = QY[j] * hh;
+        verts[o] = cx + x * c - y * s; verts[o + 1] = cy + x * s + y * c;
+        verts[o + 2] = u0 + QU[j] * .25; verts[o + 3] = QV[j];
+        verts[o + 4] = pr; verts[o + 5] = pg; verts[o + 6] = pb; verts[o + 7] = a;
+      }
+      nv += 6;
+    }
+    // a whale part: its box carried through the part's own transform
+    function partQuad(m, box) {
+      var xs = [box[0], box[2], box[2], box[0]], ys = [box[1], box[1], box[3], box[3]];
+      for (var i = 0; i < 6; i++) {
+        var j = QI[i], o = (nv + i) * 8;
+        verts[o] = m[0] * xs[j] + m[2] * ys[j] + m[4]; verts[o + 1] = m[1] * xs[j] + m[3] * ys[j] + m[5];
+        verts[o + 2] = QU[j]; verts[o + 3] = QV[j];
+        verts[o + 4] = 1; verts[o + 5] = 1; verts[o + 6] = 1; verts[o + 7] = 1;
+      }
+      nv += 6;
+    }
+    function flush(t) {
+      if (!nv) return;
+      var S = P.sprite;
+      gl.useProgram(S.p);
+      gl.bindBuffer(gl.ARRAY_BUFFER, buf); gl.bufferSubData(gl.ARRAY_BUFFER, 0, verts.subarray(0, nv * 8));
+      gl.enableVertexAttribArray(S.a.a_pos); gl.vertexAttribPointer(S.a.a_pos, 2, gl.FLOAT, false, 32, 0);
+      gl.enableVertexAttribArray(S.a.a_uv); gl.vertexAttribPointer(S.a.a_uv, 2, gl.FLOAT, false, 32, 8);
+      gl.enableVertexAttribArray(S.a.a_col); gl.vertexAttribPointer(S.a.a_col, 4, gl.FLOAT, false, 32, 16);
+      gl.uniform2f(S.u.u_res, W, H);
+      gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, t); gl.uniform1i(S.u.u_tex, 0);
+      gl.drawArrays(gl.TRIANGLES, 0, nv);
+      gl.disableVertexAttribArray(S.a.a_uv); gl.disableVertexAttribArray(S.a.a_col);
+      nv = 0;
+    }
+    function fullscreen(prog) {
+      gl.bindBuffer(gl.ARRAY_BUFFER, quadBuf);
+      gl.enableVertexAttribArray(prog.a.a_pos); gl.vertexAttribPointer(prog.a.a_pos, 2, gl.FLOAT, false, 0, 0);
+      gl.drawArrays(gl.TRIANGLES, 0, 3);
     }
 
-    function drawWhale(g, ox, oy) {
+    /* 2D affine helpers, like canvas transforms: [a, b, c, d, e, f] */
+    function mul(m, n) { return [m[0] * n[0] + m[2] * n[1], m[1] * n[0] + m[3] * n[1], m[0] * n[2] + m[2] * n[3], m[1] * n[2] + m[3] * n[3], m[0] * n[4] + m[2] * n[5] + m[4], m[1] * n[4] + m[3] * n[5] + m[5]]; }
+    function T(x, y) { return [1, 0, 0, 1, x, y]; }
+    function Rt(a) { var c = Math.cos(a), s = Math.sin(a); return [c, s, -s, c, 0, 0]; }
+    function Sc(x, y) { return [x, 0, 0, y, 0, 0]; }
+    function about(m, pv, rot, sy) { var r = mul(mul(m, T(pv[0], pv[1])), Rt(rot)); if (sy) r = mul(r, Sc(1, sy)); return mul(r, T(-pv[0], -pv[1])); }
+
+    function drawWhale(ox, oy) {
       var w = whale, dx = Math.cos(w.ang), dy = Math.sin(w.ang);
       var x = w.cx + dx * w.s + ox, y = w.cy + dy * w.s + oy;
       var t = time + w.ph * 3;
       var rot = w.ang + Math.PI / 2 + Math.sin(time * .1 + w.ph) * .025;
       var k = (w.L * w.jit) / 560;
       var breathe = 1 + Math.sin(t * .5) * .012;                       // a slow breath, barely there
-      g.save(); g.translate(x, y); g.rotate(rot); g.scale(k * breathe, k); g.translate(-CENTER[0], -CENTER[1]);
-      // a very small wave runs through the body: head one way, tail the other
-      var wave = Math.sin(t * .55);
-      // long pectoral fins, slow heavy strokes
-      drawPart(g, w.sp.finR, PARTS.finR.pivot, Math.sin(t * .4) * 5 * RAD);
-      drawPart(g, w.sp.finL, PARTS.finL.pivot, -Math.sin(t * .4) * 5 * RAD);
-      g.save(); g.translate(100, 296); g.rotate(wave * 2.4 * RAD); g.translate(-100, -296);
-      drawPart(g, w.sp.fluke, PARTS.fluke.pivot, Math.sin(t * .55 - .9) * 6 * RAD, .86 + .14 * Math.sin(t * .55 - .4));
-      drawPart(g, w.sp.rear);
-      g.restore();
-      g.save(); g.translate(100, 296); g.rotate(-wave * .9 * RAD); g.translate(-100, -296);
-      drawPart(g, w.sp.front);
-      g.restore();
-      g.restore();
-      // light moving over the body, like water: two caustic sheets drifting across the whale only
-      if (false) {
-        g.save(); g.globalCompositeOperation = 'source-atop';
-        pattern.setTransform(new DOMMatrix().translate(time * 14, time * 9).scale(2.4));
-        g.globalAlpha = .32; g.fillStyle = pattern; g.fillRect(0, 0, W, H);
-        pattern.setTransform(new DOMMatrix().translate(-time * 11, time * 6).rotate(30).scale(1.7));
-        g.globalAlpha = .22; g.fillRect(0, 0, W, H);
-        g.restore();
-      }
-      // now and then a few slow bubbles from the blowhole
+      var base = mul(mul(mul(T(x, y), Rt(rot)), Sc(k * breathe, k)), T(-CENTER[0], -CENTER[1]));
+      var wave = Math.sin(t * .55);                                     // a very small wave through the body
+      var rearM = about(base, [100, 296], wave * 2.4 * RAD);
+      var mats = {
+        finR: about(base, PARTS.finR.pivot, Math.sin(t * .4) * 5 * RAD),
+        finL: about(base, PARTS.finL.pivot, -Math.sin(t * .4) * 5 * RAD),
+        fluke: about(rearM, PARTS.fluke.pivot, Math.sin(t * .55 - .9) * 6 * RAD, .86 + .14 * Math.sin(t * .55 - .4)),
+        rear: rearM,
+        front: about(base, [100, 296], -wave * .9 * RAD)
+      };
+      // paint the parts solid into the whale layer (so no seams where they overlap), then lay it over the water, see-through
+      gl.bindFramebuffer(gl.FRAMEBUFFER, fbo); gl.viewport(0, 0, PW, PH);
+      gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
+      gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+      PART_ORDER.forEach(function (key) { partQuad(mats[key], PARTS[key].box); flush(partTex[key]); });
+      gl.bindFramebuffer(gl.FRAMEBUFFER, null); gl.viewport(0, 0, PW, PH);
+      gl.useProgram(P.comp.p);
+      gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, fboTex); gl.uniform1i(P.comp.u.u_tex, 0);
+      gl.uniform1f(P.comp.u.u_opacity, mode.whale.opacity); gl.uniform2f(P.comp.u.u_res, W, H);
+      fullscreen(P.comp);
       if (!reduce && Math.random() < .012) bubbles.push({ x: x + dx * w.L * .32, y: y + dy * w.L * .32, r: 1.5 + Math.random() * 3, v: 20 + Math.random() * 25, p: Math.random() * 6.283 });
+    }
+
+    /* ---------- watching our own smoothness ---------- */
+    var samples = [], calmGlass = false, warm = 0;
+    function adapt(dt) {
+      warm += dt; if (warm < 2) return;                       // let the page settle first
+      samples.push(dt);
+      if (samples.length < 90) return;
+      var s = samples.slice().sort(function (a, b) { return a - b; }), med = s[s.length >> 1];
+      samples.length = 0;
+      if (med > .024) {                                       // slower than ~42 fps: step down one notch
+        if (tier === 1 && !calmGlass && mode === MODES.hero) { calmGlass = true; document.documentElement.classList.add('calm-glass'); }
+        else if (tier < TIERS.length - 1) { tier++; size(); }
+      } else if (med < .0135 && tier > 0) {                   // comfortably fast again: step back up
+        tier--; size();
+      }
     }
 
     function frame(now) {
       if (!reduce) requestAnimationFrame(frame);
       var dt = last ? Math.min(.05, (now - last) / 1000) : .016; last = now;
-      if (!visible || document.hidden || !W) return;
+      if (!visible || document.hidden || !W || gl.isContextLost()) return;
       time += dt;
+      if (!reduce) adapt(dt);
       cmx += (mx - cmx) * .03; cmy += (my - cmy) * .03;
       var sy = mode.scroll ? Math.min(scrollY, H) : 0;
       var lx = W * mode.light[0], ly = H * mode.light[1];
+      if (whale && !reduce) { whale.s += mode.whale.speed * dt; if (whale.s >= whale.s1) newPass(); }
 
-      // the whale moves on; the moment it leaves, it glides in again
-      if (whale && !reduce) {
-        whale.s += mode.whale.speed * dt;
-        if (whale.s >= whale.s1) newPass();
-      }
+      gl.viewport(0, 0, PW, PH);
+      gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
+      gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
 
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      ctx.clearRect(0, 0, W, H);
-      if (wCanvas) { wctx.setTransform(dpr * ws, 0, 0, dpr * ws, 0, 0); wctx.clearRect(0, 0, W, H); }
-
-      // far motes
+      // far motes and the school of fish around the light beam (seen through the whale)
+      var mc = rgb(C.mote);
       for (var i = 0; i < motes.length; i++) {
         var p = motes[i]; p.y -= p.v * dt; p.p += dt * .5;
         if (p.y < -6) { p.y = H + 6; p.x = Math.random() * W; }
-        ctx.globalAlpha = mode.alpha * p.a * (.6 + .4 * Math.sin(p.p * 2));
-        ctx.drawImage(GLOW, p.x + Math.sin(p.p) * 8 - p.r * 2, p.y - p.r * 2, p.r * 4, p.r * 4);
+        quad(p.x + Math.sin(p.p) * 8, p.y, p.r * 2, p.r * 2, 0, CELL.glow, mc, mode.alpha * p.a * (.6 + .4 * Math.sin(p.p * 2)));
       }
-
-      // the school swirls slowly around the light beam (seen through the whale)
       for (var f = 0; f < fish.length; f++) {
         var fi = fish[f]; fi.a += fi.w * dt; fi.p += dt * .35;
         var rad = fi.r * (1 + .08 * Math.sin(fi.p));
         var fx = lx + Math.cos(fi.a) * rad + cmx * 14 * fi.d;
         var fy = ly + Math.sin(fi.a) * rad * .42 + Math.sin(fi.p * 1.3) * rad * .1 + rad * .18 - sy * .1;
-        if (fi.x !== null) {
-          var target = Math.atan2(fy - fi.y, fx - fi.x);
-          fi.h += Math.atan2(Math.sin(target - fi.h), Math.cos(target - fi.h)) * .1;
-        }
+        if (fi.x !== null) { var target = Math.atan2(fy - fi.y, fx - fi.x); fi.h += Math.atan2(Math.sin(target - fi.h), Math.cos(target - fi.h)) * .1; }
         fi.x = fx; fi.y = fy;
-        var spr = FISH[fi.d < .33 ? 0 : fi.d < .66 ? 1 : 2], sc = fi.s;
-        ctx.save(); ctx.translate(fx, fy); ctx.rotate(fi.h); ctx.globalAlpha = mode.alpha * (.4 + fi.d * .45);
-        ctx.drawImage(spr, -spr.width * .6 * sc, -spr.height * .5 * sc, spr.width * sc, spr.height * sc);
-        ctx.restore();
+        var half = 19.2 * fi.s;                                 // same size as before
+        quad(fx, fy, half, half, fi.h, CELL.fish, rgb(C.fish[fi.d < .33 ? 0 : fi.d < .66 ? 1 : 2]), mode.alpha * (.4 + fi.d * .45));
       }
-      ctx.globalAlpha = mode.alpha;
+      flush(tex.atlas);
 
-      // the whale, on its own see-through layer
-      if (whale) { wctx.globalAlpha = 1; drawWhale(wctx, cmx * 26, cmy * 16 - sy * .28); }
+      // the whale, see-through
+      if (whale) drawWhale(cmx * 26, cmy * 16 - sy * .28);
 
-      // god rays: painted into their own half-size layer a few times a second (they move very slowly)
+      // light on the water, over everything behind: caustics, god rays, the glow of the surface
       if (mode.rays) {
-        if (!fan) { fan = layer('sea-rays', wCanvas || canvas); fanCtx = fan.getContext('2d'); }
-        if (fan.width !== Math.ceil(W / 2) || fan.height !== Math.ceil(H / 2)) { fan.width = Math.ceil(W / 2); fan.height = Math.ceil(H / 2); fanAge = 99; }
-        fanAge += dt;
-        if (fanAge > (small ? .1 : .06)) {
-          fanAge = 0; var fc = fanCtx, hw = fan.width, hh = fan.height, flx = hw * mode.light[0], fly = hh * mode.light[1];
-          fc.setTransform(1, 0, 0, 1, 0, 0); fc.clearRect(0, 0, hw, hh);
-          // the moving net of light on the water (and over the whale): two caustic sheets drifting past each other
-          if (!fanPat) fanPat = fc.createPattern(TILE, 'repeat');
-          if (fanPat.setTransform && window.DOMMatrix) {
-            fc.globalCompositeOperation = 'source-over'; fc.fillStyle = fanPat;
-            fanPat.setTransform(new DOMMatrix().translate(time * 7, time * 4.5).scale(1.8)); fc.globalAlpha = .17; fc.fillRect(0, 0, hw, hh);
-            fanPat.setTransform(new DOMMatrix().translate(-time * 5.5, time * 3).rotate(28).scale(1.3)); fc.globalAlpha = .1; fc.fillRect(0, 0, hw, hh);
-            // brightest near the surface, fading with depth
-            fc.globalCompositeOperation = 'destination-in'; fc.globalAlpha = 1;
-            var fade = fc.createLinearGradient(0, 0, 0, hh); fade.addColorStop(0, 'rgba(0,0,0,1)'); fade.addColorStop(.5, 'rgba(0,0,0,.5)'); fade.addColorStop(1, 'rgba(0,0,0,.08)');
-            fc.fillStyle = fade; fc.fillRect(0, 0, hw, hh);
-          }
-          fc.globalCompositeOperation = 'lighter';
-          var sunR = Math.max(hw, hh) * .42 * (1 + .04 * Math.sin(time * .25));
-          fc.globalAlpha = .2; fc.drawImage(SUN, flx - sunR, fly - hh * .2 - sunR * .55, sunR * 2, sunR * 1.1);
-          var rl = Math.hypot(hw, hh) * 1.05;
-          for (var r2 = 0; r2 < rays.length; r2++) {
-            var ry = rays[r2], ang = ry.a + Math.sin(time * ry.sp + ry.p) * ry.sw, rw = Math.max(hw, hh) * ry.w;
-            fc.save(); fc.translate(flx, fly - hh * .25); fc.rotate(ang);
-            fc.globalAlpha = ry.o * (.7 + .3 * Math.sin(time * ry.sp * 1.7 + ry.p));
-            fc.drawImage(RAY, -rw / 2, 0, rw, rl); fc.restore();
-          }
+        var L = P.light, rl = Math.hypot(W, H) * 1.05;
+        for (var r = 0; r < 9; r++) {
+          var ry = rays[r];
+          rayU[r * 4] = ry.a + Math.sin(time * ry.sp + ry.p) * ry.sw;
+          rayU[r * 4 + 1] = Math.max(W, H) * ry.w / 2;
+          rayU[r * 4 + 2] = ry.o * (.7 + .3 * Math.sin(time * ry.sp * 1.7 + ry.p));
+          rayU[r * 4 + 3] = 0;
         }
+        gl.blendFunc(gl.ONE, gl.ONE);
+        gl.useProgram(L.p);
+        gl.uniform2f(L.u.u_res, W, H); gl.uniform2f(L.u.u_size, W, H); gl.uniform1f(L.u.u_time, time);
+        gl.uniform2f(L.u.u_sun, lx, ly - H * .2); gl.uniform1f(L.u.u_sunR, Math.max(W, H) * .42 * (1 + .04 * Math.sin(time * .25)));
+        gl.uniform2f(L.u.u_rayO, lx, ly - H * .25); gl.uniform1f(L.u.u_rayL, rl);
+        gl.uniform4fv(L.u.u_ray, rayU);
+        gl.uniform3f(L.u.u_cCol, 205 / 255, 1, 248 / 255);
+        var rc = rgb(C.ray), sc = rgb(C.sun);
+        gl.uniform3f(L.u.u_rCol, rc[0], rc[1], rc[2]); gl.uniform3f(L.u.u_sCol, sc[0], sc[1], sc[2]);
+        gl.uniform1f(L.u.u_alpha, mode.alpha * .95);
+        gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, tex.tile); gl.uniform1i(L.u.u_tile, 0);
+        fullscreen(L);
+        gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
       }
 
-      // everything in front of the whale is drawn on the whale's layer, made a little brighter to stay true
-      var g = wctx;
-
-      // bubbles: now and then a slow stream rises from below
+      // in front: slow bubble streams, out-of-focus motes, ripples
       nextStream -= dt;
       if (nextStream <= 0 && !reduce) { streams.push({ x: W * (.1 + Math.random() * .8), left: 10 + Math.random() * 10, t: 0 }); nextStream = 4 + Math.random() * 6; }
       for (var q = streams.length - 1; q >= 0; q--) {
@@ -360,34 +501,29 @@
         if (st.t <= 0) { bubbles.push({ x: st.x + (Math.random() - .5) * 10, y: H + 8, r: 2 + Math.random() * 4, v: 24 + Math.random() * 26, p: Math.random() * 6.283 }); st.t = .12 + Math.random() * .25; st.left--; }
         if (st.left <= 0) streams.splice(q, 1);
       }
+      var bc = [225 / 255, 1, 250 / 255];
       for (var b = bubbles.length - 1; b >= 0; b--) {
         var bb = bubbles[b]; bb.y -= bb.v * dt; bb.p += dt * 2.2;
         var fade = Math.min(1, bb.y / (H * .5));
-        g.globalAlpha = Math.min(1, mode.alpha * .7 * Math.max(0, fade) * front);
-        g.drawImage(BUB, bb.x + Math.sin(bb.p) * 4 - bb.r, bb.y - bb.r, bb.r * 2, bb.r * 2);
+        quad(bb.x + Math.sin(bb.p) * 4, bb.y, bb.r * 1.28, bb.r * 1.28, 0, CELL.bubble, bc, mode.alpha * .7 * Math.max(0, fade));
         if (bb.y < -10 || fade <= 0) bubbles.splice(b, 1);
       }
-
-      // near, out-of-focus light motes
       for (var gq = 0; gq < glows.length; gq++) {
         var gm = glows[gq]; gm.y -= gm.v * dt; gm.p += dt * .3;
         if (gm.y < -gm.r * 2) { gm.y = H + gm.r * 2; gm.x = Math.random() * W; }
-        g.globalAlpha = Math.min(1, mode.alpha * gm.a * (.7 + .3 * Math.sin(gm.p * 2)) * front);
-        g.drawImage(GLOW, gm.x + Math.sin(gm.p) * 14 + cmx * 40 - gm.r * 2, gm.y - gm.r * 2, gm.r * 4, gm.r * 4);
+        quad(gm.x + Math.sin(gm.p) * 14 + cmx * 40, gm.y, gm.r * 2, gm.r * 2, 0, CELL.glow, mc, mode.alpha * gm.a * (.7 + .3 * Math.sin(gm.p * 2)));
       }
-
-      // ripples from a click or tap
-      for (var r = ripples.length - 1; r >= 0; r--) {
-        var rp = ripples[r], age = time - rp.t;
-        if (age > 3) { ripples.splice(r, 1); continue; }
+      var rcol = rgb(C.ring);
+      for (var rr = ripples.length - 1; rr >= 0; rr--) {
+        var rp = ripples[rr], age = time - rp.t;
+        if (age > 3) { ripples.splice(rr, 1); continue; }
         for (var ring = 0; ring < 3; ring++) {
           var ra = age - ring * .35; if (ra <= 0) continue;
-          g.globalAlpha = Math.min(1, Math.max(0, .45 * (1 - ra / 2.6)) * front);
-          g.strokeStyle = 'rgb(205, 250, 245)'; g.lineWidth = 1.2;
-          g.beginPath(); g.ellipse(rp.x, rp.y, ra * 70, ra * 70 * .55, 0, 0, 6.283); g.stroke();
+          var rad2 = ra * 70 * (32 / 29);
+          quad(rp.x, rp.y, rad2, rad2 * .55, 0, CELL.ring, rcol, Math.max(0, .45 * (1 - ra / 2.6)));
         }
       }
-      ctx.globalAlpha = 1; g.globalAlpha = 1;
+      flush(tex.atlas);
     }
 
     /* interaction */
@@ -399,11 +535,20 @@
       for (var i = 0; i < 8; i++) bubbles.push({ x: x + (Math.random() - .5) * 30, y: y + Math.random() * 20, r: 1.5 + Math.random() * 3.5, v: 30 + Math.random() * 40, p: Math.random() * 6.283 });
     });
     if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { visible = es[0].isIntersecting; }).observe(canvas);
-    var rt; addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { build(); if (reduce) still(); }, 150); });
+    var rt; addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { if (size()) { populate(); if (reduce) still(); } }, 150); });
+    canvas.addEventListener('webglcontextlost', function (e) { e.preventDefault(); });
+    canvas.addEventListener('webglcontextrestored', function () { setupGL(); size(); });
 
     // reduced motion: one calm, still frame with the whale in view
     function still() { time = 30; last = 0; visible = true; if (whale) whale.s = mix(whale.s0, whale.s1, .45); frame(performance.now()); }
-    build();
+
+    try { setupGL(); } catch (err) {
+      if (window.console) console.warn('Walvis ocean: WebGL shaders refused, using 2D', err);
+      // this canvas is now tied to WebGL, so hand the 2D version a fresh one
+      var fresh = canvas.cloneNode(false); canvas.parentNode.replaceChild(fresh, canvas);
+      fallback(); return;
+    }
+    size(); populate();
     if (reduce) still(); else requestAnimationFrame(frame);
   }
 
