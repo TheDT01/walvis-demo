@@ -9,20 +9,15 @@ var SITE = {
   city: 'Dhaka, Bangladesh',
   social: { instagram: '#', facebook: '#', linkedin: '#' },   // PLACEHOLDERS
   logo: 'images/logo/walvis-seal-160.png',
+  // the menu (icon bar), in this order
   menu: [
-    { label: 'Lifestyle', href: 'lifestyle.html' },
-    { label: 'Concierge for Foreigners', href: 'foreigners.html' },
-    { label: 'For Expats', href: 'expats.html' },
+    { label: 'Personal Lifestyle', href: 'lifestyle.html' },
     { label: 'Travel', href: 'travel.html' },
     { label: 'Retail', href: 'retail.html' },
-    { label: 'Assets', href: 'assets.html' },
+    { label: 'Experiences', href: 'experiences.html' },
+    { label: 'Concierge for Foreigners', href: 'foreigners.html' },
+    { label: 'For Expats', href: 'expats.html' },
     { label: 'About Us', href: 'about.html' }
-  ],
-  more: [
-    { label: 'Membership', href: 'membership.html' },
-    { label: 'Special Requests', href: 'special-requests.html' },
-    { label: 'What we offer', href: 'what-we-offer.html' },
-    { label: 'Contact', href: 'contact.html' }
   ]
 };
 
@@ -59,7 +54,6 @@ function waLink(msg) {
     var items = SITE.menu.map(function (m) {
       return '<li><a href="' + m.href + '"' + (m.href === here ? ' aria-current="page"' : '') + '>' + m.label + '</a></li>';
     }).join('');
-    var more = SITE.more.map(function (m) { return '<a href="' + m.href + '">' + m.label + '</a>'; }).join('');
     h.outerHTML =
       '<a class="skip" href="#main">Skip to content</a>' +
       '<header class="topbar" id="topbar">' +
@@ -70,7 +64,6 @@ function waLink(msg) {
       '<aside class="drawer" id="drawer" aria-hidden="true" aria-label="Menu">' +
         '<button class="drawer-close" id="drawerClose" aria-label="Close menu">&times;</button>' +
         '<nav><ol>' + items + '</ol></nav>' +
-        '<div class="drawer-sub">' + more + '</div>' +
         '<div class="drawer-foot">' +
           '<a href="' + waLink() + '" target="_blank" rel="noopener">' + ic('chat') + ' WhatsApp us</a>' +
           '<a href="tel:' + SITE.phone.replace(/[^+\d]/g, '') + '">' + ic('phone') + ' ' + SITE.phone + '</a>' +
@@ -86,8 +79,8 @@ function waLink(msg) {
       '<footer class="footer"><div class="meander" style="max-width:var(--wrap);margin:0 auto 70px"></div>' +
         '<div class="foot-top">' +
           '<div class="foot-brand"><img src="' + SITE.logo + '" alt="" width="74" height="74"><span class="caps">Walvis</span><p>From seas to mountains,<br>consider it done.</p></div>' +
-          '<div><h4>Services</h4><nav>' + SITE.menu.slice(0, 6).map(function (m) { return '<a href="' + m.href + '">' + m.label + '</a>'; }).join('') + '</nav></div>' +
-          '<div><h4>Walvis</h4><nav><a href="membership.html">Membership</a><a href="special-requests.html">Special Requests</a><a href="about.html">About us</a><a href="contact.html">Contact</a></nav></div>' +
+          '<div><h4>Services</h4><nav>' + SITE.menu.filter(function (m) { return m.href !== 'about.html'; }).map(function (m) { return '<a href="' + m.href + '">' + m.label + '</a>'; }).join('') + '</nav></div>' +
+          '<div><h4>Walvis</h4><nav><a href="membership.html">Membership</a><a href="what-we-offer.html">What we offer</a><a href="assets.html">Assets</a><a href="special-requests.html">Special Requests</a><a href="about.html">About us</a><a href="contact.html">Contact</a></nav></div>' +
           '<div class="contact"><h4>Reach us</h4>' +
             '<a href="' + waLink() + '" target="_blank" rel="noopener">' + ic('chat') + ' WhatsApp</a>' +
             '<a href="tel:' + SITE.phone.replace(/[^+\d]/g, '') + '">' + ic('phone') + ' ' + SITE.phone + '</a>' +
@@ -96,7 +89,7 @@ function waLink(msg) {
             '<div class="social"><a href="' + SITE.social.instagram + '" aria-label="Instagram">' + ic('ig') + '</a><a href="' + SITE.social.facebook + '" aria-label="Facebook">' + ic('fb') + '</a><a href="' + SITE.social.linkedin + '" aria-label="LinkedIn">' + ic('li') + '</a></div>' +
           '</div>' +
         '</div>' +
-        '<div class="foot-base"><span>© ' + new Date().getFullYear() + ' Walvis Concierge. If it’s legal, we can do it.</span>' +
+        '<div class="foot-base"><span>© ' + new Date().getFullYear() + ' Walvis Concierge. If It’s Legal, It’s Possible.</span>' +
           '<nav><a href="privacy.html">Privacy</a><a href="credits.html">Photo credits</a></nav></div>' +
       '</footer>' +
       '<a class="wa" href="' + waLink() + '" target="_blank" rel="noopener" aria-label="Message Walvis on WhatsApp">' + ic('chat') + '<span>Message us</span></a>';
