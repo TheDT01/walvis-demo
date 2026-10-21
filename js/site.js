@@ -263,44 +263,65 @@ function waLink(msg) {
   if (bands.length && fine) { addEventListener('scroll', function () { if (pQueued) return; pQueued = true; requestAnimationFrame(function () { pQueued = false; parallax(); }); }, { passive: true }); parallax(); }
 
   /* ---------- Lighthouse: the seal in the header throws a beam ----------
-     Mouse: the beam follows the cursor. Touch screens: it sweeps round like a lighthouse,
-     points at a touch for a moment, then carries on. Only a transform changes per frame. */
+     Mouse: the beam reaches the cursor and ends there in a soft spotlight, nothing beyond.
+     Touch screens: it sweeps round like a lighthouse; a touch brings the spotlight to the finger for a moment.
+     The beam and the spot are drawn once at a fixed size and only moved, turned and stretched (transforms). */
   var seal = document.querySelector('.topbar .brand img');
   if (seal) {
+    var BL = 1000, BH = 200, SD = 200;                         // drawn sizes: beam length/height, spot diameter
     var beamEl = document.createElement('div'); beamEl.className = 'beam'; beamEl.setAttribute('aria-hidden', 'true');
-    var cone = document.createElement('i'); beamEl.appendChild(cone); document.body.appendChild(beamEl);
+    var cone = document.createElement('i'); beamEl.appendChild(cone);
+    var spot = document.createElement('div'); spot.className = 'beam-spot'; spot.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(beamEl); document.body.appendChild(spot);
     var mouse = matchMedia('(hover: hover) and (pointer: fine)').matches;
     var SPIN = (reduce ? 14 : 45) * Math.PI / 180;            // radians per second, about one turn in 8s
-    var bx = 0, by = 0, ang = -Math.PI / 2, target = ang, spinning = true, holdUntil = 0, bLast = 0, bRaf = 0;
+    var bx = 0, by = 0, far = 1200, ang = -Math.PI / 2, target = ang, len = 1200, tLen = 1200, wid = 740, tWid = 740;
+    var px = 0, py = 0, aiming = false, holdUntil = 0, bLast = 0, bRaf = 0, spotOn = 0;
     function place() {
       var r = seal.getBoundingClientRect(); bx = r.left + r.width / 2; by = r.top + r.height / 2;
-      var len = Math.min(Math.hypot(innerWidth, innerHeight), 1700);
-      beamEl.style.setProperty('--r', len + 'px'); beamEl.style.setProperty('--h', (len * .62) + 'px');
+      far = Math.hypot(Math.max(bx, innerWidth - bx), Math.max(by, innerHeight - by)) + 40;
+      if (aiming) aimAt(px, py, true);
     }
-    function aimAt(x, y) { target = Math.atan2(y - by, x - bx); spinning = false; wake(); }
+    function aimAt(x, y, quiet) {
+      px = x; py = y; aiming = true;
+      target = Math.atan2(y - by, x - bx);
+      tLen = Math.max(60, Math.hypot(x - bx, y - by));
+      tWid = Math.min(420, Math.max(230, tLen * .62));         // the pool of light, a little larger further away
+      if (!quiet) wake();
+    }
+    function sweep() { aiming = false; tLen = far; tWid = far * .62; wake(); }
+    function near(a, b, e) { return Math.abs(a - b) < e; }
     function frame(now) {
       bRaf = 0;
       var dt = Math.min(.05, (now - (bLast || now)) / 1000); bLast = now;
-      if (!spinning && !mouse && now > holdUntil) spinning = true;
-      if (spinning) ang += SPIN * dt;
-      else { var d = Math.atan2(Math.sin(target - ang), Math.cos(target - ang)); ang += d * Math.min(1, dt * (reduce ? 4 : 9)); }
+      if (aiming && !mouse && now > holdUntil) sweep();
+      var k = Math.min(1, dt * (reduce ? 4 : 9)), d = 0;
+      if (aiming) { d = Math.atan2(Math.sin(target - ang), Math.cos(target - ang)); ang += d * k; }
+      else { ang += SPIN * dt; tLen = far; tWid = far * .62; }
+      len += (tLen - len) * k; wid += (tWid - wid) * k;
+      spotOn += ((aiming ? 1 : 0) - spotOn) * Math.min(1, dt * 6);
       beamEl.style.transform = 'translate(' + bx + 'px,' + by + 'px) rotate(' + ang + 'rad)';
-      // keep going while it sweeps or is still turning towards the cursor; rest when it has arrived
-      if (spinning || !mouse || Math.abs(Math.atan2(Math.sin(target - ang), Math.cos(target - ang))) > .002) wake();
+      cone.style.transform = 'scale(' + (len / BL) + ',' + (wid / BH) + ')';
+      var ex = bx + Math.cos(ang) * len, ey = by + Math.sin(ang) * len, ss = wid * 1.15 / SD;
+      spot.style.transform = 'translate(' + ex + 'px,' + ey + 'px) scale(' + ss + ')';
+      spot.style.opacity = (spotOn * (bar && bar.classList.contains('solid') ? .5 : 1)).toFixed(3);
+      // keep going while it sweeps or is still settling on the cursor; rest once it has arrived
+      if (!aiming || !mouse || !near(d, 0, .002) || !near(len, tLen, .5) || !near(wid, tWid, .5) || !near(spotOn, 1, .01)) wake();
     }
     function wake() { if (!bRaf && !document.hidden) bRaf = requestAnimationFrame(frame); }
     place(); wake();
     requestAnimationFrame(function () { document.documentElement.classList.add('beam-on'); });
     addEventListener('resize', function () { place(); wake(); });
     addEventListener('scroll', function () { place(); wake(); }, { passive: true });
-    seal.addEventListener('transitionend', place);                // the seal shrinks when the header turns solid
+    seal.addEventListener('transitionend', function () { place(); wake(); });   // the seal shrinks when the header turns solid
     document.addEventListener('visibilitychange', function () { bLast = 0; wake(); });
     if (mouse) {
       addEventListener('mousemove', function (e) { aimAt(e.clientX, e.clientY); }, { passive: true });
-      document.documentElement.addEventListener('mouseleave', function () { spinning = true; wake(); });
+      document.documentElement.addEventListener('mouseleave', sweep);
     } else {
-      addEventListener('touchstart', function (e) { var p = e.touches[0]; if (p) { aimAt(p.clientX, p.clientY); holdUntil = performance.now() + 1800; } }, { passive: true });
-      addEventListener('touchmove', function (e) { var p = e.touches[0]; if (p) { aimAt(p.clientX, p.clientY); holdUntil = performance.now() + 1800; } }, { passive: true });
+      var touch = function (e) { var p = e.touches[0]; if (p) { aimAt(p.clientX, p.clientY); holdUntil = performance.now() + 1800; } };
+      addEventListener('touchstart', touch, { passive: true });
+      addEventListener('touchmove', touch, { passive: true });
     }
   }
 
