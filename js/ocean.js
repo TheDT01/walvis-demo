@@ -11,7 +11,7 @@
      then only moved each frame;
    - the light on the water and the god rays are computed per
      pixel by the graphics card;
-   - fish, motes, bubbles and ripples are a single batch.
+   - fish, motes and ripples are a single batch.
    It watches its own frame rate and, only on a machine that is
    struggling, gently lowers its drawing resolution (and as a last
    resort turns off the glass blur over the moving sea).
@@ -255,8 +255,8 @@
     var gl = canvas.getContext('webgl', GL_OPTS);
     if (!gl) return;
     var baseDpr = Math.min(devicePixelRatio || 1, small ? 1.5 : 1.75), tier = 0;
-    var W = 0, H = 0, PW = 0, PH = 0, whale = null, fish = [], motes = [], glows = [], bubbles = [], ripples = [], streams = [];
-    var visible = true, mx = 0, my = 0, cmx = 0, cmy = 0, last = 0, time = 0, nextStream = 2;
+    var W = 0, H = 0, PW = 0, PH = 0, whale = null, fish = [], motes = [], glows = [], ripples = [];
+    var visible = true, mx = 0, my = 0, cmx = 0, cmy = 0, last = 0, time = 0;
     var rays = [];
     for (var ri = 0; ri < 9; ri++) rays.push({ a: (-34 + ri * 8.5 + Math.random() * 4) * RAD, w: .04 + Math.random() * .08, o: .05 + Math.random() * .08,
       sp: .05 + Math.random() * .06, sw: (1.5 + Math.random() * 2.5) * RAD, p: Math.random() * 6.283 });
@@ -418,7 +418,6 @@
       gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, fboTex); gl.uniform1i(P.comp.u.u_tex, 0);
       gl.uniform1f(P.comp.u.u_opacity, mode.whale.opacity); gl.uniform2f(P.comp.u.u_res, W, H);
       fullscreen(P.comp);
-      if (!reduce && Math.random() < .012) bubbles.push({ x: x + dx * w.L * .32, y: y + dy * w.L * .32, r: 1.5 + Math.random() * 3, v: 20 + Math.random() * 25, p: Math.random() * 6.283 });
     }
 
     /* ---------- watching our own smoothness ---------- */
@@ -501,21 +500,7 @@
         gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
       }
 
-      // in front: slow bubble streams, out-of-focus motes, ripples
-      nextStream -= dt;
-      if (nextStream <= 0 && !reduce) { streams.push({ x: W * (.1 + Math.random() * .8), left: 10 + Math.random() * 10, t: 0 }); nextStream = 4 + Math.random() * 6; }
-      for (var q = streams.length - 1; q >= 0; q--) {
-        var st = streams[q]; st.t -= dt;
-        if (st.t <= 0) { bubbles.push({ x: st.x + (Math.random() - .5) * 10, y: H + 8, r: 2 + Math.random() * 4, v: 24 + Math.random() * 26, p: Math.random() * 6.283 }); st.t = .12 + Math.random() * .25; st.left--; }
-        if (st.left <= 0) streams.splice(q, 1);
-      }
-      var bc = [225 / 255, 1, 250 / 255];
-      for (var b = bubbles.length - 1; b >= 0; b--) {
-        var bb = bubbles[b]; bb.y -= bb.v * dt; bb.p += dt * 2.2;
-        var fade = Math.min(1, bb.y / (H * .5));
-        quad(bb.x + Math.sin(bb.p) * 4, bb.y, bb.r * 1.28, bb.r * 1.28, 0, CELL.bubble, bc, mode.alpha * .7 * Math.max(0, fade));
-        if (bb.y < -10 || fade <= 0) bubbles.splice(b, 1);
-      }
+      // in front: out-of-focus motes and ripples
       for (var gq = 0; gq < glows.length; gq++) {
         var gm = glows[gq]; gm.y -= gm.v * dt; gm.p += dt * .3;
         if (gm.y < -gm.r * 2) { gm.y = H + gm.r * 2; gm.x = Math.random() * W; }
@@ -543,7 +528,6 @@
       if (e.target.closest('a, button')) return;
       var rc = canvas.getBoundingClientRect(), x = e.clientX - rc.left, y = e.clientY - rc.top;
       ripples.push({ x: x, y: y, t: time });
-      for (var i = 0; i < 8; i++) bubbles.push({ x: x + (Math.random() - .5) * 30, y: y + Math.random() * 20, r: 1.5 + Math.random() * 3.5, v: 30 + Math.random() * 40, p: Math.random() * 6.283 });
     });
     if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { visible = es[0].isIntersecting; }).observe(canvas);
     var rt; addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { if (size()) { populate(); if (reduce) still(); } }, 150); });

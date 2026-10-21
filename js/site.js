@@ -15,8 +15,9 @@ var SITE = {
     { label: 'Travel', href: 'travel.html' },
     { label: 'Retail', href: 'retail.html' },
     { label: 'Experiences', href: 'experiences.html' },
-    { label: 'Concierge for Foreigners', href: 'foreigners.html' },
-    { label: 'For Expats', href: 'expats.html' },
+    { label: 'Discover Bangladesh', href: 'foreigners.html' },
+    { label: 'Probashi Concierge', href: 'expats.html' },
+    { label: 'Portal', href: 'portal.html' },
     { label: 'About Us', href: 'about.html' }
   ]
 };
@@ -57,12 +58,12 @@ function waLink(msg) {
     h.outerHTML =
       '<a class="skip" href="#main">Skip to content</a>' +
       '<header class="topbar" id="topbar">' +
-        '<button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="drawer"><span class="bars"><i></i><i></i><i></i></span><span class="lbl">Menu</span></button>' +
+        '<button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="drawer"><span class="tail" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 12V18.8M2.6 6.4C6 7.8 9.4 8.2 12 9.4 14.6 8.2 18 7.8 21.4 6.4 19.9 10.9 15.6 12.6 12 12 8.4 12.6 4.1 10.9 2.6 6.4Z"/></svg></span><span class="lbl">Menu</span></button>' +
         '<a class="brand" href="index.html" aria-label="Walvis Concierge, home"><img src="' + SITE.logo + '" alt="Walvis Concierge seal" width="58" height="58"><span class="caps">Walvis</span></a>' +
         '<a class="btn member-btn" href="membership.html"><span class="v">View&nbsp;</span>Membership</a>' +
       '</header>' +
       '<aside class="drawer" id="drawer" aria-hidden="true" aria-label="Menu">' +
-        '<button class="drawer-close" id="drawerClose" aria-label="Close menu">&times;</button>' +
+        '<button class="drawer-close" id="drawerClose" aria-label="Close menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7L7 17"/></svg></button>' +
         '<nav><ol>' + items + '</ol></nav>' +
         '<div class="drawer-foot">' +
           '<a href="' + waLink() + '" target="_blank" rel="noopener">' + ic('chat') + ' WhatsApp us</a>' +
@@ -79,8 +80,8 @@ function waLink(msg) {
       '<footer class="footer"><div class="meander" style="max-width:var(--wrap);margin:0 auto 70px"></div>' +
         '<div class="foot-top">' +
           '<div class="foot-brand"><img src="' + SITE.logo + '" alt="" width="74" height="74"><span class="caps">Walvis</span><p>From seas to mountains,<br>consider it done.</p></div>' +
-          '<div><h4>Services</h4><nav>' + SITE.menu.filter(function (m) { return m.href !== 'about.html'; }).map(function (m) { return '<a href="' + m.href + '">' + m.label + '</a>'; }).join('') + '</nav></div>' +
-          '<div><h4>Walvis</h4><nav><a href="membership.html">Membership</a><a href="what-we-offer.html">What we offer</a><a href="assets.html">Assets</a><a href="special-requests.html">Special Requests</a><a href="about.html">About us</a><a href="contact.html">Contact</a></nav></div>' +
+          '<div><h4>Services</h4><nav>' + SITE.menu.filter(function (m) { return m.href !== 'about.html' && m.href !== 'portal.html'; }).map(function (m) { return '<a href="' + m.href + '">' + m.label + '</a>'; }).join('') + '</nav></div>' +
+          '<div><h4>Walvis</h4><nav><a href="membership.html">Membership</a><a href="what-we-offer.html">What we offer</a><a href="assets.html">Assets</a><a href="special-requests.html">Special Requests</a><a href="portal.html">Portal</a><a href="about.html">About us</a><a href="contact.html">Contact</a></nav></div>' +
           '<div class="contact"><h4>Reach us</h4>' +
             '<a href="' + waLink() + '" target="_blank" rel="noopener">' + ic('chat') + ' WhatsApp</a>' +
             '<a href="tel:' + SITE.phone.replace(/[^+\d]/g, '') + '">' + ic('phone') + ' ' + SITE.phone + '</a>' +
@@ -158,27 +159,9 @@ function waLink(msg) {
     });
   } else rev.forEach(function (el) { el.classList.add('in'); });
 
-  /* ---------- Pause / play for the whale scene (remembered on this device) ---------- */
+  /* ---------- Whale scene state (read by the ocean engines and the ?debug panel) ---------- */
   var SEA = window.WalvisSea = window.WalvisSea || { paused: false, engine: '', renderer: '', tier: 0, calm: reduce };
-  try { SEA.paused = localStorage.getItem('walvis-sea-paused') === '1'; } catch (e) {}
-  var heroSea = document.querySelector('.hero canvas.sea');
-  if (heroSea) {
-    var tg = document.createElement('button');
-    tg.type = 'button'; tg.className = 'sea-toggle';
-    function paintToggle() {
-      tg.setAttribute('aria-pressed', String(SEA.paused));
-      tg.setAttribute('aria-label', SEA.paused ? 'Play the ocean animation' : 'Pause the ocean animation');
-      tg.innerHTML = (SEA.paused ? '<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>'
-                                 : '<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" fill="currentColor"/></svg>') +
-                     '<span>' + (SEA.paused ? 'Play' : 'Pause') + '</span>';
-    }
-    tg.addEventListener('click', function () {
-      SEA.paused = !SEA.paused; paintToggle();
-      try { localStorage.setItem('walvis-sea-paused', SEA.paused ? '1' : '0'); } catch (e) {}
-    });
-    paintToggle();
-    document.querySelector('.hero').appendChild(tg);
-  }
+  try { localStorage.removeItem('walvis-sea-paused'); } catch (e) {}
 
   /* ---------- Diagnostics: add ?debug to the address to see what this computer is doing ---------- */
   if (/[?&]debug\b/.test(location.search)) {
@@ -190,8 +173,7 @@ function waLink(msg) {
     setInterval(function () {
       var rows = [
         ['Reduced motion setting', reduce ? 'ON (whale moves slower)' : 'off'],
-        ['Animation paused', SEA.paused ? 'yes (press Play)' : 'no'],
-        ['Engine', SEA.engine || 'not started'],
+                ['Engine', SEA.engine || 'not started'],
         ['Why not WebGL', SEA.whyNot || '-'],
         ['Graphics card', SEA.renderer || 'unknown'],
         ['Frame rate', fps + ' fps'],

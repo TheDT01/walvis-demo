@@ -144,13 +144,6 @@
     gy.addColorStop(0, 'rgba(0,0,0,1)'); gy.addColorStop(.45, 'rgba(0,0,0,.35)'); gy.addColorStop(1, 'rgba(0,0,0,0)');
     g.fillStyle = gy; g.fillRect(0, 0, w, h); return c;
   }
-  function bubbleSprite(size) {
-    var c = document.createElement('canvas'); c.width = c.height = size;
-    var g = c.getContext('2d'), r = size / 2;
-    g.strokeStyle = 'rgba(225, 255, 250, .75)'; g.lineWidth = size * .07; g.beginPath(); g.arc(r, r, r * .8, 0, 6.283); g.stroke();
-    g.fillStyle = 'rgba(255,255,255,.65)'; g.beginPath(); g.arc(r * .7, r * .68, r * .18, 0, 6.283); g.fill();
-    return c;
-  }
   function fishSprite(len, rgb) {
     var c = document.createElement('canvas'); c.width = Math.ceil(len * 2.6); c.height = Math.ceil(len * 1.1);
     var g = c.getContext('2d'); g.translate(len * 1.55, len * .55); g.fillStyle = 'rgb(' + rgb + ')';
@@ -172,8 +165,8 @@
     var ctx = canvas.getContext('2d');
     // drawing resolution steps, used only if a machine struggles (1 = full quality)
     var TIERS = [1, .8, .66, .5], tier = 0, baseDpr = Math.min(devicePixelRatio || 1, small ? 1 : 1.25), dpr = baseDpr;
-    var W = 0, H = 0, whale = null, fish = [], motes = [], glows = [], bubbles = [], ripples = [], streams = [];
-    var visible = true, mx = 0, my = 0, cmx = 0, cmy = 0, last = 0, time = 0, nextStream = 2;
+    var W = 0, H = 0, whale = null, fish = [], motes = [], glows = [], ripples = [];
+    var visible = true, mx = 0, my = 0, cmx = 0, cmy = 0, last = 0, time = 0;
     var fan = null, fanCtx = null, fanAge = 99, fanPat = null;
     // the whale gets its own layer, shown see-through by the browser: no seams where fins meet the body
     var wCanvas = null, wctx = ctx, front = 1, ws = small ? .7 : .75;
@@ -181,7 +174,7 @@
       wCanvas = layer('sea-whale', canvas); wctx = wCanvas.getContext('2d');
       wCanvas.style.opacity = mode.whale.opacity; front = 1 / mode.whale.opacity;
     }
-    var GLOW = glowSprite(64, C.mote), BUB = bubbleSprite(32), SUN = glowSprite(256, C.sun), RAY = raySprite(64, 512, C.ray), rays = [];
+    var GLOW = glowSprite(64, C.mote), SUN = glowSprite(256, C.sun), RAY = raySprite(64, 512, C.ray), rays = [];
     var FISH = C.fish.map(function (c) { return fishSprite(12, c); });
     for (var ri = 0; ri < 9; ri++) rays.push({ a: (-34 + ri * 8.5 + Math.random() * 4) * RAD, w: .04 + Math.random() * .08, o: .05 + Math.random() * .08,
       sp: .05 + Math.random() * .06, sw: (1.5 + Math.random() * 2.5) * RAD, p: Math.random() * 6.283 });
@@ -286,8 +279,6 @@
       drawPart(g, w.sp.front);
       g.restore();
       g.restore();
-      // now and then a few slow bubbles from the blowhole
-      if (!reduce && Math.random() < .012) bubbles.push({ x: x + dx * w.L * .32, y: y + dy * w.L * .32, r: 1.5 + Math.random() * 3, v: 20 + Math.random() * 25, p: Math.random() * 6.283 });
     }
 
     function frame(now) {
@@ -376,21 +367,6 @@
       // everything in front of the whale is drawn on the whale's layer, made a little brighter to stay true
       var g = wctx;
 
-      // bubbles: now and then a slow stream rises from below
-      nextStream -= dt;
-      if (nextStream <= 0 && !reduce) { streams.push({ x: W * (.1 + Math.random() * .8), left: 10 + Math.random() * 10, t: 0 }); nextStream = 4 + Math.random() * 6; }
-      for (var q = streams.length - 1; q >= 0; q--) {
-        var st = streams[q]; st.t -= dt;
-        if (st.t <= 0) { bubbles.push({ x: st.x + (Math.random() - .5) * 10, y: H + 8, r: 2 + Math.random() * 4, v: 24 + Math.random() * 26, p: Math.random() * 6.283 }); st.t = .12 + Math.random() * .25; st.left--; }
-        if (st.left <= 0) streams.splice(q, 1);
-      }
-      for (var b = bubbles.length - 1; b >= 0; b--) {
-        var bb = bubbles[b]; bb.y -= bb.v * dt; bb.p += dt * 2.2;
-        var fade = Math.min(1, bb.y / (H * .5));
-        g.globalAlpha = Math.min(1, mode.alpha * .7 * Math.max(0, fade) * front);
-        g.drawImage(BUB, bb.x + Math.sin(bb.p) * 4 - bb.r, bb.y - bb.r, bb.r * 2, bb.r * 2);
-        if (bb.y < -10 || fade <= 0) bubbles.splice(b, 1);
-      }
 
       // near, out-of-focus light motes
       for (var gq = 0; gq < glows.length; gq++) {
@@ -423,7 +399,6 @@
       if (e.target.closest('a, button')) return;
       var rc = canvas.getBoundingClientRect(), x = e.clientX - rc.left, y = e.clientY - rc.top;
       ripples.push({ x: x, y: y, t: time });
-      for (var i = 0; i < 8; i++) bubbles.push({ x: x + (Math.random() - .5) * 30, y: y + Math.random() * 20, r: 1.5 + Math.random() * 3.5, v: 30 + Math.random() * 40, p: Math.random() * 6.283 });
     });
     if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { visible = es[0].isIntersecting; }).observe(canvas);
     var rt; addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { build(); if (reduce) still(); }, 150); });
