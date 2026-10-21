@@ -263,55 +263,53 @@ function waLink(msg) {
   if (bands.length && fine) { addEventListener('scroll', function () { if (pQueued) return; pQueued = true; requestAnimationFrame(function () { pQueued = false; parallax(); }); }, { passive: true }); parallax(); }
 
   /* ---------- Lighthouse: the seal in the header throws a beam ----------
-     One continuous beam: a single cone from the seal that ends at the cursor, nothing beyond.
+     One slim beam: a soft teal glow, a clearer body and a fine bright core, tapering away at the cursor.
      Touch screens: it sweeps round like a lighthouse; a touch brings it to the finger for a moment.
-     It is drawn on a quarter-size canvas (cheap, and the stretch softens it) and only when it moves. */
+     The beam is painted once into a small image; after that it is only moved, turned and stretched (transforms). */
   var seal = document.querySelector('.topbar .brand img');
   if (seal) {
-    var Q = .25;
+    var SW = 1024, SH = 256, SR = 104;                      // sprite size and the cone's half-width at its mouth (room left for the glow)
     var beamEl = document.createElement('canvas'); beamEl.className = 'beam'; beamEl.setAttribute('aria-hidden', 'true');
-    document.body.appendChild(beamEl);
+    beamEl.width = SW; beamEl.height = SH;
     var bctx = beamEl.getContext('2d');
-    var soft = bctx && 'filter' in bctx;
     var mouse = matchMedia('(hover: hover) and (pointer: fine)').matches;
     var SPIN = (reduce ? 14 : 45) * Math.PI / 180;            // radians per second, about one turn in 8s
-    var bx = 0, by = 0, far = 1200, ang = -Math.PI / 2, target = ang, len = 1200, tLen = 1200, wid = 740, tWid = 740;
+    var bx = 0, by = 0, far = 1200, ang = -Math.PI / 2, target = ang, len = 1200, tLen = 1200, wid = 360, tWid = 360;
     var px = 0, py = 0, aiming = false, holdUntil = 0, bLast = 0, bRaf = 0;
     function place() {
       var r = seal.getBoundingClientRect(); bx = r.left + r.width / 2; by = r.top + r.height / 2;
       far = Math.hypot(Math.max(bx, innerWidth - bx), Math.max(by, innerHeight - by)) + 40;
-      var w = Math.ceil(innerWidth * Q), h = Math.ceil(innerHeight * Q);
-      if (beamEl.width !== w || beamEl.height !== h) { beamEl.width = w; beamEl.height = h; beamEl.style.width = innerWidth + 'px'; beamEl.style.height = innerHeight + 'px'; }
       if (aiming) aimAt(px, py, true);
     }
     function aimAt(x, y, quiet) {
       px = x; py = y; aiming = true;
       target = Math.atan2(y - by, x - bx);
       tLen = Math.max(60, Math.hypot(x - bx, y - by));
-      tWid = Math.min(420, Math.max(200, tLen * .55));         // the mouth of the cone, a little wider further away
+      tWid = Math.min(240, Math.max(100, tLen * .3));          // a slim mouth, a little wider further away
       if (!quiet) wake();
     }
-    function sweep() { aiming = false; tLen = far; tWid = far * .62; wake(); }
+    function sweep() { aiming = false; tLen = far; tWid = far * .3; wake(); }
     function near(a, b, e) { return Math.abs(a - b) < e; }
+    // three nested cones painted as one beam, pointing right from the middle of the left edge
+    function paint() {
+      var g = bctx, soft = 'filter' in g, cy = SH / 2;
+      g.globalCompositeOperation = 'lighter';
+      [{ w: 1, apex: 3, a: .2, rgb: '92, 196, 192', blur: 12 },
+       { w: .55, apex: 1.5, a: .22, rgb: '200, 243, 239', blur: 5 },
+       { w: .16, apex: .6, a: .3, rgb: '255, 250, 250', blur: 2 }].forEach(function (L) {
+        var w = SR * L.w;
+        if (soft) g.filter = 'blur(' + L.blur + 'px)';
+        g.beginPath(); g.moveTo(0, cy - L.apex); g.lineTo(SW, cy - w); g.lineTo(SW, cy + w); g.lineTo(0, cy + L.apex); g.closePath();
+        // fades in from the lamp, carries, then tapers away to nothing exactly at the cursor
+        var lg = g.createLinearGradient(0, 0, SW, 0), col = 'rgba(' + L.rgb + ',';
+        lg.addColorStop(0, col + '0)'); lg.addColorStop(.08, col + L.a + ')'); lg.addColorStop(.55, col + (L.a * .8) + ')');
+        lg.addColorStop(.85, col + (L.a * .45) + ')'); lg.addColorStop(1, col + '0)');
+        g.fillStyle = lg; g.fill();
+      });
+      g.filter = 'none'; g.globalCompositeOperation = 'source-over';
+    }
     function draw() {
-      var g = bctx, c = Math.cos(ang), s2 = Math.sin(ang), nx = -s2, ny = c, r = wid / 2, a0 = 5;
-      var ex = bx + c * len, ey = by + s2 * len;
-      g.setTransform(1, 0, 0, 1, 0, 0); g.clearRect(0, 0, beamEl.width, beamEl.height);
-      g.setTransform(Q, 0, 0, Q, 0, 0);
-      if (soft) g.filter = 'blur(' + (4 + r * .02).toFixed(1) + 'px)';
-      // one cone: the lamp, out to the cursor, and back
-      g.beginPath();
-      g.moveTo(bx + nx * a0, by + ny * a0);
-      g.lineTo(ex + nx * r, ey + ny * r);
-      g.lineTo(ex - nx * r, ey - ny * r);
-      g.lineTo(bx - nx * a0, by - ny * a0);
-      g.closePath();
-      var lg = g.createLinearGradient(bx, by, ex, ey);
-      lg.addColorStop(0, 'rgba(214, 245, 242, 0)');
-      lg.addColorStop(.06, 'rgba(214, 245, 242, .3)');
-      lg.addColorStop(.6, 'rgba(214, 245, 242, .26)');
-      lg.addColorStop(1, 'rgba(214, 245, 242, .34)');
-      g.fillStyle = lg; g.fill();
+      beamEl.style.transform = 'translate(' + bx + 'px,' + (by - SH / 2) + 'px) rotate(' + ang + 'rad) scale(' + (len / SW) + ',' + (wid / 2 / SR) + ')';
     }
     function frame(now) {
       bRaf = 0;
@@ -319,7 +317,7 @@ function waLink(msg) {
       if (aiming && !mouse && now > holdUntil) sweep();
       var k = Math.min(1, dt * (reduce ? 4 : 9)), d = 0;
       if (aiming) { d = Math.atan2(Math.sin(target - ang), Math.cos(target - ang)); ang += d * k; }
-      else { ang += SPIN * dt; tLen = far; tWid = far * .62; }
+      else { ang += SPIN * dt; tLen = far; tWid = far * .3; }
       len += (tLen - len) * k; wid += (tWid - wid) * k;
       draw();
       // keep going while it sweeps or is still settling on the cursor; rest once it has arrived
@@ -327,6 +325,7 @@ function waLink(msg) {
     }
     function wake() { if (!bRaf && !document.hidden) bRaf = requestAnimationFrame(frame); }
     if (bctx) {
+      paint(); document.body.appendChild(beamEl);
       place(); wake();
       requestAnimationFrame(function () { document.documentElement.classList.add('beam-on'); });
       addEventListener('resize', function () { place(); wake(); });

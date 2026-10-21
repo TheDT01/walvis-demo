@@ -975,7 +975,8 @@ html.calm-glass .hero .btn-line { -webkit-backdrop-filter: none !important; back
 /* =========================================================
    v11 · lighthouse: a beam from the seal in the header
    ========================================================= */
-.beam { position: fixed; left: 0; top: 0; width: 100vw; height: 100vh; z-index: 39; pointer-events: none; opacity: 0; transition: opacity 1.6s var(--ease); }
+.beam { position: fixed; left: 0; top: 0; z-index: 39; pointer-events: none; opacity: 0; transition: opacity 1.6s var(--ease);
+  transform-origin: 0 50%; will-change: transform; }
 html.beam-on .beam { opacity: 1; }
 /* once past the hero the light is gentler, so it never gets in the way of reading */
 html.beam-on body:has(.topbar.solid) .beam { opacity: .5; }
