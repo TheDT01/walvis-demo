@@ -975,21 +975,8 @@ html.calm-glass .hero .btn-line { -webkit-backdrop-filter: none !important; back
 /* =========================================================
    v11 · lighthouse: a beam from the seal in the header
    ========================================================= */
-.beam, .beam-spot { position: fixed; left: 0; top: 0; z-index: 39; pointer-events: none; will-change: transform; }
-.beam { width: 0; height: 0; opacity: 0; transition: opacity 1.6s var(--ease); }
+.beam { position: fixed; left: 0; top: 0; width: 100vw; height: 100vh; z-index: 39; pointer-events: none; opacity: 0; transition: opacity 1.6s var(--ease); }
 html.beam-on .beam { opacity: 1; }
-/* the beam is drawn 1000 x 200 pointing right from its left edge, then stretched to reach the cursor */
-.beam i { position: absolute; left: 0; top: -100px; width: 1000px; height: 200px; transform-origin: 0 50%;
-  /* a soft cone from the lamp to the full 200px height at the far end; it keeps its shape when stretched */
-  background: conic-gradient(from 84.29deg at 0 50%, rgba(92, 196, 192, 0) 0deg, rgba(92, 196, 192, .2) 1.6deg, rgba(200, 243, 239, .34) 3.66deg,
-                             rgba(255, 250, 250, .46) 5.71deg, rgba(200, 243, 239, .34) 7.76deg, rgba(92, 196, 192, .2) 9.82deg, rgba(92, 196, 192, 0) 11.42deg, transparent 12deg);
-  /* faint at the lamp, strongest on the way, then melting into the spotlight so there is no hard end */
-  -webkit-mask-image: linear-gradient(to right, transparent 0, rgba(0, 0, 0, .6) 6%, rgba(0, 0, 0, .85) 55%, rgba(0, 0, 0, .7) 78%, transparent 97%);
-          mask-image: linear-gradient(to right, transparent 0, rgba(0, 0, 0, .6) 6%, rgba(0, 0, 0, .85) 55%, rgba(0, 0, 0, .7) 78%, transparent 97%); }
-/* the spotlight where the beam lands */
-.beam-spot { width: 200px; height: 200px; margin: -100px 0 0 -100px; opacity: 0; border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 250, 250, .52) 0, rgba(200, 243, 239, .36) 26%, rgba(92, 196, 192, .16) 52%, rgba(92, 196, 192, .05) 64%, rgba(92, 196, 192, 0) 71%); }
-html:not(.beam-on) .beam-spot { visibility: hidden; }
 /* once past the hero the light is gentler, so it never gets in the way of reading */
 html.beam-on body:has(.topbar.solid) .beam { opacity: .5; }
 /* the lamp itself: the seal glows while the light is on */
