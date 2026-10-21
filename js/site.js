@@ -262,6 +262,48 @@ function waLink(msg) {
   var fine = matchMedia('(hover: hover) and (pointer: fine) and (min-width: 1025px)').matches, pQueued = false;
   if (bands.length && fine) { addEventListener('scroll', function () { if (pQueued) return; pQueued = true; requestAnimationFrame(function () { pQueued = false; parallax(); }); }, { passive: true }); parallax(); }
 
+  /* ---------- Lighthouse: the seal in the header throws a beam ----------
+     Mouse: the beam follows the cursor. Touch screens: it sweeps round like a lighthouse,
+     points at a touch for a moment, then carries on. Only a transform changes per frame. */
+  var seal = document.querySelector('.topbar .brand img');
+  if (seal) {
+    var beamEl = document.createElement('div'); beamEl.className = 'beam'; beamEl.setAttribute('aria-hidden', 'true');
+    var cone = document.createElement('i'); beamEl.appendChild(cone); document.body.appendChild(beamEl);
+    var mouse = matchMedia('(hover: hover) and (pointer: fine)').matches;
+    var SPIN = (reduce ? 14 : 45) * Math.PI / 180;            // radians per second, about one turn in 8s
+    var bx = 0, by = 0, ang = -Math.PI / 2, target = ang, spinning = true, holdUntil = 0, bLast = 0, bRaf = 0;
+    function place() {
+      var r = seal.getBoundingClientRect(); bx = r.left + r.width / 2; by = r.top + r.height / 2;
+      var len = Math.min(Math.hypot(innerWidth, innerHeight), 1700);
+      beamEl.style.setProperty('--r', len + 'px'); beamEl.style.setProperty('--h', (len * .62) + 'px');
+    }
+    function aimAt(x, y) { target = Math.atan2(y - by, x - bx); spinning = false; wake(); }
+    function frame(now) {
+      bRaf = 0;
+      var dt = Math.min(.05, (now - (bLast || now)) / 1000); bLast = now;
+      if (!spinning && !mouse && now > holdUntil) spinning = true;
+      if (spinning) ang += SPIN * dt;
+      else { var d = Math.atan2(Math.sin(target - ang), Math.cos(target - ang)); ang += d * Math.min(1, dt * (reduce ? 4 : 9)); }
+      beamEl.style.transform = 'translate(' + bx + 'px,' + by + 'px) rotate(' + ang + 'rad)';
+      // keep going while it sweeps or is still turning towards the cursor; rest when it has arrived
+      if (spinning || !mouse || Math.abs(Math.atan2(Math.sin(target - ang), Math.cos(target - ang))) > .002) wake();
+    }
+    function wake() { if (!bRaf && !document.hidden) bRaf = requestAnimationFrame(frame); }
+    place(); wake();
+    requestAnimationFrame(function () { document.documentElement.classList.add('beam-on'); });
+    addEventListener('resize', function () { place(); wake(); });
+    addEventListener('scroll', function () { place(); wake(); }, { passive: true });
+    seal.addEventListener('transitionend', place);                // the seal shrinks when the header turns solid
+    document.addEventListener('visibilitychange', function () { bLast = 0; wake(); });
+    if (mouse) {
+      addEventListener('mousemove', function (e) { aimAt(e.clientX, e.clientY); }, { passive: true });
+      document.documentElement.addEventListener('mouseleave', function () { spinning = true; wake(); });
+    } else {
+      addEventListener('touchstart', function (e) { var p = e.touches[0]; if (p) { aimAt(p.clientX, p.clientY); holdUntil = performance.now() + 1800; } }, { passive: true });
+      addEventListener('touchmove', function (e) { var p = e.touches[0]; if (p) { aimAt(p.clientX, p.clientY); holdUntil = performance.now() + 1800; } }, { passive: true });
+    }
+  }
+
   /* ---------- Musical notes (inside [data-notes]) ---------- */
   var zones = document.querySelectorAll('[data-notes]');
   var NOTES = ['♪', '♫', '♩', '♬'], COLORS = ['#ffffff', '#c8f3ef', '#5cc4c0'];
