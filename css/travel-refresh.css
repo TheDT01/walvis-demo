@@ -1,0 +1,34 @@
+.travel-refresh{--tr-ink:#32152e;--tr-teal:#0e7a77;color:var(--tr-ink)}
+.travel-refresh .light{background:#f7f3ec}.travel-refresh .mist{background:#eee9e2}.travel-refresh .dark{background:#301029;color:#fffaf5}
+.travel-refresh .head{max-width:850px;margin-bottom:48px}.travel-refresh .lead{max-width:660px}.travel-refresh h3{font-family:var(--serif);font-weight:400;font-size:1.9rem;line-height:1.2;margin:18px 0 12px}
+.tr-hero{position:relative;isolation:isolate;min-height:90svh;display:flex;align-items:center;padding:190px 0 110px;overflow:hidden;background:#26091f;color:#fffaf5}
+.tr-slides{position:absolute;inset:0;z-index:-2}.tr-slides img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 2.6s cubic-bezier(.4,0,.2,1);will-change:opacity}.tr-slides img.is-current{opacity:1}
+.tr-hero:after{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(24,9,23,.8),rgba(24,9,23,.4) 55%,rgba(24,9,23,.18))}
+.tr-hero h1{font-size:clamp(4.4rem,8vw,8rem);line-height:1;max-width:8ch;margin:28px 0}.tr-hero h1 em{color:#bde2df}.tr-hero .lead{max-width:490px;color:#fffaf5;margin-bottom:30px}.tr-hero .kicker{color:#bde2df}
+.tr-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:48px 30px}.tr-card{display:flex;flex-direction:column;min-width:0}.tr-card img{width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:16px;display:block}.tr-card .kicker{margin-top:23px;font-size:.62rem}.tr-card p{margin-bottom:20px}.tr-card .link{margin-top:auto;align-self:start;font-size:.7rem}
+.tr-reasons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:40px}.tr-reasons article{padding-top:24px;border-top:1px solid rgba(50,21,46,.2)}
+.tr-bangladesh{display:grid;grid-template-columns:1.2fr 1fr;gap:32px}.tr-bangladesh figure{margin:0}.tr-bangladesh img{width:100%;height:400px;object-fit:cover;border-radius:16px}.tr-bangladesh figcaption{font-family:var(--serif);font-size:1.5rem;margin-top:16px}
+.tr-stays{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:22px}.tr-stays img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:16px}.tr-stays h3{font-size:1.55rem}.tr-note{font-size:.8rem;opacity:.75;margin-top:24px;margin-bottom:24px}
+.tr-contact{display:grid;grid-template-columns:1.5fr 1fr;gap:64px;align-items:center}.tr-contact-links{display:flex;flex-direction:column;align-items:flex-start;gap:16px;border-left:1px solid rgba(50,21,46,.2);padding-left:40px}.tr-contact-links a{overflow-wrap:anywhere;max-width:100%}
+.tr-card img,.tr-stays img{transition:transform 1.6s cubic-bezier(.25,.46,.45,.94)}
+@media(hover:hover){.tr-card:hover img,.tr-stays article:hover img{transform:translateY(-3px)}}
+@media(max-width:1050px){.tr-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.tr-stays{grid-template-columns:repeat(3,minmax(0,1fr))}.tr-contact{gap:30px}}
+@media(max-width:700px){.tr-hero{min-height:85svh;padding:150px 0 80px}.tr-hero h1{font-size:4.6rem}.tr-grid,.tr-reasons,.tr-bangladesh,.tr-contact{grid-template-columns:1fr;gap:32px}.tr-stays{grid-template-columns:repeat(2,minmax(0,1fr))}.tr-bangladesh img{height:300px}.tr-contact-links{border-left:0;border-top:1px solid rgba(50,21,46,.2);padding:28px 0 0}.travel-refresh .head{margin-bottom:32px}}
+@media(prefers-reduced-motion:reduce){.tr-card img,.tr-stays img{transition:none;transform:none!important}.tr-slides img{transition-duration:.3s}}
+
+/* Reserve each photograph's space while a restrained shimmer signals loading. */
+.travel-refresh .tr-photo{position:relative;overflow:hidden;isolation:isolate;border-radius:16px;background:#e5dfd8;width:100%;aspect-ratio:3/2;flex-shrink:0}
+.travel-refresh .tr-stays .tr-photo{aspect-ratio:4/5}
+.travel-refresh .tr-bangladesh .tr-photo{aspect-ratio:auto;height:400px}
+.travel-refresh .tr-photo img{width:100%;height:100%;aspect-ratio:auto;object-fit:cover;opacity:1;transition:opacity .8s ease,transform 1.6s cubic-bezier(.25,.46,.45,.94)}
+.travel-refresh .tr-photo.tr-loading img{opacity:0}
+.tr-photo::after,.tr-slides::after{content:'';position:absolute;inset:0;pointer-events:none;opacity:0;background:linear-gradient(100deg,transparent 15%,rgba(255,255,255,.32) 48%,transparent 80%);transform:translateX(-100%)}
+.tr-photo.tr-loading::after,.tr-slides.tr-loading::after{opacity:1;animation:tr-photo-shimmer 1.8s ease-in-out infinite;animation-play-state:paused}
+.tr-photo.tr-loading.tr-loading-visible::after,.tr-slides.tr-loading.tr-loading-visible::after{animation-play-state:running}
+.tr-loading-paused .tr-loading::after{animation-play-state:paused!important}
+.tr-slides.tr-loading{background:#301029}
+.tr-photo.tr-load-error{background:#e5dfd8}
+@keyframes tr-photo-shimmer{to{transform:translateX(100%)}}
+@media(hover:hover){.travel-refresh .tr-card:hover .tr-photo img,.travel-refresh .tr-stays article:hover .tr-photo img{transform:scale(1.025)}}
+@media(max-width:700px){.travel-refresh .tr-bangladesh .tr-photo{height:300px}}
+@media(prefers-reduced-motion:reduce){.travel-refresh .tr-photo img{transition:none;transform:none!important}.tr-loading::after{animation:none!important;opacity:0}}

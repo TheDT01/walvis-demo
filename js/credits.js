@@ -44,8 +44,12 @@ var WALVIS_CREDITS = [
   { file: "lux-copper-bath.jpg", title: "Woman Bathtub", creator: "World Travel Adventures", licence: "CC0", source: "https://stocksnap.io/photo/woman-bathtub-JYDEWCLZCJ" },
   { file: "roses.jpg", title: "", creator: "Unknown", licence: "CC0", source: "https://stocksnap.io/photo/ZNN96DDKLT" },
   { file: "handwritten-note.jpg", title: "", creator: "Unknown", licence: "CC0", source: "https://stocksnap.io/photo/CJETOU0HKX" },
-  { file: "lux-alpine-peak.jpg", title: "Snow Mountain", creator: "Tyler Lastovich", licence: "CC0", source: "https://stocksnap.io/photo/snow-mountain-6DC0ERNTN3" },
-  { file: "lux-desert-dunes.jpg", title: "Desert Dubai", creator: "Walid Ahmad", licence: "CC0", source: "https://stocksnap.io/photo/desert-dubai-RQKIPWXZCF" },
-  { file: "lux-louvre-night.jpg", title: "Thelouvre Paris", creator: "RAFAEL MIRANDA", licence: "CC0", source: "https://stocksnap.io/photo/thelouvre-paris-Z4SBGYA12R" },
-  { file: "lux-ocean-pool.jpg", title: "Resort Pool", creator: "Matt Moloney", licence: "CC0", source: "https://stocksnap.io/photo/resort-pool-FUPABBDRCI" }
+  { file: "travel-ref/editorial-30615183.jpg", title: "Infinity Pool Overlooking Ocean at Luxury Resort", creator: "Vinícius Vieira ft", licence: "Pexels licence", source: "https://www.pexels.com/photo/infinity-pool-overlooking-ocean-at-luxury-resort-30615183/" },
+  { file: "travel-ref/editorial-28536189.jpg", title: "Scenic Villa on Lake Como with Boating View", creator: "Yannick", licence: "Pexels licence", source: "https://www.pexels.com/photo/scenic-villa-on-lake-como-with-boating-view-28536189/" },
+  { file: "travel-ref/editorial-30601453.jpg", title: "Luxury Resort Poolside at Sunset Retreat", creator: "Wendy Wei", licence: "Pexels licence", source: "https://www.pexels.com/photo/luxury-resort-poolside-at-sunset-retreat-30601453/" },
+  { file: "travel-ref/editorial-14746040.jpg", title: "Luxury Hotel Room", creator: "Rosie C", licence: "Pexels licence", source: "https://www.pexels.com/photo/luxury-hotel-room-14746040/" },
+  { file: "travel-ref/travel-safari.jpg", title: "Elephant on the savannah in Kenya", creator: "Marri Shyam", licence: "Pexels licence", source: "https://www.pexels.com/photo/wet-african-bush-elephant-on-the-savannah-25942405/" },
+  { file: "travel-ref/travel-rail.jpg", title: "Train in Mountains", creator: "IsMo", licence: "Pexels licence", source: "https://www.pexels.com/photo/train-in-mountains-18716717/" },
+  { file: "travel-ref/travel-lodge.jpg", title: "Tranquil Forest Pathway by Modern Cabin", creator: "Quang Nguyen Vinh", licence: "Pexels licence", source: "https://www.pexels.com/photo/tranquil-forest-pathway-by-modern-cabin-29000354/" },
+  { file: "travel-ref/travel-kaaba.jpg", title: "Pilgrims Gather Around the Kaaba in Mecca", creator: "Yasir Gürbüz", licence: "Pexels licence", source: "https://www.pexels.com/photo/pilgrims-gather-around-the-kaaba-in-mecca-32290181/" }
 ];
