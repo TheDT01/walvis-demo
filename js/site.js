@@ -273,7 +273,9 @@ function waLink(msg) {
     beamEl.width = SW; beamEl.height = SH;
     var bctx = beamEl.getContext('2d');
     var mouse = matchMedia('(hover: hover) and (pointer: fine)').matches;
-    var SPIN = (reduce ? 14 : 45) * Math.PI / 180;            // radians per second, about one turn in 8s
+    var SPIN = (reduce ? 12 : 30) * Math.PI / 180;            // radians per second, about one turn in 12s
+    var FOLLOW = reduce ? 2.2 : 3.2;                          // how briskly the beam turns towards the cursor (lower = calmer)
+    var angVel = 0;                                           // the beam's turning speed, so it speeds up and slows down gently
     var bx = 0, by = 0, far = 1200, ang = -Math.PI / 2, target = ang, len = 1200, tLen = 1200, wid = 360, tWid = 360;
     var px = 0, py = 0, aiming = false, holdUntil = 0, bLast = 0, bRaf = 0;
     function place() {
@@ -296,7 +298,7 @@ function waLink(msg) {
       g.globalCompositeOperation = 'lighter';
       [{ w: 1, apex: 3, a: .2, rgb: '92, 196, 192', blur: 12 },
        { w: .55, apex: 1.5, a: .22, rgb: '200, 243, 239', blur: 5 },
-       { w: .16, apex: .6, a: .3, rgb: '255, 250, 250', blur: 2 }].forEach(function (L) {
+       { w: .16, apex: .6, a: .24, rgb: '255, 250, 250', blur: 2.5 }].forEach(function (L) {
         var w = SR * L.w;
         if (soft) g.filter = 'blur(' + L.blur + 'px)';
         g.beginPath(); g.moveTo(0, cy - L.apex); g.lineTo(SW, cy - w); g.lineTo(SW, cy + w); g.lineTo(0, cy + L.apex); g.closePath();
@@ -315,13 +317,21 @@ function waLink(msg) {
       bRaf = 0;
       var dt = Math.min(.05, (now - (bLast || now)) / 1000); bLast = now;
       if (aiming && !mouse && now > holdUntil) sweep();
-      var k = Math.min(1, dt * (reduce ? 4 : 9)), d = 0;
-      if (aiming) { d = Math.atan2(Math.sin(target - ang), Math.cos(target - ang)); ang += d * k; }
-      else { ang += SPIN * dt; tLen = far; tWid = far * .3; }
+      var d = 0;
+      if (aiming) {
+        // a critically damped spring: glides towards the cursor and settles without overshooting or jerking
+        d = Math.atan2(Math.sin(target - ang), Math.cos(target - ang));
+        angVel += (FOLLOW * FOLLOW * d - 2 * FOLLOW * angVel) * dt;
+      } else {
+        angVel += (SPIN - angVel) * (1 - Math.exp(-dt / .9));     // eases into the slow sweep
+        tLen = far; tWid = far * .3;
+      }
+      ang += angVel * dt;
+      var k = 1 - Math.exp(-dt / .45);                            // length and width follow softly
       len += (tLen - len) * k; wid += (tWid - wid) * k;
       draw();
       // keep going while it sweeps or is still settling on the cursor; rest once it has arrived
-      if (!aiming || !mouse || !near(d, 0, .002) || !near(len, tLen, .5) || !near(wid, tWid, .5)) wake();
+      if (!aiming || !mouse || !near(d, 0, .002) || !near(angVel, 0, .003) || !near(len, tLen, .5) || !near(wid, tWid, .5)) wake();
     }
     function wake() { if (!bRaf && !document.hidden) bRaf = requestAnimationFrame(frame); }
     if (bctx) {
