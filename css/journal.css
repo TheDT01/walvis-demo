@@ -10,7 +10,7 @@
 html.jr-intro-on { overflow: hidden; }
 html.jr-intro-on .jb {
   --p: min(40vw, 31vh, 300px);                       /* one page: width; height is 1.4x */
-  --leather: #4c1847; --paper: #f4efe4;
+  --leather: #4c1847; --paper: #f4efe4; --t: calc(var(--p) * .09);   /* --t: the thickness of the page block */
   display: grid; place-items: center; position: fixed; inset: 0; z-index: 500; overflow: hidden; cursor: pointer;
   perspective: 1700px; background:
     repeating-linear-gradient(-24deg, rgba(255, 255, 255, .018) 0 2px, transparent 2px 11px),
@@ -28,7 +28,24 @@ html.jr-intro-on .jb.skip { animation: jb-out .35s ease forwards; }
 .jb-page { background: var(--paper); box-shadow: inset 6px 0 14px -8px rgba(58, 16, 53, .35);
   display: grid; place-content: center; justify-items: center; text-align: center; color: #3a1035; }
 .jb-page::before { content: ""; position: absolute; inset: 7%; border: 1px solid rgba(58, 16, 53, .25); box-shadow: 0 0 0 3px var(--paper), 0 0 0 4px rgba(58, 16, 53, .13); }
-.jb-right { box-shadow: 0 30px 60px -20px rgba(0, 0, 0, .8), inset 6px 0 14px -8px rgba(58, 16, 53, .35); animation: jb-fade .9s 3.5s ease-in-out forwards; }
+.jb-right { transform: translateZ(var(--t)); box-shadow: inset 8px 0 16px -8px rgba(58, 16, 53, .4); animation: jb-fade .9s 3.5s ease-in-out forwards; }
+/* a real book: back cover, a block of pages with visible edges, and a leather spine */
+.jb-base, .jb-edge, .jb-spine { position: absolute; display: block; }
+.jb-base { inset: -1.6% -2.6% -1.6% 0; border-radius: 2px 7px 7px 2px; background: linear-gradient(135deg, #5a1f54, #3a1035);
+  box-shadow: 0 50px 90px -30px rgba(0, 0, 0, .9), 0 18px 30px -18px rgba(0, 0, 0, .8); }
+.jb-edge { background: repeating-linear-gradient(90deg, #f3ecdf 0 1px, #d8cebd 1px 2px), #efe7d8; }
+.jb-fore { left: 100%; top: 0; width: var(--t); height: 100%; transform-origin: 0 50%; transform: rotateY(-90deg);
+  background: linear-gradient(90deg, rgba(58, 16, 53, .25), transparent 40%), repeating-linear-gradient(90deg, #f3ecdf 0 1px, #d6ccba 1px 2px); }
+.jb-top, .jb-bottom { left: 0; width: 100%; height: var(--t);
+  background: linear-gradient(180deg, rgba(58, 16, 53, .2), transparent 50%), repeating-linear-gradient(180deg, #f3ecdf 0 1px, #d6ccba 1px 2px); }
+.jb-top { bottom: 100%; transform-origin: 50% 100%; transform: rotateX(-90deg); }
+.jb-bottom { top: 100%; transform-origin: 50% 0; transform: rotateX(90deg); }
+.jb-spine { right: 100%; top: 0; width: calc(var(--t) + 2px); height: 100%; transform-origin: 100% 50%; transform: rotateY(90deg);
+  background: linear-gradient(90deg, #3a1035, #5e2258 50%, #3a1035); }
+/* the left half of the pages, under the opened cover */
+.jb-lside { position: absolute; inset: 0; transform-style: preserve-3d; transform-origin: 0 50%; transform: scaleX(-1); opacity: 0;
+  animation: jb-show .45s 1.95s ease forwards, jb-fade .9s 3.5s ease-in-out forwards; }
+.jb-base, .jb-edge, .jb-spine { animation: jb-fade .9s 3.5s ease-in-out forwards; }
 /* as the camera reaches the title page, everything but its words melts into the paper */
 .jb-cover .jb-back > :not(b) { animation: jb-fade .9s 3.6s ease-in-out forwards; }
 .jb-cover .jb-back::before { animation: jb-fade .5s 3.45s ease forwards; }
@@ -45,9 +62,9 @@ html.jr-intro-on .jb.skip { animation: jb-out .35s ease forwards; }
 .jb-cover { position: absolute; inset: 0; transform-style: preserve-3d; transform-origin: 0 50%; }
 .jb-back { transform: rotateY(180deg); border-radius: 6px 2px 2px 6px; }
 /* the cover: plum leather, stitched, with the seal, a label and teal studs; it opens straight onto the title page */
-.jb-cover { transform: translateZ(3px); animation: jb-open 1.4s 1.35s cubic-bezier(.65, 0, .35, 1) both; }
+.jb-cover { transform: translateZ(calc(var(--t) + 1px)); animation: jb-open 1.4s 1.35s cubic-bezier(.65, 0, .35, 1) both; }
 .jb-cover .jb-back { box-shadow: inset -6px 0 14px -8px rgba(58, 16, 53, .35); }
-.jb-front { display: grid; place-items: center; color: #e9e3ea; box-shadow: 0 34px 70px -24px rgba(0, 0, 0, .85);
+.jb-front { display: grid; place-items: center; color: #e9e3ea; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .06), inset -10px 0 18px -12px rgba(0, 0, 0, .5);
   background: radial-gradient(ellipse at 30% 25%, rgba(255, 255, 255, .08), transparent 55%),
               radial-gradient(circle at 70% 80%, rgba(0, 0, 0, .25), transparent 60%), var(--leather); }
 .jb-front::before { content: ""; position: absolute; inset: 6% 6% 6% 14%; border: 1px dashed rgba(92, 196, 192, .45); border-radius: 3px; }
@@ -68,11 +85,12 @@ html.jr-intro-on .jb.skip { animation: jb-out .35s ease forwards; }
   59%  { transform: translateX(calc(var(--p) / 2)) rotateX(16deg) rotateZ(-3deg) scale(1); animation-timing-function: ease-in-out; }
   64%  { transform: translateX(calc(var(--p) / 2)) rotateX(14deg) rotateZ(-2.5deg) scale(1.01); animation-timing-function: cubic-bezier(.6, 0, .25, 1); }
   /* lands with the book's "Journal" exactly on the page's own title (--zs, --zy measured in js/journal.js) */
-  100% { transform: translateX(calc(var(--p) / 2 * (1 + var(--zs, 2.4)))) translateY(var(--zy, 0px)) rotateX(0) rotateZ(0) scale(var(--zs, 2.4)); }
+  100% { transform: translateX(calc(var(--p) / 2 * (1 + var(--zs, 2.4)))) translateY(var(--zy, 0px)) translateZ(calc(var(--t) * var(--zs, 2.4) * -1)) rotateX(0) rotateZ(0) scale(var(--zs, 2.4)); }
 }
-@keyframes jb-open { to { transform: translateZ(1px) rotateY(-180deg); } }
+@keyframes jb-open { to { transform: translateZ(var(--t)) rotateY(-180deg); } }
 @keyframes jb-paper { to { clip-path: circle(75% at 50% 50%); } }
 @keyframes jb-fade { to { opacity: 0; } }
+@keyframes jb-show { to { opacity: 1; } }
 @keyframes jb-flat { to { background: transparent; box-shadow: none; } }
 @keyframes jb-out { to { opacity: 0; visibility: hidden; } }
 @keyframes jb-skip { to { opacity: 1; } }
