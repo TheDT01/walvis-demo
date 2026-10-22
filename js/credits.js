@@ -43,5 +43,9 @@ var WALVIS_CREDITS = [
   { file: "lux-place-setting.jpg", title: "Events Venue", creator: "Freestocks.org", licence: "CC0", source: "https://stocksnap.io/photo/events-venue-S6JFNH818M" },
   { file: "lux-copper-bath.jpg", title: "Woman Bathtub", creator: "World Travel Adventures", licence: "CC0", source: "https://stocksnap.io/photo/woman-bathtub-JYDEWCLZCJ" },
   { file: "roses.jpg", title: "", creator: "Unknown", licence: "CC0", source: "https://stocksnap.io/photo/ZNN96DDKLT" },
-  { file: "handwritten-note.jpg", title: "", creator: "Unknown", licence: "CC0", source: "https://stocksnap.io/photo/CJETOU0HKX" }
+  { file: "handwritten-note.jpg", title: "", creator: "Unknown", licence: "CC0", source: "https://stocksnap.io/photo/CJETOU0HKX" },
+  { file: "lux-alpine-peak.jpg", title: "Snow Mountain", creator: "Tyler Lastovich", licence: "CC0", source: "https://stocksnap.io/photo/snow-mountain-6DC0ERNTN3" },
+  { file: "lux-desert-dunes.jpg", title: "Desert Dubai", creator: "Walid Ahmad", licence: "CC0", source: "https://stocksnap.io/photo/desert-dubai-RQKIPWXZCF" },
+  { file: "lux-louvre-night.jpg", title: "Thelouvre Paris", creator: "RAFAEL MIRANDA", licence: "CC0", source: "https://stocksnap.io/photo/thelouvre-paris-Z4SBGYA12R" },
+  { file: "lux-ocean-pool.jpg", title: "Resort Pool", creator: "Matt Moloney", licence: "CC0", source: "https://stocksnap.io/photo/resort-pool-FUPABBDRCI" }
 ];
