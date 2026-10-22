@@ -46,6 +46,17 @@
       fish: small ? 30 : 55, motes: small ? 30 : 50, glowMotes: 5,
       light: [.3, .12], alpha: .9, rays: true, ripple: true, scroll: false
     },
+    fish: {
+      whale: null,
+      fish: small ? 90 : 160, motes: 0, glowMotes: 0,
+      light: [.5, .5], alpha: .9, rays: false, ripple: false, scroll: false, spread: true
+    },
+    // Intro-only mode: a small school of understated fish, without water lines, rays or particles.
+    'fish-lite': {
+      whale: null,
+      fish: small ? 8 : 14, motes: 0, glowMotes: 0,
+      light: [.5, .5], alpha: .58, rays: false, ripple: false, scroll: false, spread: true
+    },
     faint: {
       whale: null,
       fish: 0, motes: 26, glowMotes: 3, light: [.5, .1], alpha: .3, rays: false, ripple: false, scroll: false
@@ -327,10 +338,11 @@
 
     function populate() {
       fish = [];
-      var R = Math.min(W, H);
+      var R = mode.spread ? H : Math.min(W, H);
       for (var f = 0; f < mode.fish; f++) {
         var d = Math.random();
-        fish.push({ a: Math.random() * 6.283, w: (.07 + Math.random() * .09) * (Math.random() < .88 ? 1 : -1), r: R * (.1 + Math.random() * .34),
+        var radius = mode.spread ? H * (.025 + Math.pow(Math.random(), 1.65) * .62) : R * (.1 + Math.random() * .34);
+        fish.push({ a: Math.random() * 6.283, w: (.07 + Math.random() * .09) * (Math.random() < .88 ? 1 : -1), r: radius,
           p: Math.random() * 6.283, d: d, s: .3 + d * .55, x: null, y: null, h: 0 });
       }
       motes = [];
@@ -463,7 +475,7 @@
       for (var f = 0; f < fish.length; f++) {
         var fi = fish[f]; fi.a += fi.w * dt; fi.p += dt * .35;
         var rad = fi.r * (1 + .08 * Math.sin(fi.p));
-        var fx = lx + Math.cos(fi.a) * rad + cmx * 14 * fi.d;
+        var fx = lx + Math.cos(fi.a) * rad * (mode.spread ? W / H : 1) + cmx * 14 * fi.d;
         var fy = ly + Math.sin(fi.a) * rad * .42 + Math.sin(fi.p * 1.3) * rad * .1 + rad * .18 - sy * .1;
         if (fi.x !== null) { var target = Math.atan2(fy - fi.y, fx - fi.x); fi.h += Math.atan2(Math.sin(target - fi.h), Math.cos(target - fi.h)) * .1; }
         fi.x = fx; fi.y = fy;
