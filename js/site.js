@@ -26,6 +26,9 @@ function waLink(msg) {
   return 'https://wa.me/' + SITE.whatsapp + '?text=' + encodeURIComponent(msg || 'Hello Walvis, I would like to know more.');
 }
 
+// the version stamp on this script's address (site.js?v=...), passed on to the scripts it loads so browsers never keep stale copies
+var ASSET_V = ((document.currentScript && document.currentScript.src.match(/\?v=[^&#]+/)) || [''])[0];
+
 (function () {
   var here = location.pathname.split('/').pop() || 'index.html';
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -188,7 +191,7 @@ function waLink(msg) {
 
   /* ---------- The ocean (js/ocean.js), only where a whale scene exists ---------- */
   if (document.querySelector('canvas.sea')) {
-    var oc = document.createElement('script'); oc.src = 'js/ocean.js'; oc.defer = true; document.body.appendChild(oc);
+    var oc = document.createElement('script'); oc.src = 'js/ocean.js' + ASSET_V; oc.defer = true; document.body.appendChild(oc);
   }
 
   /* =========================================================

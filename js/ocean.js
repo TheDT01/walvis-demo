@@ -74,7 +74,7 @@
 
   /* ---------- WebGL available? Otherwise use the 2D version ---------- */
   var fellBack = false;
-  function fallback() { if (fellBack) return; fellBack = true; var s = document.createElement('script'); s.src = 'js/ocean-2d.js'; document.body.appendChild(s); }
+  function fallback() { if (fellBack) return; fellBack = true; var s = document.createElement('script'); s.src = 'js/ocean-2d.js' + (window.ASSET_V || ''); document.body.appendChild(s); }
   // WebGL only pays off with real graphics acceleration. Without it (old or blocked drivers), browsers
   // emulate WebGL in software, which is slower than the 2D version, so those machines get 2D.
   var GL_OPTS = { alpha: true, premultipliedAlpha: true, antialias: false, depth: false, stencil: false, failIfMajorPerformanceCaveat: true };
