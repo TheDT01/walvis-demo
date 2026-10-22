@@ -973,17 +973,6 @@ html.calm-glass .hero .btn-line { -webkit-backdrop-filter: none !important; back
 .portal-signin .head { display: flex; flex-direction: column; align-items: center; }
 
 /* =========================================================
-   v11 · lighthouse: a beam from the seal in the header
-   ========================================================= */
-.beam { position: fixed; left: 0; top: 0; z-index: 39; pointer-events: none; opacity: 0; transition: opacity 1.6s var(--ease);
-  transform-origin: 0 50%; will-change: transform; }
-html.beam-on .beam { opacity: 1; }
-/* once past the hero the light is gentler, so it never gets in the way of reading */
-html.beam-on body:has(.topbar.solid) .beam { opacity: .5; }
-/* the lamp itself: the seal glows while the light is on */
-html.beam-on .topbar .brand img { filter: drop-shadow(0 0 10px rgba(92, 196, 192, .55)) drop-shadow(0 0 22px rgba(255, 250, 250, .25)); }
-
-/* =========================================================
    v12 · phone button sizes
    ========================================================= */
 @media (max-width: 680px) {
@@ -1001,4 +990,15 @@ html.beam-on .topbar .brand img { filter: drop-shadow(0 0 10px rgba(92, 196, 192
 }
 @media (max-width: 380px) {
   .topbar .member-btn { padding: 0 12px; font-size: .52rem; letter-spacing: .12em; }
+}
+
+/* =========================================================
+   v13 · the Walvis whale cursor (mouse and trackpad only; touch screens have no cursor)
+   The whale's nose is the click point. Over anything clickable it blows a little spout.
+   ========================================================= */
+@media (hover: hover) and (pointer: fine) {
+  html { cursor: url("../images/cursor/whale.svg") 6 5, url("../images/cursor/whale.png") 6 5, auto; }
+  a[href], a[data-wa], button, summary, label, select, [role="button"], [role="tab"], .tile, .menu-btn, .drawer-close, .rail-nav button, .scrim {
+    cursor: url("../images/cursor/whale-pointer.svg") 6 5, url("../images/cursor/whale-pointer.png") 6 5, pointer !important; }
+  input:not([type="button"]):not([type="submit"]), textarea, [contenteditable="true"] { cursor: text; }
 }
