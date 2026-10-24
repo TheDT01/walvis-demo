@@ -261,27 +261,8 @@ write("lifestyle.html", "Personal Lifestyle", "Personal lifestyle management by 
 # TRAVEL: travel.html, journey.html, css/travel.css and js/travel.js come from gen_travel.py (redesign); not generated here
 
 # =================================================================== RETAIL
-types = [
-  ("lux-cufflinks.jpg", "Jewellery", "Bridal sets, fine pieces and the gift that is kept for a lifetime, from jewellers we trust."),
-  ("lux-pocket-watch.jpg", "Timepieces", "Sought-after watches, sourced from trusted dealers and checked before they reach you."),
-  ("bd-holud-stage.jpg", "Heritage crafts", "Master-woven jamdani, Rajshahi silk and the crafts of Bangladesh, commissioned for you."),
-  ("lux-candlelight.jpg", "Fragrance", "Rare oud and attar from Dubai and beyond, delivered to Dhaka."),
-  ("lux-palace-salon.jpg", "Home &amp; art", "Rugs, art and objects for the home, found, framed and installed."),
-  ("retail-gift-box.jpg", "Gifting", "Gifts that feel personal, wrapped and delivered with your note."),
-]
-write("retail.html", "Retail · The Collection", "The Collection by Walvis Concierge: jewellery, timepieces, heritage crafts, fragrance, home and art, sourced for you.",
-  hero("lux-cufflinks.jpg", "Retail", "Retail · The Collection", "Rare pieces, <em>found for you.</em>",
-    "Jewellery, timepieces, jamdani and oud. Sourced, checked and delivered quietly to your door, from Dhaka to Dubai, London and beyond.",
-    "Hello Walvis, I am looking for something specific.", cta="Tell us what you want")
-  + worlds("The Collection", "A few things <em>members ask for.</em>", "No checkout and no rush. Tap “Ask about this” and we come back with options, availability and price.",
-    [(img, "The Collection", t, x) for img, t, x in types], tone="light")
-  + band("lux-glass-dome.jpg", "Something specific?", "Send a photo, a link <em>or a feeling.</em>", "If it exists, we will find it. If it does not, we will tell you plainly and offer the next best thing.")
-  + svc("How we shop", "Shopping, <em>without the shopping.</em>", "", [
-    ("Sourced through people we trust", "Dealers, boutiques and makers we know personally, at home and abroad."),
-    ("Checked before handover", "Pieces are checked carefully before any money changes hands."),
-    ("Your approval first", "You see the piece, the price and the timing before anything is bought."),
-  ])
-  + closing("The Collection", "Looking for <em>something?</em>", "Tell us what it is. We will find it.", "Hello Walvis, I am looking for something specific."))
+# Retail is The Walvis Promenade, hand-made in its own folder retail/ (retail.html only forwards to it); not generated here
+
 
 # =================================================================== ASSETS
 write("assets.html", "Assets", "Homes, vehicles, paperwork and household staff in Dhaka, looked after by Walvis Concierge, especially for Bangladeshis living abroad.",
@@ -493,80 +474,8 @@ xh = xh.replace('<script src="js/site.js"></script>', '<script src="js/site.js">
 open(xp, "w").write(xh)
 
 # =================================================================== THE JOURNAL
-# Opening the page plays the book film (videos/the-journal.mp4) before the page appears: css/journal.css, js/journal.js.
-ENTRIES = [
-  ("I", "Personal Lifestyle", "The art of the Eid gift", "Choosing something that feels personal, not just expensive.",
-   ["The best Eid gifts are rarely the most expensive ones. They are the ones that show you were paying attention: the attar your uncle mentioned once, the sweets from the shop your mother grew up near, the book a friend has been meaning to read.",
-    "We start with a short list of names and a few words about each person. Then we find two or three ideas for every name, wrap them properly, and send them out on the right morning with a card in your words.",
-    "A small tip from our side: decide the list a week before Chaand Raat. The good mishti shops and florists are busiest exactly when you need them."]),
-  ("II", "Bangladesh", "Old Dhaka, slowly", "A morning between the palaces, the river and a long lunch.",
-   ["Old Dhaka rewards anyone who arrives early. Before the traffic wakes up, Ahsan Manzil glows pink by the Buriganga and Lalbagh Fort is quiet enough to hear the birds.",
-    "We like to go on foot where we can, with someone who knows the stories behind the doorways, then take a small boat on the river before lunch. The Star Mosque is best seen in the softer light of late morning.",
-    "It is a day for comfortable shoes, an empty afternoon and an appetite. Tell us how much walking feels right and we will shape the route around it."]),
-  ("III", "Experiences", "Planning a surprise that stays a surprise", "Proposals, birthdays and anniversaries, kept quiet until the moment.",
-   ["The hardest part of a surprise is not the flowers or the table. It is keeping it secret. So we keep the conversation with one person only, and every message is written so it gives nothing away if someone else picks up the phone.",
-    "We plan a cover story with you, a back-up for the weather, and someone on the ground on the day so you can simply arrive and enjoy it.",
-    "Our favourite surprises are small and personal: a song that matters, a view from the first trip, a note in the right handwriting."]),
-  ("IV", "Travel", "What to ask before booking a villa", "Five questions that save a holiday.",
-   ["Photographs are generous. Before we recommend a villa, we ask what the pictures do not show: how far the beach really is, whether the pool is heated, who cooks, and what is being built next door.",
-    "We also ask about the people: is there a house manager, who answers at night, and how quickly can a doctor arrive. For families with grandparents or little ones, the stairs and the bathrooms matter more than the view.",
-    "None of this is glamorous, which is exactly why we do it for you. You should only have to choose between places that already work."]),
-  ("V", "Concierge for Expats", "Coming home for a family wedding", "A gentle checklist for Bangladeshis flying in from abroad.",
-   ["A wedding at home is a joy and a project. Outfits to tailor in time, gifts for both families, a car for every function and somewhere comfortable to stay when the house is full.",
-    "We like to start six to eight weeks out: measurements sent ahead, fittings booked for the first days after landing, and a simple plan of which car goes where on each evening.",
-    "Then, once you land, the only thing left to arrange is your time with family. That is the part we cannot do for you, and should not."]),
-  ("VI", "How we work", "Why we always send options first", "Two or three good choices, never a decision made for you.",
-   ["Every request starts with a short conversation and ends with options: usually two or three, each one we would be happy to book ourselves.",
-    "Nothing is bought or booked until you say yes. It is slower by a few minutes and calmer by a mile, and it means there are no surprises you did not ask for.",
-    "If something cannot be done, we say so early and suggest the next best thing. That honesty is part of the service too."]),
-]
-entries = "".join(f"""
-        <details class="jr-entry reveal{d(i)}">
-          <summary>
-            <span class="jr-num">{n}</span>
-            <span class="kicker">{k}</span>
-            <h3>{t}</h3>
-            <p class="jr-dek">{dek}</p>
-            <span class="jr-read">Read <span aria-hidden="true">+</span></span>
-          </summary>
-          <div class="jr-body">{''.join(f'<p>{p}</p>' for p in ps)}<a class="link" data-wa="{E('Hello Walvis, I read “' + t + '” in The Journal and would like to ask about it.')}" href="#">Ask us about this {ARROW}</a></div>
-        </details>""" for i, (n, k, t, dek, ps) in enumerate(ENTRIES))
-write("journal.html", "The Journal", "The Journal by Walvis Concierge: stories, guides and small discoveries on travel, gifting, celebrations and Bangladesh.",
-  f"""
-  <section class="section jr-paper" id="entries">
-    <div class="wrap">
-      <div class="jr-title">
-        <span class="jr-small">Walvis Concierge</span>
-        <span class="jr-the">The</span>
-        <h2>Journal</h2>
-        <span class="jr-rule" aria-hidden="true"><i></i></span>
-        <p>In this issue: six short reads, from Eid gifts to a slow morning in Old Dhaka.</p>
-      </div>
-      <div class="jr-entries">{entries}
-      </div>
-    </div>
-  </section>
-"""
-  + closing("The Journal", "A story you would like <em>us to write?</em>", "Tell us what you are curious about. The best ideas for The Journal come from our members.", "Hello Walvis, I have an idea for The Journal."))
-
-# the film plays before the page appears (skipped for reduced motion, or if the browser will not play it)
-JR_HEAD = """<link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/journal.css">
-  <script>if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('jr-intro-on')</script>"""
-JR_INTRO = """<body class="journal-page">
-  <div class="jb" id="jb" aria-hidden="true">
-    <div class="jb-book">
-      <i class="jb-base"></i><i class="jb-edge jb-fore"></i><i class="jb-edge jb-top"></i><i class="jb-edge jb-bottom"></i><i class="jb-spine"></i>
-      <div class="jb-lside"><i class="jb-base"></i><i class="jb-edge jb-fore"></i><i class="jb-edge jb-top"></i><i class="jb-edge jb-bottom"></i></div>
-      <div class="jb-page jb-right"><img src="images/logo/walvis-seal-180.png" alt=""><b>Walvis</b><small>Concierge</small></div>
-      <div class="jb-cover"><div class="jb-front"><img src="images/logo/walvis-seal-180.png" alt=""><span>The Journal</span></div><div class="jb-page jb-back jb-title"><small>Walvis Concierge</small><i>The</i><b>Journal</b><span class="jr-rule"><i></i></span><em>&#10042;</em></div></div>
-    </div>
-    <button class="jb-skip" type="button" tabindex="-1">Skip</button>
-  </div>"""
-jp = os.path.join(OUT, "journal.html"); jh = open(jp).read()
-jh = jh.replace('<link rel="stylesheet" href="css/style.css">', JR_HEAD, 1).replace("<body>", JR_INTRO, 1)
-jh = jh.replace('<script src="js/site.js"></script>', '<script src="js/site.js"></script>\n  <script src="js/journal.js"></script>', 1)
-open(jp, "w").write(jh)
+# journal.html is hand-made (css/journal.css, js/journal.js, js/journal-front.js) and is not generated here.
+# Its stories, sections and calendar live in js/journal-data.js.
 
 # old Portal links forward to The Journal
 open(os.path.join(OUT, "portal.html"), "w").write("""<!doctype html>
@@ -750,6 +659,9 @@ for fn in os.listdir(OUT):
     if fn.endswith(".html"): used |= set(re.findall(r'images/([a-z0-9-]+\.jpg)', open(os.path.join(OUT, fn)).read()))
 for fn in ["js/travel-refresh.js", "css/experiences.css"]:
     if os.path.exists(os.path.join(OUT, fn)): used |= set(re.findall(r'images/([a-z0-9-]+\.jpg)', open(os.path.join(OUT, fn)).read()))
+# The Journal names its photos in js/journal-data.js (img: 'file.jpg', or 'travel-ref/file.jpg')
+used |= set(re.findall(r"img: '([a-z0-9/-]+\.jpg)'", open(os.path.join(OUT, "js/journal-data.js")).read()))
+# The Walvis Promenade (retail/) credits its own photos on retail/credits.html
 # the Travel page keeps its own photos in images/travel-ref/
 for fn in ["travel.html", "js/travel-refresh.js"]:
     used |= {"travel-ref/" + f for f in re.findall(r'images/travel-ref/([a-z0-9-]+\.jpg)', open(os.path.join(OUT, fn)).read())}
@@ -759,7 +671,7 @@ write("credits.html", "Photo credits", "Photo credits for the Walvis Concierge w
   <section class="section dark" style="padding-top:170px">
     <div class="wrap">
       <div class="head reveal"><span class="kicker">Photo credits</span><h1 class="t-1">With thanks to <em>the photographers.</em></h1>
-      <p class="lead">Photos licensed under CC BY-SA must stay credited while they are in use. Photos without a line here are our own or CC0.</p></div>
+      <p class="lead">Photos licensed under CC BY-SA must stay credited while they are in use. Photos without a line here are our own or CC0. The photos in The Walvis Promenade are credited on <a class="link" style="padding:0;border:0" href="retail/credits.html">their own credits page</a>.</p></div>
       <div style="overflow-x:auto"><table class="credits">
         <thead><tr><th>File</th><th>Title</th><th>Creator</th><th>Licence</th><th></th></tr></thead>
         <tbody>{rows}</tbody></table></div>

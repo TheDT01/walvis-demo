@@ -11,6 +11,8 @@ A static website: plain HTML, CSS and JavaScript, no build step. Open `index.htm
 | Whale scene without graphics acceleration | `js/ocean-2d.js` (same scene in Canvas 2D; loaded automatically when WebGL would be slow; keep its `MODES` in step) |
 | Colours, fonts, Liquid Glass styling | `css/style.css` (the "v6 · LIQUID GLASS" block at the end) |
 | Pages | one `.html` file per page |
+| Retail: The Walvis Promenade (floors, shops, pieces, prices) | `retail/js/data.js` (the mall lives in its own folder `retail/`; see `retail/README.md`) |
+| The Journal: news, sections, calendar | `js/journal-data.js` (page: `journal.html`, `css/journal.css`, `js/journal-front.js`; illustrations: `js/journal-art.js`) |
 | Photos and logo | `images/` (photo credits: `js/credits.js`, shown on `credits.html`) |
 
 Photos licensed CC BY-SA must stay credited on `credits.html` while they are in use.

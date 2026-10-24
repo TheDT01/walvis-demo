@@ -1,0 +1,94 @@
+/* =========================================================
+   WALVIS CONCIERGE · retail/css/standalone.css
+   Only for using retail/ on ANOTHER website that does not have the Walvis css/style.css.
+   It carries the colours, fonts, buttons and base rules the Promenade needs.
+   On the Walvis site itself this file is not loaded (css/style.css already has all of it).
+   Load it in place of css/style.css, before retail/css/mall.css.
+   ========================================================= */
+:root {
+  --plum: #3a1035;
+  --plum-deep: #26091f;
+  --plum-ink: #1a0616;
+  --plum-soft: #4d1d47;
+  --teal: #11908d;
+  --teal-dark: #0e7a77;
+  --teal-light: #5cc4c0;
+  --snow: #fffafa;
+  --snow-mist: #f7f0f2;
+  --ink: #2a0c26;
+  --ink-soft: rgba(42, 12, 38, .68);
+  --on-dark: rgba(255, 250, 250, .74);
+  --on-dark-faint: rgba(255, 250, 250, .48);
+  --line-dark: rgba(255, 250, 250, .12);
+  --line-light: rgba(58, 16, 53, .12);
+
+  --serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --caps: "Cinzel", "Cormorant Garamond", Georgia, serif;
+  --sans: "Jost", "Helvetica Neue", Arial, sans-serif;
+
+  --wrap: 1280px;
+  --gutter: clamp(20px, 5vw, 64px);
+  --ease: cubic-bezier(.22, .61, .36, 1);
+  --ease-out: cubic-bezier(.16, 1, .3, 1);
+}
+
+:root {
+  --ink: #fffafa;
+  --ink-soft: rgba(255, 250, 250, .72);
+  --line-light: rgba(255, 250, 250, .12);
+  --teal-dark: #5cc4c0;                 /* accents on dark */
+  --bg: #1c0719;
+  --glass-bg: linear-gradient(140deg, rgba(255, 250, 250, .11) 0%, rgba(255, 250, 250, .04) 38%, rgba(92, 196, 192, .06) 100%);
+  --glass-line: rgba(255, 250, 250, .16);
+  --glass-shadow: inset 0 1px 0 rgba(255, 255, 255, .28), inset 0 -1px 0 rgba(255, 255, 255, .05), inset 1px 0 0 rgba(255, 255, 255, .07),
+                  0 30px 70px -34px rgba(0, 0, 0, .7);
+  --glass-blur: blur(16px) saturate(170%);
+  --r-lg: 32px; --r-md: 22px;
+}
+html, body { background: var(--bg); color: var(--snow); }
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body { font-family: var(--sans); font-weight: 300; font-size: 16px; line-height: 1.7; color: var(--ink); background: var(--snow);
+  -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+body.no-scroll { overflow: hidden; }
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+svg.i { width: 1em; height: 1em; flex: none; }
+::selection { background: var(--teal); color: var(--snow); }
+.skip { position: absolute; left: -999px; top: 10px; z-index: 100; background: var(--snow); color: var(--plum); padding: 10px 16px; }
+.skip:focus { left: 10px; }
+:focus-visible { outline: 1px solid var(--teal-light); outline-offset: 4px; }
+h1, h2, h3, h4 { font-family: var(--serif); font-weight: 400; line-height: 1.08; letter-spacing: -.005em; }
+h1 em, h2 em, h3 em { font-style: italic; color: var(--teal-dark); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 12px; min-height: 52px; padding: 0 30px;
+  font-family: var(--sans); font-size: .74rem; font-weight: 400; letter-spacing: .22em; text-transform: uppercase; white-space: nowrap;
+  border: 1px solid transparent; cursor: pointer; transition: background .5s var(--ease), color .5s var(--ease), border-color .5s var(--ease); }
+.btn .i { width: 15px; height: 15px; transition: transform .5s var(--ease); }
+.btn:hover .i { transform: translateX(4px); }
+.btn-teal { background: var(--teal); color: var(--snow); }
+.btn-teal:hover { background: var(--teal-dark); }
+.btn-plum { background: var(--plum); color: var(--snow); }
+.btn-plum:hover { background: var(--plum-deep); }
+.btn-line { border-color: currentColor; }
+.btn { border-radius: 999px; min-height: 50px; padding: 0 28px; font-weight: 500; letter-spacing: .18em; }
+.btn-teal, .btn-plum, .member-btn, .tier .foot .btn { background: var(--snow) !important; color: var(--plum) !important; border: 1px solid rgba(255, 255, 255, .9) !important;
+  box-shadow: inset 0 1px 0 #fff, 0 10px 30px -12px rgba(92, 196, 192, .55); }
+.btn-teal:hover, .btn-plum:hover, .member-btn:hover { background: #fff !important; box-shadow: inset 0 1px 0 #fff, 0 14px 38px -10px rgba(92, 196, 192, .8); transform: translateY(-1px); }
+.btn-line, .light .btn-line, .dark .btn-line, .on-dark .btn-line { color: var(--snow) !important; border: 1px solid rgba(255, 250, 250, .32) !important;
+  background: rgba(255, 250, 250, .08) !important; -webkit-backdrop-filter: blur(14px) saturate(160%); backdrop-filter: blur(14px) saturate(160%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .22); }
+.btn-line:hover, .light .btn-line:hover, .dark .btn-line:hover, .on-dark .btn-line:hover { background: rgba(255, 250, 250, .18) !important; color: #fff !important; }
+.wrap { max-width: var(--wrap); margin: 0 auto; }
+.checks { list-style: none; display: grid; gap: 14px; padding-top: 8px; }
+.checks li { display: grid; grid-template-columns: 26px 1fr; gap: 10px; align-items: start; }
+.checks li::before { content: ""; width: 14px; height: 1px; background: var(--teal); margin-top: 13px; }
+
+/* the stand-alone header and footer (drawn by retail/js/core.js when the host site has none) */
+.mx-solo-head { position: fixed; inset: 0 0 auto 0; z-index: 40; height: 70px; display: flex; align-items: center; justify-content: space-between;
+  padding: 0 var(--gutter); background: rgba(26, 6, 22, .82); color: var(--snow); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+.mx-solo-brand { display: flex; align-items: center; gap: 12px; font-family: var(--caps); letter-spacing: .26em; text-transform: uppercase; font-size: .78rem; }
+.mx-solo-head nav { display: flex; gap: 22px; font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; }
+.mx-solo-head nav a { display: inline-flex; align-items: center; gap: 8px; }
+.mx-solo-head nav a[aria-current] { color: var(--teal-light); }
+.mx-solo-foot { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; padding: 28px var(--gutter); background: var(--plum-ink); color: var(--on-dark); font-size: .8rem; }

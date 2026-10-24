@@ -1027,3 +1027,8 @@ html.calm-glass .hero .btn-line { -webkit-backdrop-filter: none !important; back
 .steps.steps-5 { grid-template-columns: repeat(5, 1fr); }
 @media (max-width: 1080px) { .pl-moments.pl-moments-3, .pl-handle.pl-handle-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); } .steps.steps-5 { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 600px) { .pl-moments.pl-moments-3, .pl-handle.pl-handle-3, .steps.steps-5 { grid-template-columns: 1fr; } }
+
+/* The Journal's illustrations in the home page row (js/journal-latest.js) */
+.world .ph.jx-home-art { display: block; }
+.world .ph.jx-home-art svg { display: block; width: 100%; height: 100%; transition: transform 1.6s var(--ease-out); }
+.world:hover .ph.jx-home-art svg { transform: scale(1.05); }
