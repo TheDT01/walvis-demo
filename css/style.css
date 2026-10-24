@@ -1002,3 +1002,21 @@ html.calm-glass .hero .btn-line { -webkit-backdrop-filter: none !important; back
     cursor: url("../images/cursor/star-pointer.svg") 16 16, url("../images/cursor/star-pointer.png") 16 16, pointer !important; }
   input:not([type="button"]):not([type="submit"]), textarea, [contenteditable="true"] { cursor: text; }
 }
+
+/* =========================================================
+   v14 · Personal Lifestyle: the moments that slip, and everything we handle
+   ========================================================= */
+.pl-moments { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
+.pl-moment { padding: 30px 26px 28px; border-radius: 22px; border: 1px solid rgba(255, 250, 250, .14);
+  background: linear-gradient(150deg, rgba(255, 250, 250, .08), rgba(255, 250, 250, .02) 60%, rgba(92, 196, 192, .05)); }
+.pl-moment time { display: block; margin-bottom: 18px; font-family: var(--caps); font-size: .64rem; letter-spacing: .22em; text-transform: uppercase; color: var(--teal-light); }
+.pl-moment h3 { margin: 0 0 8px; font-family: var(--serif); font-weight: 400; font-size: 1.55rem; line-height: 1.2; color: var(--snow); }
+.pl-moment p { margin: 0; color: rgba(255, 250, 250, .7); }
+.pl-answer { margin: clamp(40px, 6vw, 64px) auto 0; text-align: center; font-family: var(--serif); font-size: clamp(1.5rem, 2.6vw, 2.1rem); color: var(--snow); }
+.pl-answer em { color: var(--teal-light); }
+.pl-handle { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 30px; }
+.pl-col h3 { margin: 0 0 6px; padding-bottom: 14px; border-bottom: 1px solid rgba(92, 196, 192, .3); font-family: var(--serif); font-weight: 400; font-size: 1.6rem; }
+@media (max-width: 1080px) { .pl-moments, .pl-handle { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px) { .pl-moments, .pl-handle { grid-template-columns: 1fr; } }
+@media (min-width: 1081px) { #in-your-name .worlds { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (min-width: 681px) and (max-width: 1080px) { #in-your-name .worlds { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
