@@ -1020,3 +1020,10 @@ html.calm-glass .hero .btn-line { -webkit-backdrop-filter: none !important; back
 @media (max-width: 600px) { .pl-moments, .pl-handle { grid-template-columns: 1fr; } }
 @media (min-width: 1081px) { #in-your-name .worlds { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 @media (min-width: 681px) and (max-width: 1080px) { #in-your-name .worlds { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* v15 · three-across moments and service groups; five steps */
+.pl-moments.pl-moments-3, .pl-handle.pl-handle-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.pl-handle.pl-handle-3 { row-gap: 48px; }
+.steps.steps-5 { grid-template-columns: repeat(5, 1fr); }
+@media (max-width: 1080px) { .pl-moments.pl-moments-3, .pl-handle.pl-handle-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); } .steps.steps-5 { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 600px) { .pl-moments.pl-moments-3, .pl-handle.pl-handle-3, .steps.steps-5 { grid-template-columns: 1fr; } }

@@ -327,7 +327,115 @@ write("foreigners.html", "Discover Bangladesh", "For visitors and executives arr
   ])
   + closing("Visitors", "Arriving <em>soon?</em>", "Send us your dates and what you need. We will have a plan ready before you land.", "Hello Walvis, I am visiting Bangladesh and would like concierge support."))
 
-# PROBASHI CONCIERGE: expats.html is hand-made from the 'Concierge for Expats' design (css/expats.css, js/expats.js); not generated here
+# =================================================================== PROBASHI CONCIERGE
+# Content from the "Concierge for Expats" design (tools/sources/concierge-for-expats.html), in the site's own style.
+PX_MOMENTS = [
+  ("Before dawn, your time", "Ammu&rsquo;s medicine is almost finished.", "The pharmacy in Dhaka closes at ten, and the only cousin who could go is stuck at work."),
+  ("Three days before Eid", "The florist you trusted last year stops answering.", "Every other shop sounds just as sure, and you have no way to tell which one will turn up."),
+  ("Order placed, never arrived", "The vendor says delivered. Abbu says nothing came.", "Long-distance orders go wrong quietly, and you are the last to find out."),
+  ("Hospital day", "Your brother takes the day off to sit with a parent.", "Again. Family at home carry the whole load while you read messages from another time zone."),
+  ("Your flight lands Saturday", "The house is shut, and you need a car and a SIM.", "A week of leave is too short to spend it sorting out logistics."),
+  ("An overdue notice", "A bill or renewal slips past while you are abroad.", "Paperwork has a deadline, and nobody in the family wants to stand in that queue."),
+]
+px_moments = "".join(f"""
+        <article class="pl-moment reveal{d(i)}"><time>{t}</time><h3>{a}</h3><p>{b}</p></article>""" for i, (t, a, b) in enumerate(PX_MOMENTS))
+
+PX_HANDLE = [
+  ("Special occasions", ["Surprise birthdays and anniversaries", "Eid and Pohela Boishakh celebrations", "Aqiqah and graduations", "Small weddings and family gatherings"]),
+  ("Gifting", ["Curated gifts, wrapped and delivered", "Flowers and sweets from trusted shops", "Iftar hampers and Eid clothing", "Qurbani coordinated through a trusted source"]),
+  ("Parents&rsquo; care", ["Regular check-in visits", "Escort to doctor appointments", "Pharmacy delivery", "Coordination with hospitals and carers (we coordinate; we do not give medical advice)"]),
+  ("Family trips", ["Private-car packages", "The Sundarbans, planned for families", "Sylhet and the tea gardens", "For families and solo travellers"]),
+  ("Visits home", ["VIP airport pickup", "A SIM card and a driver", "The house or hotel made ready", "An itinerary around your family"]),
+  ("Errands", ["Documents collected and delivered", "Bills paid on time", "Home repairs", "Household tasks through trusted partners"]),
+]
+px_handle = "".join(f"""
+        <div class="pl-col reveal{d(i)}"><h3>{h}</h3><ul class="checks">{''.join(f'<li>{x}</li>' for x in xs)}</ul></div>""" for i, (h, xs) in enumerate(PX_HANDLE))
+
+PX_CHAT = [
+  ("me", "Abbu&rsquo;s birthday is on Friday and I can&rsquo;t be there. Can you do something nice?", "21:14"),
+  ("them", "Of course. A small cake from his favourite shop, flowers and your card, delivered on Friday at 4 pm. Shall we add a video call at the door?", "21:26"),
+  ("me", "Yes please. Card: &ldquo;Happy birthday, Abbu. Love, Rafi.&rdquo;", "21:28"),
+  ("them", "Confirmed. We will send you a photo the moment it arrives.", "21:31"),
+  ("them", "Delivered. He is on the video call now, smiling.", "Fri 16:04"),
+]
+px_chat = "".join(f'<div class="msg {w}">{m}<time>{t}</time></div>' for w, m, t in PX_CHAT)
+PX_WA = "Hello Walvis, I live abroad and would like help for my family in Bangladesh."
+
+write("expats.html", "Probashi Concierge", "Concierge services for expats and Bangladeshis abroad: caring for your loved ones in Bangladesh while you are away. Occasions, gifting, parents' care, family trips, visits home and errands.",
+  hero("bd-hatirjheel-night.jpg", "Probashi Concierge", "Probashi Concierge", "Far away, <em>still close.</em>",
+    "Concierge services for expats and Bangladeshis abroad. Caring for your loved ones in Bangladesh, while you are away.",
+    PX_WA, cta="Send your first request", second=("#how", "See how it works"))
+  + intro("handwritten-note.jpg", "About this service", "Your trusted presence <em>at home.</em>",
+    ["Living abroad means missing birthdays, Eid mornings and the everyday moments that matter most to the people you love.",
+     "We act as your trusted presence in Bangladesh, turning your wishes into well-organised, elegant moments. You tell us what you want; we plan it, deliver it and show you it was done with care."],
+    ["Surprise celebrations, in your name", "Parents looked after, gently", "Family trips and visits home", "Proof of every delivery"], alt="A handwritten note")
+  + f"""
+  <section class="section dark on-dark">
+    <div class="wrap">
+      <div class="head reveal"><span class="kicker">Sounds familiar?</span><h2 class="t-1">You haven&rsquo;t stopped caring. <em>You are just an ocean away.</em></h2></div>
+      <div class="pl-moments pl-moments-3">{px_moments}
+      </div>
+      <p class="pl-answer reveal">Send us one message. We handle it <em>and show you the proof.</em></p>
+    </div>
+  </section>
+
+  <section class="section mist">
+    <div class="wrap">
+      <div class="head reveal"><span class="kicker">Lifestyle management</span><h2 class="t-1">Everything we arrange <em>for the people you love.</em></h2>
+      <p class="lead">Six ways we look after your family at home, one request at a time.</p></div>
+      <div class="pl-handle pl-handle-3">{px_handle}
+      </div>
+    </div>
+  </section>
+
+  <section class="section light">
+    <div class="wrap split">
+      <div class="media reveal">
+        <div class="phone">
+          <div class="screen">
+            <div class="chat-top"><img src="images/logo/walvis-seal-96.png" alt=""><div><b>Walvis Concierge</b><small>online</small></div></div>
+            <div class="chat-body">{px_chat}</div>
+          </div>
+        </div>
+        <p class="note-small">A sample conversation, for illustration</p>
+      </div>
+      <div class="copy">
+        <span class="kicker reveal">How it feels</span>
+        <h2 class="t-1 reveal d1">You ask, <em>we deliver.</em></h2>
+        <p class="lead reveal d2">No forms, no phone tag across time zones. Write to us the way you would write to a friend at home, and we reply with a plan, then the proof.</p>
+        <div class="btn-row reveal d3"><a class="btn btn-teal" data-wa="{E(PX_WA)}" href="#">{CHAT} Send your first request</a></div>
+      </div>
+    </div>
+  </section>
+"""
+  + principles("Why families choose us", "Peace of mind, <em>from far away.</em>", [
+    ("Trust", "We vet every vendor, driver and guide, and keep the same team on a family&rsquo;s requests."),
+    ("Proof of delivery", "Photos, short videos or a live video call, so you see the moment."),
+    ("One point of contact", "One WhatsApp number instead of chasing ten people."),
+    ("Time-zone friendly", "Updates timed for your evening, with urgent requests handled fast."),
+    ("Luxury and care", "Elegant presentation, thoughtful details and respect for elderly family members."),
+    ("Backup plans", "A second option ready if a vendor, car or venue falls through."),
+    ("Privacy", "Family details stay confidential and are used only to deliver your request."),
+    ("A clear quote first", "You know what it costs before any work starts. No surprise add-ons."),
+  ], tone="dark")
+  + f"""
+  <section class="section light" id="how" style="scroll-margin-top:70px">
+    <div class="wrap">
+      <div class="head reveal"><span class="kicker">How it works</span><h2 class="t-1">Simple, <em>across any distance.</em></h2></div>
+      <ol class="steps steps-5">{''.join(f'<li class="reveal{d(i)}"><h3>{t}</h3><p>{x}</p></li>' for i, (t, x) in enumerate([
+        ("Request", "Send a message with the occasion, the date and your loved one&rsquo;s details."),
+        ("Plan", "We reply with a plan and a clear quote."),
+        ("Approve", "You confirm. Nothing happens before your yes."),
+        ("Deliver", "Our team handles it on the ground, with photos or video."),
+        ("Follow up", "We check how it went and remember the family&rsquo;s preferences for next time."),
+      ]))}</ol>
+    </div>
+  </section>
+"""
+  + band("lux-candlelight.jpg", "The Occasion Calendar", "Never miss <em>a moment.</em>",
+    "We remind you of birthdays, anniversaries and Eid in advance, each with a ready-made idea, so you can say yes in one message.")
+  + closing("Probashi Concierge", "We&rsquo;ll look after them <em>as our own.</em>", "One trusted team that plans, delivers and proves every special moment, from birthdays and Eid gifts to parents&rsquo; care and visits home.", PX_WA))
+
 
 # =================================================================== THE JOURNAL
 # Opening the page plays the book film (videos/the-journal.mp4) before the page appears: css/journal.css, js/journal.js.
@@ -451,30 +559,33 @@ write("special-requests.html", "Special Requests", "Special requests at Walvis C
 
 # =================================================================== MEMBERSHIP
 write("membership.html", "Membership", "Walvis Concierge membership: Personal Concierge for you and your family, and Corporate Concierge with terms tailored to your company.",
-  f"""
-  <section class="wm" id="why-membership" aria-labelledby="why-title">
-    <div class="wm-wrap reveal">
+  hero("lux-palace-salon.jpg", "Membership", "Membership", "A small circle, <em>known by name.</em>",
+    "One team learns your tastes, remembers your dates and handles the rest, so you only ever have to ask.",
+    "Hello Walvis, I would like to know how membership works.", cta="Start your Walvis journey", second=("#why-membership", "Why choose us"))
+  + f"""
+  <section class="section dark on-dark" id="why-membership" style="scroll-margin-top:70px">
+    <div class="wrap wm-grid">
       <div class="wm-main">
-        <span class="wm-eyebrow">Membership</span>
-        <h1 id="why-title">Why choose <em>us.</em></h1>
-        <p class="wm-lead">Walvis is a small circle, known by name. One team learns your tastes, remembers your dates and handles the rest, so <strong>you only ever have to ask.</strong></p>
-        <p class="wm-found">Here you&rsquo;ll find:</p>
+        <span class="kicker reveal">Membership</span>
+        <h2 class="t-1 reveal d1">Why choose <em>us.</em></h2>
+        <p class="lead reveal d2">Walvis is a small circle, known by name. One team learns your tastes, remembers your dates and handles the rest, so <strong>you only ever have to ask.</strong></p>
+        <p class="wm-found reveal">Here you&rsquo;ll find:</p>
         <ul class="wm-points">
-          <li><h3>One standard, for every member</h3><p>No paid tiers of service. Every personal member receives the same care.</p></li>
-          <li><h3>Options within 24 hours</h3><p>For special requests, two or three ways to do it arrive within a day.</p></li>
-          <li><h3>Your approval first</h3><p>Nothing is bought or booked until you have said a clear yes.</p></li>
-          <li><h3>A personal touch, always discreet</h3><p>Real people who know you, on WhatsApp or by phone. What you ask stays between us.</p></li>
+          <li class="reveal"><h3>One standard, for every member</h3><p>No paid tiers of service. Every personal member receives the same care.</p></li>
+          <li class="reveal d1"><h3>Options within 24 hours</h3><p>For special requests, two or three ways to do it arrive within a day.</p></li>
+          <li class="reveal d2"><h3>Your approval first</h3><p>Nothing is bought or booked until you have said a clear yes.</p></li>
+          <li class="reveal"><h3>A personal touch, always discreet</h3><p>Real people who know you, on WhatsApp or by phone. What you ask stays between us.</p></li>
         </ul>
-        <a class="wm-btn" data-wa="{E('Hello Walvis, I would like to start my Walvis journey and learn about membership.')}" href="#">Start your Walvis journey <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a>
+        <div class="btn-row reveal"><a class="btn btn-teal" data-wa="{E('Hello Walvis, I would like to start my Walvis journey and learn about membership.')}" href="#">{CHAT} Start your Walvis journey</a></div>
       </div>
-      <aside class="wm-side">
+      <aside class="wm-side reveal d1">
         <div class="wm-card">
-          <img class="wm-seal" src="images/logo/walvis-seal-96.png" alt="Walvis Concierge seal" width="58" height="58">
-          <span class="wm-eyebrow">Memberships</span>
-          <div class="wm-limited">Limited members</div>
+          <img class="wm-seal" src="images/logo/walvis-seal-96.png" alt="" width="54" height="54">
+          <span class="kicker">Memberships</span>
+          <p class="wm-limited"><span class="dot"></span> Limited members</p>
           <nav class="wm-links" aria-label="Walvis Concierge services">
-            <a href="lifestyle.html">Personal Lifestyle</a><a href="travel.html">Travel</a><a href="retail.html">Retail</a><a href="experiences.html">Experiences</a>
-            <a href="foreigners.html">Discover Bangladesh</a><a href="expats.html">Probashi Concierge</a><a href="journal.html">The Journal</a>
+            <a href="lifestyle.html">Personal Lifestyle {ARROW}</a><a href="travel.html">Travel {ARROW}</a><a href="retail.html">Retail {ARROW}</a><a href="experiences.html">Experiences {ARROW}</a>
+            <a href="foreigners.html">Discover Bangladesh {ARROW}</a><a href="expats.html">Probashi Concierge {ARROW}</a><a href="journal.html">The Journal {ARROW}</a>
           </nav>
         </div>
       </aside>
