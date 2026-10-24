@@ -16,7 +16,7 @@ var SITE = {
     { label: 'Retail', href: 'retail.html' },
     { label: 'Experiences', href: 'experiences.html' },
     { label: 'Discover Bangladesh', href: 'foreigners.html' },
-    { label: 'Probashi Concierge', href: 'expats.html' },
+    { label: 'Concierge for Expats', href: 'expats.html' },
     { label: 'The Journal', href: 'journal.html' },
     { label: 'About Us', href: 'about.html' }
   ]
