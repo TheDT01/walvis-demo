@@ -28,3 +28,7 @@
 
 @media (max-width: 900px) { .wm-grid { grid-template-columns: 1fr; } .wm-side { position: static; margin-top: 0; } }
 @media (max-width: 520px) { .wm-card { padding: 34px 24px 28px; } }
+
+/* the page is just this section: start it below the floating header and let it fill the screen */
+.wm-page { min-height: 100vh; min-height: 100svh; padding-top: clamp(150px, 18vh, 200px); }
+.wm-page h1.t-1 { font-size: clamp(3rem, 6vw, 5.2rem); }

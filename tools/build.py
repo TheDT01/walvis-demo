@@ -613,16 +613,13 @@ write("special-requests.html", "Special Requests", "Special requests at Walvis C
   + closing("Special Requests", "Go on. <em>Try us.</em>", "Tell us what you are after. The stranger, the better.", "Hello Walvis, I have a special request.", "Special requests are for members."))
 
 # =================================================================== MEMBERSHIP
-write("membership.html", "Membership", "Walvis Concierge membership: Personal Concierge for you and your family, and Corporate Concierge with terms tailored to your company.",
-  hero("lux-palace-salon.jpg", "Membership", "Membership", "A small circle, <em>known by name.</em>",
-    "One team learns your tastes, remembers your dates and handles the rest, so you only ever have to ask.",
-    "Hello Walvis, I would like to know how membership works.", cta="Start your Walvis journey", second=("#why-membership", "Why choose us"))
-  + f"""
-  <section class="section dark on-dark" id="why-membership" style="scroll-margin-top:70px">
+write("membership.html", "Membership", "Why choose Walvis Concierge: one standard for every member, options within 24 hours, your approval first and a personal, discreet touch.",
+  f"""
+  <section class="section dark on-dark wm-page" id="why-membership">
     <div class="wrap wm-grid">
       <div class="wm-main">
         <span class="kicker reveal">Membership</span>
-        <h2 class="t-1 reveal d1">Why choose <em>us.</em></h2>
+        <h1 class="t-1 reveal d1">Why choose <em>us.</em></h1>
         <p class="lead reveal d2">Walvis is a small circle, known by name. One team learns your tastes, remembers your dates and handles the rest, so <strong>you only ever have to ask.</strong></p>
         <p class="wm-found reveal">Here you&rsquo;ll find:</p>
         <ul class="wm-points">
@@ -647,44 +644,7 @@ write("membership.html", "Membership", "Walvis Concierge membership: Personal Co
     </div>
   </section>
 """
-  + f"""
-  <section class="section mist">
-    <div class="wrap">
-      <div class="tiers">
-        <article class="tier reveal" id="personal" style="scroll-margin-top:90px">
-          <div class="ph mask"><img src="images/lux-candlelight.jpg" alt="" loading="lazy" style="object-position:50% 40%"></div>
-          <div class="body">
-            <span class="kicker">Personal</span><h3>Your life, <em>lighter.</em></h3>
-            <p>A personal concierge for you and your family, at home or abroad. One small team that learns your tastes, remembers your dates and handles the rest.</p>
-            <ul class="checks"><li>Travel, at home and abroad</li><li>Gifts, cakes and flowers sent in your name</li><li>Birthdays, anniversaries and celebrations</li><li>Rare and hard-to-find things, sourced</li><li>Reservations, tickets and errands</li><li>Special requests, whatever they turn out to be</li></ul>
-            <div class="foot"><small>Membership by enquiry</small><a class="btn btn-plum" data-wa="Hello Walvis, I would like to know about Personal Concierge membership." href="#">{CHAT} Enquire</a></div>
-          </div>
-        </article>
-        <article class="tier reveal d1" id="corporate" style="scroll-margin-top:90px">
-          <div class="ph mask"><img src="images/lux-skyline-night.jpg" alt="" loading="lazy"></div>
-          <div class="body">
-            <span class="kicker">Corporate</span><h3>Your company, <em>well looked after.</em></h3>
-            <p>For your leadership, your guests and the people you want to impress. The details your company is remembered for, handled by your outside team.</p>
-            <ul class="checks"><li>Executive support, handled discreetly</li><li>Visiting guests and buyers, met and hosted</li><li>Corporate gifting, ten boxes or a thousand</li><li>Business travel around the meeting schedule</li><li>Client dinners, launches and celebrations</li><li>Staff rewards that feel like a real thank-you</li></ul>
-            <div class="foot"><small>Terms tailored to your company</small><a class="btn btn-plum" data-wa="Hello Walvis, I would like to know about Corporate Concierge membership." href="#">{CHAT} Enquire</a></div>
-          </div>
-        </article>
-      </div>
-    </div>
-  </section>
-"""
-  + principles("Who it is for", "Different lives, <em>the same ease.</em>", [
-    ("The busy and the young", "Big weeks, bigger weekends. You make the plans; we make them happen while you get on with things."),
-    ("Established families", "Weddings, school holidays, parents&rsquo; birthdays, the house full of guests. One team keeps it all running smoothly."),
-    ("Bangladeshis abroad", "Far from home but still the one who remembers. Gifts on the day, errands for family, everything ready when you fly in."),
-  ], tone="mist")
-  + steps("Getting started", "It begins with <em>one message.</em>", [
-    ("Say hello", "Message us on WhatsApp. We will explain membership and answer every question."),
-    ("We get to know you", "A relaxed conversation about your family or company, your tastes and the dates that matter."),
-    ("Message us any time", "Big or small. For special requests, two or three options arrive within 24 hours."),
-    ("Consider it done", "You approve, we handle every step and let you know when it is finished."),
-  ])
-  + closing("Membership", "Membership is <em>by enquiry.</em>", "Message us and we will walk you through how it works, what is included and whether it is the right fit.", "Hello Walvis, I would like to know how membership works."))
+)
 
 # Membership opens on the "Why choose us" design (css/membership.css)
 mp = os.path.join(OUT, "membership.html"); mh = open(mp).read()
