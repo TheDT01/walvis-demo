@@ -52,5 +52,5 @@ var WALVIS_CREDITS = [
   { file: "travel-ref/travel-rail.jpg", title: "Train in Mountains", creator: "IsMo", licence: "Pexels licence", source: "https://www.pexels.com/photo/train-in-mountains-18716717/" },
   { file: "travel-ref/travel-lodge.jpg", title: "Tranquil Forest Pathway by Modern Cabin", creator: "Quang Nguyen Vinh", licence: "Pexels licence", source: "https://www.pexels.com/photo/tranquil-forest-pathway-by-modern-cabin-29000354/" },
   { file: "travel-ref/travel-kaaba.jpg", title: "Pilgrims Gather Around the Kaaba in Mecca", creator: "Yasir Gürbüz", licence: "Pexels licence", source: "https://www.pexels.com/photo/pilgrims-gather-around-the-kaaba-in-mecca-32290181/" },
-  { file: "retail-dark-chocolate.jpg", title: "Dark Chocolate", creator: "Micha%u0142%20Grosicki", licence: "CC0", source: "https://stocksnap.io/photo/dark-chocolate-Z7A3GBMGOX" }
+  { file: "proposal-ring.jpg", title: "", creator: "Unknown", licence: "CC0", source: "https://stocksnap.io/photo/4IFH7OWDL8" }
 ];

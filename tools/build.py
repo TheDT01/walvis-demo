@@ -220,9 +220,9 @@ write("lifestyle.html", "Personal Lifestyle", "Personal lifestyle management by 
     "Birthdays, anniversaries, Eid, Puja, graduations, new babies. Tell us the date and the person, and decide each time whether you want a reminder or simply want it done.")
   + worlds("In your name", "The small things, <em>done beautifully.</em>", "Tell us who it is for and what the card should say. We take care of the rest, on the day.", [
     ("roses.jpg", "Sent today", "Flowers", "Hand-tied, delivered in water, with your words on the card."),
-    ("retail-dark-chocolate.jpg", "Sweet things", "Cakes, chocolates and mishti", "From the bakeries and sweet shops that do it best, on the right day."),
+    ("pl-birthday-cake.jpg", "Sweet things", "Cakes and mishti", "From the bakeries and sweet shops that do it best, on the right day."),
     ("retail-gift-box.jpg", "Chosen for them", "Gifts", "For the person, not the occasion. Wrapped and delivered by hand."),
-    ("lux-candlelight.jpg", "Never missed", "Remembered dates", "Give us the calendar once. A reminder, or simply done."),
+    ("proposal-ring.jpg", "Never missed", "Remembered dates", "Give us the calendar once. A reminder, or simply done."),
   ], tone="mist", id="in-your-name")
   + f"""
   <section class="section light">
