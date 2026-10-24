@@ -52,9 +52,9 @@ var WALVIS_CREDITS = [
   { file: "travel-ref/travel-rail.jpg", title: "Train in Mountains", creator: "IsMo", licence: "Pexels licence", source: "https://www.pexels.com/photo/train-in-mountains-18716717/" },
   { file: "travel-ref/travel-lodge.jpg", title: "Tranquil Forest Pathway by Modern Cabin", creator: "Quang Nguyen Vinh", licence: "Pexels licence", source: "https://www.pexels.com/photo/tranquil-forest-pathway-by-modern-cabin-29000354/" },
   { file: "travel-ref/travel-kaaba.jpg", title: "Pilgrims Gather Around the Kaaba in Mecca", creator: "Yasir Gürbüz", licence: "Pexels licence", source: "https://www.pexels.com/photo/pilgrims-gather-around-the-kaaba-in-mecca-32290181/" },
-  { file: "lux-watch-flight.jpg", title: "Watch Time", creator: "Donald Tong", licence: "CC0", source: "https://stocksnap.io/photo/watch-time-DK8YWMVJT0" },
   { file: "pl-bouquet.jpg", title: "Flower Bouquet", creator: "Anton Mislawsky", licence: "CC0", source: "https://stocksnap.io/photo/flower-bouquet-ZD7VQOTJOA" },
   { file: "pl-mishti.jpg", title: "Ovaltin Pera - Bangladeshi Sweets from Banoful", creator: "Tanvir Rahman", licence: "CC BY-SA 4.0", source: "https://commons.wikimedia.org/w/index.php?curid=39105878" },
-  { file: "proposal-ring.jpg", title: "", creator: "Unknown", licence: "CC0", source: "https://stocksnap.io/photo/4IFH7OWDL8" },
-  { file: "lux-personal-shopping.jpg", title: "Elegant Woman", creator: "Bruce Mars", licence: "CC0", source: "https://stocksnap.io/photo/elegant-woman-GE7GGDMILW" }
+  { file: "retail-jamdani.jpg", title: "Jamdani DSC 0500", creator: "Atudu", licence: "CC BY-SA 4.0", source: "https://commons.wikimedia.org/w/index.php?curid=46842532" },
+  { file: "retail-attar.jpg", title: "Bottle Perfume", creator: "Ahmed Aqtai", licence: "CC0", source: "https://stocksnap.io/photo/bottle-perfume-CV6AI5T3K5" },
+  { file: "retail-nakshi-kantha.jpg", title: "Nakshi Kantha, Sonargaon Folk Art and Craft Museum", creator: "Nahid Sultan", licence: "CC BY-SA 4.0", source: "https://commons.wikimedia.org/w/index.php?curid=63281644" }
 ];
