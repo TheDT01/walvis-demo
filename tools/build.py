@@ -327,30 +327,7 @@ write("foreigners.html", "Discover Bangladesh", "For visitors and executives arr
   ])
   + closing("Visitors", "Arriving <em>soon?</em>", "Send us your dates and what you need. We will have a plan ready before you land.", "Hello Walvis, I am visiting Bangladesh and would like concierge support."))
 
-# =================================================================== PROBASHI CONCIERGE
-write("expats.html", "Probashi Concierge", "For Bangladeshis living abroad: family looked after, gifts on the day, home and paperwork handled, and everything ready when you fly in.",
-  hero("bd-hatirjheel-night.jpg", "Probashi Concierge", "Probashi Concierge", "Far away, <em>still close.</em>",
-    "For Bangladeshis living abroad. Your family looked after, your home kept and everything ready when you fly in, by a team on the ground in Dhaka.",
-    "Hello Walvis, I live abroad and would like help at home in Bangladesh.")
-  + intro("handwritten-note.jpg", "Your people in Dhaka", "Someone you trust, <em>on the ground.</em>",
-    ["Living abroad means the things at home still need a person: a parent&rsquo;s doctor visit, a gift on Eid, a flat that needs looking after, papers waiting to be collected.",
-     "Send us one message from wherever you are. We handle it here, keep you updated, and you never have to ask a favour twice."],
-    ["Parents and family looked in on", "Gifts and flowers on the right day", "Home, bills and paperwork handled", "Everything ready when you land"], alt="A handwritten note")
-  + svc("What we handle", "Home, <em>taken care of.</em>", "", [
-    ("Family care", "Visits to parents, doctor appointments, medicine and groceries, with a short note back to you each time."),
-    ("Gifts on the day", "Eid, birthdays, weddings and anniversaries. Chosen well and delivered in your name."),
-    ("Home and property", "Your flat or house kept, repairs arranged, tenants and caretakers looked after."),
-    ("Bills and paperwork", "Utility bills, renewals and documents collected, kept track of and done on time."),
-    ("Coming home", "Met at the airport, a car and driver for the visit, and the house aired and stocked before you arrive."),
-    ("Family occasions", "Weddings, aqiqahs and milad mehfils planned from abroad, ready for you to walk into."),
-  ], tone="mist")
-  + steps("How it works", "From anywhere, <em>in one message.</em>", [
-    ("Tell us who and what", "Your family, your home and the dates that matter to you."),
-    ("We set it up", "A simple plan for regular care, and options for anything special."),
-    ("You approve", "Nothing is booked or paid for until you say yes."),
-    ("We keep you posted", "Photos and short updates, in your time zone."),
-  ])
-  + closing("Probashi Concierge", "Home is <em>one message away.</em>", "Tell us where you live and what you need looked after in Bangladesh. We will send a simple plan.", "Hello Walvis, I live abroad and would like help at home in Bangladesh."))
+# PROBASHI CONCIERGE: expats.html is hand-made from the 'Concierge for Expats' design (css/expats.css, js/expats.js); not generated here
 
 # =================================================================== THE JOURNAL
 # Opening the page plays the book film (videos/the-journal.mp4) before the page appears: css/journal.css, js/journal.js.

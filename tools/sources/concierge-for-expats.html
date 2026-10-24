@@ -1,0 +1,680 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Walvis Concierge for Expats</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&display=swap">
+<style>
+/* Layout concept: a long dark-plum page cut by snow-white bands. One bold moment: the
+   statement line whose letters grow as you scroll. Everything else slides in and stays calm. */
+:root {
+  --plum-950: #150c1d;
+  --plum-900: #1d1028;
+  --plum-800: #2b1839;
+  --plum-700: #412558;
+  --teal: #34c5bb;
+  --teal-deep: #0f6f70;
+  --snow: #f6f8fa;
+  --ink: #241431;
+  --ink-soft: #54446a;
+  --mist: #c9bdd6;
+  --line: rgba(246, 248, 250, 0.16);
+  --line-ink: rgba(36, 20, 49, 0.2);
+  --focus: #f6f8fa;
+  --font-display: "Cormorant Garamond", "Times New Roman", Georgia, serif;
+  --font-body: "Jost", "Helvetica Neue", Arial, sans-serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--plum-900);
+  color: var(--snow);
+  font-family: var(--font-body);
+  font-size: 1.125rem;
+  line-height: 1.65;
+  font-weight: 300;
+}
+h1, h2, h3, p, ol, ul, dl, dd { margin: 0; padding: 0; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+
+.wrap {
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-left: max(clamp(16px, 5vw, 56px), env(safe-area-inset-left, 0px));
+  padding-right: max(clamp(16px, 5vw, 56px), env(safe-area-inset-right, 0px));
+}
+.band { position: relative; overflow-x: clip; }
+.band .wrap { padding-block: clamp(72px, 11vw, 140px); }
+.light { background: var(--snow); color: var(--ink); --focus: #241431; }
+.light .muted { color: var(--ink-soft); }
+.muted { color: var(--mist); }
+
+h2 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(2.3rem, 5.2vw, 4.2rem);
+  line-height: 1.04;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+h3 { font-family: var(--font-display); font-weight: 500; font-size: 1.7rem; line-height: 1.15; }
+.small { font-size: 1rem; }
+.teal { color: var(--teal); }
+.light .teal { color: var(--teal-deep); }
+
+/* Fixed logo, blends with whatever band is behind it */
+.brand {
+  position: fixed;
+  top: calc(14px + env(safe-area-inset-top, 0px));
+  left: max(16px, env(safe-area-inset-left, 0px));
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  mix-blend-mode: difference;
+  text-decoration: none;
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  letter-spacing: 0.04em;
+}
+.brand svg { width: 36px; height: 36px; flex: none; }
+
+/* Buttons */
+.btn {
+  display: inline-block;
+  padding: 16px 30px;
+  background: var(--teal);
+  color: #0b1f26;
+  font-weight: 500;
+  text-decoration: none;
+  border-radius: 2px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.btn:hover { transform: translateY(-3px); box-shadow: 0 14px 34px rgba(52, 197, 187, 0.35); }
+.link { text-decoration: none; border-bottom: 1px solid var(--line); padding-bottom: 2px; transition: border-color 0.25s ease; }
+.link:hover { border-color: var(--teal); }
+
+/* Hero */
+.hero {
+  background:
+    radial-gradient(900px 520px at 80% 38%, rgba(52, 197, 187, 0.17), transparent 62%),
+    radial-gradient(760px 520px at 8% 0%, rgba(110, 58, 148, 0.5), transparent 60%),
+    var(--plum-900);
+}
+.hero .wrap { padding-top: clamp(120px, 20vh, 190px); padding-bottom: clamp(64px, 10vh, 110px); position: relative; z-index: 1; }
+.hero .kicker { color: var(--teal); font-size: 1.05rem; letter-spacing: 0.06em; margin-bottom: 22px; }
+.hero h1 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(2.7rem, 8.6vw, 7.2rem);
+  line-height: 0.98;
+  letter-spacing: -0.015em;
+}
+.hero h1 em { font-style: italic; font-weight: 400; color: var(--teal); }
+.hero .ln { display: block; animation: slideL 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) both; animation-delay: var(--d, 0s); }
+.hero .tag { max-width: 34rem; margin-top: 30px; font-size: 1.35rem; color: var(--mist); }
+.hero .actions { margin-top: 38px; display: flex; flex-wrap: wrap; align-items: center; gap: 22px 30px; }
+@keyframes slideL { from { opacity: 0; transform: translateX(-56px); } to { opacity: 1; transform: none; } }
+.halo {
+  position: absolute;
+  right: -10%;
+  top: 50%;
+  width: min(62vw, 660px);
+  aspect-ratio: 1;
+  max-width: 100%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  perspective: 900px;
+  transform-style: preserve-3d;
+  opacity: 0.9;
+}
+.halo i {
+  position: absolute;
+  inset: calc(var(--k) * 6%);
+  border-radius: 50%;
+  border: 1px solid rgba(52, 197, 187, 0.4);
+  animation: spin var(--t) linear infinite;
+}
+@keyframes spin {
+  from { transform: rotateX(var(--rx)) rotateZ(0deg); }
+  to { transform: rotateX(var(--rx)) rotateZ(360deg); }
+}
+.halo::before {
+  content: "";
+  position: absolute;
+  inset: 30%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(52, 197, 187, 0.4), transparent 68%);
+}
+
+/* About */
+.split { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(28px, 6vw, 90px); align-items: start; }
+.about p + p { margin-top: 1.1em; }
+.about .lead { font-size: 1.3rem; color: var(--snow); }
+
+/* Scroll-grown statement */
+.grow { height: 250vh; background: linear-gradient(180deg, var(--plum-900), var(--plum-950)); }
+.stick {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 28px;
+  text-align: center;
+  padding-inline: max(16px, env(safe-area-inset-left, 0px));
+}
+.grow-line {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(3.2rem, 12vw, 10rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  max-width: 14ch;
+  margin-inline: auto;
+}
+.grow-line .w { display: inline-block; white-space: nowrap; margin-inline: 0.12em; }
+.grow-line .ch { display: inline-block; will-change: transform, opacity; transform-origin: 50% 80%; }
+.grow-sub { max-width: 32rem; margin-inline: auto; color: var(--mist); font-size: 1.3rem; }
+
+/* Sounds familiar */
+.eyebrow { display: flex; align-items: center; gap: 14px; margin-bottom: 26px; color: var(--teal); font-size: 0.8rem; letter-spacing: 0.28em; text-transform: uppercase; }
+.eyebrow::before { content: ""; width: 34px; height: 1px; background: var(--teal); flex: none; }
+.light .eyebrow { color: var(--teal-deep); }
+.light .eyebrow::before { background: var(--teal-deep); }
+h2 em { font-style: italic; font-weight: 400; color: var(--teal); }
+.light h2 em { color: var(--teal-deep); }
+.familiar { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; margin-top: clamp(36px, 6vw, 64px); }
+.fcard { padding: 28px 26px 30px; border: 1px solid var(--line-ink); border-radius: 4px; background: #fff; }
+.fcard .when { color: var(--teal-deep); font-size: 0.78rem; letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 14px; }
+.fcard h3 { font-size: 1.6rem; margin-bottom: 12px; }
+.fcard p:not(.when) { color: var(--ink-soft); font-size: 1.02rem; line-height: 1.6; }
+.bridge { margin-top: clamp(40px, 6vw, 72px); font-family: var(--font-display); font-size: clamp(1.8rem, 3.6vw, 2.9rem); line-height: 1.1; }
+.head { max-width: 46rem; }
+.head { max-width: 46rem; }
+
+/* What we arrange */
+.rows { margin-top: clamp(36px, 6vw, 64px); }
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+  gap: 12px clamp(24px, 5vw, 70px);
+  padding-block: 30px;
+  border-top: 1px solid var(--line);
+  transition: padding-left 0.35s ease;
+}
+.row:last-child { border-bottom: 1px solid var(--line); }
+.row h3 { font-size: clamp(1.8rem, 3vw, 2.4rem); transition: color 0.3s ease; }
+.row:hover { padding-left: 14px; }
+.row:hover h3 { color: var(--teal); }
+.row p { color: var(--mist); }
+
+/* Lifestyle management: four-column checklist on the deepest plum */
+.lifestyle { background: var(--plum-950); }
+.lifestyle h2 { font-size: clamp(2.5rem, 6vw, 4.8rem); line-height: 1.02; max-width: 15ch; }
+.lifestyle .sub { max-width: 28rem; margin-top: 26px; color: var(--mist); font-size: 1.3rem; line-height: 1.6; }
+.lcols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(24px, 3vw, 44px); margin-top: clamp(48px, 7vw, 88px); }
+.lcol h3 { padding-bottom: 14px; border-bottom: 1px solid rgba(52, 197, 187, 0.35); font-size: 1.75rem; }
+.lcol ul { list-style: none; }
+.lcol li { position: relative; padding: 15px 0 15px 36px; color: var(--snow); font-size: 1.02rem; line-height: 1.6; }
+.lcol li::before { content: ""; position: absolute; left: 0; top: 1.5em; width: 14px; height: 1px; background: var(--teal); }
+
+/* Sample conversation */
+.chatwrap { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(32px, 7vw, 100px); align-items: center; }
+.chatwrap .sub { max-width: 28rem; margin-top: 24px; color: var(--mist); font-size: 1.25rem; }
+.chatwrap .btn { margin-top: 34px; }
+.phone { max-width: 26rem; width: 100%; margin-inline: auto 0; border: 1px solid var(--line); border-radius: 18px; background: var(--plum-950); overflow: hidden; }
+.phone-head { display: flex; align-items: center; gap: 12px; padding: 14px 18px; border-bottom: 1px solid var(--line); background: var(--plum-800); }
+.phone-head svg { width: 34px; height: 34px; color: var(--teal); flex: none; }
+.phone-head strong { display: block; font-weight: 500; font-size: 1rem; line-height: 1.2; }
+.phone-head span { font-size: 0.82rem; color: var(--mist); }
+.msgs { display: flex; flex-direction: column; gap: 12px; padding: 22px 18px 26px; }
+.msg { max-width: 86%; padding: 11px 15px 8px; border-radius: 14px; font-size: 0.98rem; line-height: 1.5; }
+.msg time { display: block; margin-top: 4px; font-size: 0.72rem; opacity: 0.7; text-align: right; }
+.msg.you { align-self: flex-end; background: var(--plum-700); border-bottom-right-radius: 4px; }
+.msg.us { align-self: flex-start; background: var(--teal-deep); border-bottom-left-radius: 4px; }
+.cap { margin-top: 14px; text-align: center; color: var(--mist); font-size: 0.85rem; }
+
+/* Why families */
+.why { background: var(--plum-800); }
+.cards4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; margin-top: clamp(36px, 6vw, 64px); }
+.cards4 > div { perspective: 900px; }
+.tilt {
+  --mx: 50%;
+  --my: 50%;
+  height: 100%;
+  padding: 30px 26px 34px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background:
+    radial-gradient(260px 200px at var(--mx) var(--my), rgba(52, 197, 187, 0.16), transparent 70%),
+    rgba(246, 248, 250, 0.04);
+  transition: transform 0.2s ease-out, border-color 0.3s ease;
+}
+.tilt:hover { border-color: rgba(52, 197, 187, 0.55); }
+.tilt h3 { margin-bottom: 12px; }
+.tilt p { color: var(--mist); font-size: 1.05rem; line-height: 1.6; }
+
+/* How it works */
+.steps { position: relative; margin-top: clamp(36px, 6vw, 64px); --p: 0; max-width: 46rem; }
+.steps::before, .steps::after { content: ""; position: absolute; left: 32px; top: 32px; bottom: 32px; width: 1px; }
+.steps::before { background: var(--line-ink); }
+.steps::after { background: var(--teal-deep); transform-origin: top; transform: scaleY(var(--p)); }
+.step { position: relative; display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 24px; padding-block: 22px; align-items: start; list-style: none; }
+.num {
+  position: relative;
+  z-index: 1;
+  width: 64px;
+  height: 64px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--snow);
+  border: 1px solid var(--line-ink);
+  font-family: var(--font-display);
+  font-size: 1.9rem;
+  color: var(--teal-deep);
+  transition: background 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+}
+.step.on .num { background: var(--teal-deep); color: var(--snow); border-color: var(--teal-deep); }
+.step h3 { padding-top: 8px; }
+.step p { margin-top: 4px; color: var(--ink-soft); }
+
+/* Membership */
+.tiers { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; margin-top: clamp(36px, 6vw, 64px); }
+.tier { height: 100%; display: flex; flex-direction: column; gap: 14px; padding: 34px 28px; border: 1px solid var(--line); border-radius: 4px; background: rgba(246, 248, 250, 0.03); }
+.tier h3 { font-size: 2.2rem; }
+.tier p { color: var(--mist); }
+.price { margin-top: auto; padding-top: 18px; border-top: 1px dashed var(--line); font-size: 1rem; color: var(--teal); }
+
+/* Occasion calendar */
+.occasion { background: linear-gradient(120deg, var(--teal-deep), #14485a 60%, var(--plum-700)); }
+.occasion .wrap { padding-block: clamp(64px, 9vw, 110px); }
+.occasion p.body { max-width: 38rem; margin-top: 22px; font-size: 1.3rem; }
+.chips { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+.chip { padding: 8px 20px; border: 1px solid rgba(246, 248, 250, 0.5); border-radius: 999px; font-size: 1rem; }
+
+/* Summary and contact */
+.summary { background: var(--plum-800); }
+.summary p.big { font-family: var(--font-display); font-size: clamp(1.5rem, 2.6vw, 2.1rem); line-height: 1.35; }
+.contact { margin-top: clamp(40px, 6vw, 70px); padding-top: 34px; border-top: 1px solid var(--line); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
+.contact dt { color: var(--teal); font-size: 0.95rem; }
+.contact dd { margin-top: 4px; color: var(--mist); overflow-wrap: anywhere; }
+.foot { margin-top: 56px; color: var(--mist); font-size: 0.95rem; }
+
+/* Reveals: visible by default, hidden only once script is running */
+.js .rv { transition: opacity 0.9s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1); transition-delay: var(--d, 0s); }
+.js .rv:not(.in) { opacity: 0; transform: translateX(var(--dx, -46px)) translateY(var(--dy, 0px)); }
+
+@media (max-width: 980px) {
+  .familiar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .lcols { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 48px; }
+}
+@media (max-width: 980px) {
+  .cards4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .tiers { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 760px) {
+  body { font-size: 1.0625rem; }
+  .split, .row, .contact { grid-template-columns: minmax(0, 1fr); }
+  .familiar { grid-template-columns: minmax(0, 1fr); }
+  .chatwrap { grid-template-columns: minmax(0, 1fr); }
+  .cards4 { grid-template-columns: minmax(0, 1fr); }
+  .lcols { grid-template-columns: minmax(0, 1fr); }
+  .halo { right: -34%; opacity: 0.5; }
+  .step { grid-template-columns: 52px minmax(0, 1fr); gap: 16px; }
+  .num { width: 52px; height: 52px; font-size: 1.6rem; }
+  .steps::before, .steps::after { left: 26px; top: 26px; bottom: 26px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero .ln, .halo i { animation: none; }
+  .js .rv:not(.in) { opacity: 1; transform: none; }
+  .grow { height: auto; }
+  .stick { position: static; height: auto; padding-block: 96px; }
+  .btn, .row, .tilt { transition: none; }
+}
+</style>
+
+<a class="brand" href="#top" aria-label="Walvis Concierge, back to top">
+  <svg viewBox="0 0 40 40" aria-hidden="true">
+    <circle cx="20" cy="20" r="18" fill="none" stroke="currentColor" stroke-width="1.2"/>
+    <circle cx="20" cy="20" r="14.5" fill="none" stroke="currentColor" stroke-width="0.6"/>
+    <text x="20" y="26.4" text-anchor="middle" font-size="18" fill="currentColor" font-family="Cormorant Garamond, Georgia, serif" font-weight="500">W</text>
+  </svg>
+  <span>Walvis</span>
+</a>
+
+<header class="hero band" id="top">
+  <div class="halo" aria-hidden="true">
+    <i style="--k:0;--rx:68deg;--t:46s"></i>
+    <i style="--k:1.4;--rx:68deg;--t:62s"></i>
+    <i style="--k:3;--rx:-62deg;--t:54s"></i>
+  </div>
+  <div class="wrap">
+    <p class="kicker ln" style="--d:.05s">Concierge services | Bangladesh</p>
+    <h1>
+      <span class="ln" style="--d:.15s">Concierge Services</span>
+      <span class="ln" style="--d:.3s"><em>for Expats.</em></span>
+    </h1>
+    <p class="tag ln" style="--d:.5s">Caring for your loved ones in Bangladesh, while you are away.</p>
+    <div class="actions ln" style="--d:.65s">
+      <a class="btn" href="#contact">Send your first request</a>
+      <a class="link" href="#how">See how it works</a>
+    </div>
+  </div>
+</header>
+
+<section class="band" id="about">
+  <div class="wrap split about">
+    <h2 class="rv" style="--dx:-60px">About this service</h2>
+    <div class="rv" style="--dx:60px;--d:.12s">
+      <p class="lead">Living abroad means missing birthdays, Eid mornings and the everyday moments that matter most to the people you love.</p>
+      <p class="muted">Our concierge service acts as your trusted presence in Bangladesh, turning your wishes into well-organized, elegant experiences. You tell us what you want, and we plan it, deliver it and show you it was done with care.</p>
+      <p class="muted">From surprise celebrations and parents' care to family trips and visits home, we handle the details so you can stay close without being there. Below is what we offer, why families trust us and how simple it is to begin.</p>
+    </div>
+  </div>
+</section>
+
+<section class="grow band" id="statement" aria-label="You ask, we deliver.">
+  <div class="stick">
+    <p class="grow-line" id="growLine">You ask, we deliver.</p>
+    <p class="grow-sub" id="growSub">Tell us what you want for the people you love. We plan it, run it on the ground and show you it was done well.</p>
+  </div>
+</section>
+
+<section class="light band" id="problem">
+  <div class="wrap">
+    <p class="eyebrow rv" style="--dx:-40px">Sounds familiar?</p>
+    <h2 class="head rv" style="--dx:-60px;--d:.05s">You haven't stopped caring. <em>You are just an ocean away.</em></h2>
+    <div class="familiar">
+      <article class="fcard rv" style="--dy:36px;--dx:0px">
+        <p class="when">Before dawn, your time</p>
+        <h3>Mum's medicine is almost finished.</h3>
+        <p>The pharmacy in Dhaka closes at ten, and the only cousin who could go is stuck at work.</p>
+      </article>
+      <article class="fcard rv" style="--dy:36px;--dx:0px;--d:.07s">
+        <p class="when">Three days before Eid</p>
+        <h3>The florist you trusted last year stops answering.</h3>
+        <p>Every other shop sounds just as sure, and you have no way to tell which one will turn up.</p>
+      </article>
+      <article class="fcard rv" style="--dy:36px;--dx:0px;--d:.14s">
+        <p class="when">Order placed, never arrived</p>
+        <h3>The vendor says delivered. Your father says nothing came.</h3>
+        <p>Long-distance orders go wrong quietly, and you are the last to find out.</p>
+      </article>
+      <article class="fcard rv" style="--dy:36px;--dx:0px">
+        <p class="when">Hospital day</p>
+        <h3>Your brother takes the day off to sit with a parent.</h3>
+        <p>Again. Relatives at home carry the whole load while you scroll through messages from another time zone.</p>
+      </article>
+      <article class="fcard rv" style="--dy:36px;--dx:0px;--d:.07s">
+        <p class="when">Your flight lands Saturday</p>
+        <h3>The house is shut, you need a car and a working SIM.</h3>
+        <p>A week of leave is too short to spend it sorting out logistics.</p>
+      </article>
+      <article class="fcard rv" style="--dy:36px;--dx:0px;--d:.14s">
+        <p class="when">An overdue notice</p>
+        <h3>A bill or renewal at home slips past while you are abroad.</h3>
+        <p>Paperwork has a deadline, and nobody in your family wants to stand in that queue.</p>
+      </article>
+    </div>
+    <p class="bridge rv" style="--dy:30px;--dx:0px">Send us one message. <em>We handle it and show you the proof.</em></p>
+  </div>
+</section>
+
+<section class="lifestyle band" id="lifestyle">
+  <div class="wrap">
+    <p class="eyebrow rv" style="--dx:-40px">Lifestyle management</p>
+    <h2 class="rv" style="--dx:-60px;--d:.05s">Everything we arrange <em>for the people you love.</em></h2>
+    <p class="sub rv" style="--dx:-40px;--d:.1s">Six ways we look after the people you love, one request at a time.</p>
+    <div class="lcols">
+      <div class="lcol rv" style="--dy:40px;--dx:0px">
+        <h3>Special occasions</h3>
+        <ul>
+          <li>Surprise birthdays and anniversaries</li>
+          <li>Eid and Pohela Boishakh celebrations</li>
+          <li>Aqiqah and graduations</li>
+          <li>Small weddings and family gatherings</li>
+        </ul>
+      </div>
+      <div class="lcol rv" style="--dy:40px;--dx:0px;--d:.07s">
+        <h3>Gifting</h3>
+        <ul>
+          <li>Curated gifts, wrapped and delivered</li>
+          <li>Flowers and sweets from trusted shops</li>
+          <li>Iftar hampers and Eid clothing</li>
+          <li>Qurbani coordination through a trusted source</li>
+        </ul>
+      </div>
+      <div class="lcol rv" style="--dy:40px;--dx:0px;--d:.14s">
+        <h3>Parents' care</h3>
+        <ul>
+          <li>Regular check-in visits</li>
+          <li>Escort to doctor appointments</li>
+          <li>Pharmacy delivery</li>
+          <li>Coordination with hospitals and caregivers (we coordinate; we do not give medical advice)</li>
+        </ul>
+      </div>
+      <div class="lcol rv" style="--dy:40px;--dx:0px">
+        <h3>Family trips</h3>
+        <ul>
+          <li>Private-car packages</li>
+          <li>Our Sundarbans plan</li>
+          <li>Our Sylhet plan</li>
+          <li>Designed for families and solo travelers</li>
+        </ul>
+      </div>
+      <div class="lcol rv" style="--dy:40px;--dx:0px;--d:.07s">
+        <h3>Visits home</h3>
+        <ul>
+          <li>VIP airport pickup</li>
+          <li>SIM card and a driver</li>
+          <li>Hotel or home preparation</li>
+          <li>A custom itinerary</li>
+        </ul>
+      </div>
+      <div class="lcol rv" style="--dy:40px;--dx:0px;--d:.14s">
+        <h3>Errands</h3>
+        <ul>
+          <li>Document pickup and delivery</li>
+          <li>Bill payments</li>
+          <li>Home repairs</li>
+          <li>Household tasks through trusted partners</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="chat">
+  <div class="wrap chatwrap">
+    <div class="rv" style="--dx:-50px">
+      <p class="eyebrow">How it feels</p>
+      <h2>One message. <em>Then it's done.</em></h2>
+      <p class="sub">No forms, no phone tag across time zones. Write to us the way you would write to a friend at home, and we reply with a plan and proof.</p>
+      <a class="btn" href="#contact">Send your first request</a>
+    </div>
+    <div class="rv" style="--dx:50px;--d:.1s">
+      <div class="phone" role="img" aria-label="Sample WhatsApp conversation between a client abroad and the Walvis concierge">
+        <div class="phone-head">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="18" fill="none" stroke="currentColor" stroke-width="1.2"/><circle cx="20" cy="20" r="14.5" fill="none" stroke="currentColor" stroke-width="0.6"/><text x="20" y="26.4" text-anchor="middle" font-size="18" fill="currentColor" font-family="Cormorant Garamond, Georgia, serif" font-weight="500">W</text></svg>
+          <div><strong>Walvis Concierge</strong><span>Usually replies within the hour</span></div>
+        </div>
+        <div class="msgs">
+          <p class="msg you">Abba's birthday is on Friday and I can't be there. Can you do something nice?<time>9:14 pm</time></p>
+          <p class="msg us">Of course. A small cake from his favourite shop, flowers and your card, delivered Friday at 4 pm. Shall we add a video call at the door?<time>9:26 pm</time></p>
+          <p class="msg you">Yes please. Write on the card: "Happy birthday, Abba. Love, Rafi."<time>9:28 pm</time></p>
+          <p class="msg us">Confirmed. Quote sent. We will message you a photo the moment it arrives.<time>9:31 pm</time></p>
+        </div>
+      </div>
+      <p class="cap">A sample conversation, for illustration</p>
+    </div>
+  </div>
+</section>
+
+<section class="why band" id="why">
+  <div class="wrap">
+    <h2 class="head rv">Why families choose us</h2>
+    <div class="cards4">
+      <div class="rv" style="--dy:40px;--dx:0px"><article class="tilt"><h3>Trust</h3><p>We vet every vendor, driver and guide, and keep the same team on a family's requests.</p></article></div>
+      <div class="rv" style="--dy:40px;--dx:0px;--d:.07s"><article class="tilt"><h3>Proof of delivery</h3><p>Photos, short videos or a live video call, so you see the moment.</p></article></div>
+      <div class="rv" style="--dy:40px;--dx:0px;--d:.14s"><article class="tilt"><h3>One point of contact</h3><p>One WhatsApp number instead of chasing ten people.</p></article></div>
+      <div class="rv" style="--dy:40px;--dx:0px;--d:.21s"><article class="tilt"><h3>Time-zone friendly</h3><p>Updates timed for your evening, with urgent requests handled fast.</p></article></div>
+      <div class="rv" style="--dy:40px;--dx:0px"><article class="tilt"><h3>Luxury and care</h3><p>Elegant presentation, thoughtful details and respect for elderly family members.</p></article></div>
+      <div class="rv" style="--dy:40px;--dx:0px;--d:.07s"><article class="tilt"><h3>Backup plans</h3><p>A second option ready if a vendor, car or venue falls through.</p></article></div>
+      <div class="rv" style="--dy:40px;--dx:0px;--d:.14s"><article class="tilt"><h3>Privacy</h3><p>Family details stay confidential and are used only to deliver your request.</p></article></div>
+      <div class="rv" style="--dy:40px;--dx:0px;--d:.21s"><article class="tilt"><h3>Transparent pricing</h3><p>A clear quote before any work starts, with no surprise add-ons.</p></article></div>
+    </div>
+  </div>
+</section>
+
+<section class="light band" id="how">
+  <div class="wrap">
+    <h2 class="head rv">How it works</h2>
+    <ol class="steps" id="steps">
+      <li class="step rv" style="--dx:-50px"><span class="num" aria-hidden="true">1</span><div><h3>Request</h3><p>Send a message with the occasion, date, budget and your loved one's details.</p></div></li>
+      <li class="step rv" style="--dx:-50px"><span class="num" aria-hidden="true">2</span><div><h3>Plan</h3><p>We reply within an agreed time with a plan and a price.</p></div></li>
+      <li class="step rv" style="--dx:-50px"><span class="num" aria-hidden="true">3</span><div><h3>Approve</h3><p>You confirm and pay by the agreed method.</p></div></li>
+      <li class="step rv" style="--dx:-50px"><span class="num" aria-hidden="true">4</span><div><h3>Deliver</h3><p>Our team runs it on the ground, with photos or video.</p></div></li>
+      <li class="step rv" style="--dx:-50px"><span class="num" aria-hidden="true">5</span><div><h3>Follow-up</h3><p>We check how it went and save the family's preferences for next time.</p></div></li>
+    </ol>
+  </div>
+</section>
+
+<section class="occasion band" id="calendar">
+  <div class="wrap">
+    <p class="small rv" style="--dx:-40px">A special touch</p>
+    <h2 class="rv" style="--dx:-60px;--d:.05s">The Occasion Calendar</h2>
+    <p class="body rv" style="--dx:-40px;--d:.1s">We remind you of birthdays, anniversaries and Eid dates in advance and offer a ready-made package for each, so you never miss a moment.</p>
+    <div class="chips rv" style="--dx:-40px;--d:.15s">
+      <span class="chip">Birthdays</span>
+      <span class="chip">Anniversaries</span>
+      <span class="chip">Eid dates</span>
+    </div>
+  </div>
+</section>
+
+<section class="summary band" id="contact">
+  <div class="wrap">
+    <div class="split">
+      <h2 class="rv" style="--dx:-60px">In summary</h2>
+      <div class="rv" style="--dx:60px;--d:.1s">
+        <p class="big">Expats should not have to choose between a busy life abroad and caring for family at home. Our concierge service gives you one trusted team that plans, delivers and proves every special moment, from birthdays and Eid gifts to parents' care and family trips.</p>
+        <p class="muted" style="margin-top:1.2em">With vetted partners, clear pricing, backup plans and updates timed to your day, we remove the stress and uncertainty of long-distance arrangements. Let us handle the rest.</p>
+        <p style="margin-top:1.2em">Send us your first request, and we will take care of the people you love as if they were our own.</p>
+      </div>
+    </div>
+    <dl class="contact rv" style="--dy:30px;--dx:0px">
+      <div><dt>Concierge</dt><dd>[Your concierge name]</dd></div>
+      <div><dt>Phone / WhatsApp</dt><dd>[Phone / WhatsApp]</dd></div>
+      <div><dt>Email</dt><dd>[Email]</dd></div>
+    </dl>
+    <p class="foot">Concierge services | Bangladesh. Demo site. Contact details are placeholders.</p>
+  </div>
+</section>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  root.classList.add("js");
+  var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function clamp(v) { return Math.min(1, Math.max(0, v)); }
+  function ease(t) { return t * t * (3 - 2 * t); }
+
+  /* Slide-in reveals */
+  var rvs = [].slice.call(document.querySelectorAll(".rv"));
+  if (reduce || !("IntersectionObserver" in window)) {
+    rvs.forEach(function (e) { e.classList.add("in"); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); }
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -6% 0px" });
+    rvs.forEach(function (e) { io.observe(e); });
+  }
+
+  /* Letters that grow as you scroll */
+  var growSec = document.getElementById("statement");
+  var growLine = document.getElementById("growLine");
+  var growSub = document.getElementById("growSub");
+  var letters = [];
+  if (growLine && !reduce) {
+    var text = growLine.textContent;
+    growLine.setAttribute("aria-label", text);
+    growLine.textContent = "";
+    text.split(" ").forEach(function (word, wi, arr) {
+      var w = document.createElement("span");
+      w.className = "w";
+      w.setAttribute("aria-hidden", "true");
+      word.split("").forEach(function (c) {
+        var s = document.createElement("span");
+        s.className = "ch";
+        s.textContent = c;
+        w.appendChild(s);
+        letters.push(s);
+      });
+      growLine.appendChild(w);
+      if (wi < arr.length - 1) growLine.appendChild(document.createTextNode(" "));
+    });
+  }
+
+  /* Steps line */
+  var stepsEl = document.getElementById("steps");
+  var stepItems = stepsEl ? [].slice.call(stepsEl.querySelectorAll(".step")) : [];
+
+  var queued = false;
+  function update() {
+    queued = false;
+    var vh = window.innerHeight;
+    if (growSec && letters.length) {
+      var r = growSec.getBoundingClientRect();
+      var total = r.height - vh;
+      var p = total > 0 ? clamp(-r.top / total) : 1;
+      var n = letters.length;
+      for (var i = 0; i < n; i++) {
+        var start = (i / n) * 0.55;
+        var l = ease(clamp((p * 1.15 - start) / 0.4));
+        letters[i].style.opacity = (0.16 + 0.84 * l).toFixed(3);
+        letters[i].style.transform = "translateY(" + ((1 - l) * 0.18).toFixed(3) + "em) scale(" + (0.5 + 0.5 * l).toFixed(3) + ")";
+      }
+      var sp = ease(clamp((p - 0.72) / 0.2));
+      growSub.style.opacity = sp.toFixed(3);
+      growSub.style.transform = "translateY(" + ((1 - sp) * 18).toFixed(1) + "px)";
+    }
+    if (stepsEl) {
+      var sr = stepsEl.getBoundingClientRect();
+      var mid = vh * 0.6;
+      stepsEl.style.setProperty("--p", clamp((mid - sr.top) / sr.height).toFixed(3));
+      stepItems.forEach(function (st) {
+        var b = st.getBoundingClientRect();
+        st.classList.toggle("on", reduce ? true : b.top + 40 < mid);
+      });
+    }
+  }
+  function req() { if (!queued) { queued = true; requestAnimationFrame(update); } }
+  window.addEventListener("scroll", req, { passive: true });
+  window.addEventListener("resize", req);
+  update();
+
+  /* 3D tilt on cards (mouse only) */
+  if (!reduce) {
+    [].slice.call(document.querySelectorAll(".tilt")).forEach(function (el) {
+      el.addEventListener("pointermove", function (e) {
+        if (e.pointerType !== "mouse") return;
+        var b = el.getBoundingClientRect();
+        var x = (e.clientX - b.left) / b.width;
+        var y = (e.clientY - b.top) / b.height;
+        el.style.transform = "rotateX(" + ((0.5 - y) * 9).toFixed(2) + "deg) rotateY(" + ((x - 0.5) * 11).toFixed(2) + "deg)";
+        el.style.setProperty("--mx", (x * 100).toFixed(1) + "%");
+        el.style.setProperty("--my", (y * 100).toFixed(1) + "%");
+      });
+      el.addEventListener("pointerleave", function () { el.style.transform = ""; });
+    });
+  }
+})();
+</script>
+
+</body></html>
