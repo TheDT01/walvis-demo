@@ -993,12 +993,12 @@ html.calm-glass .hero .btn-line { -webkit-backdrop-filter: none !important; back
 }
 
 /* =========================================================
-   v13 · the Walvis whale cursor (mouse and trackpad only; touch screens have no cursor)
-   The whale's nose is the click point. Over anything clickable it blows a little spout.
+   v13 · the Walvis star cursor (mouse and trackpad only; touch screens have no cursor)
+   A sharp four-pointed star in dark plum; over anything clickable it turns teal. Its centre is the click point.
    ========================================================= */
 @media (hover: hover) and (pointer: fine) {
-  html { cursor: url("../images/cursor/whale.svg") 6 5, url("../images/cursor/whale.png") 6 5, auto; }
-  a[href], a[data-wa], button, summary, label, select, [role="button"], [role="tab"], .tile, .menu-btn, .drawer-close, .rail-nav button, .scrim {
-    cursor: url("../images/cursor/whale-pointer.svg") 6 5, url("../images/cursor/whale-pointer.png") 6 5, pointer !important; }
+  html { cursor: url("../images/cursor/star.svg") 16 16, url("../images/cursor/star.png") 16 16, auto; }
+  a[href], a[data-wa], button, summary, label, select, [role="button"], [role="tab"], .tile, .menu-btn, .drawer-close, .rail-nav button, .scrim, .jb {
+    cursor: url("../images/cursor/star-pointer.svg") 16 16, url("../images/cursor/star-pointer.png") 16 16, pointer !important; }
   input:not([type="button"]):not([type="submit"]), textarea, [contenteditable="true"] { cursor: text; }
 }

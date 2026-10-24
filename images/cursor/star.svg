@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <!-- Walvis cursor: a four-pointed star in dark plum. The centre (16 16) is the click point. -->
+  <path d="M16 1.2 C16.5 10.6 19.2 13.9 30.8 16 C19.2 18.1 16.5 21.4 16 30.8 C15.5 21.4 12.8 18.1 1.2 16 C12.8 13.9 15.5 10.6 16 1.2 Z" fill="#3a1035" stroke="#fffafa" stroke-width="1.1" stroke-linejoin="miter" stroke-miterlimit="20"/>
+  <path d="M16 10.5 C16.2 13.8 17.6 15.2 21.5 16 C17.6 16.8 16.2 18.2 16 21.5 C15.8 18.2 14.4 16.8 10.5 16 C14.4 15.2 15.8 13.8 16 10.5 Z" fill="#5e2258"/>
+</svg>
