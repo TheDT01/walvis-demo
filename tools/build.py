@@ -474,9 +474,36 @@ write("special-requests.html", "Special Requests", "Special requests at Walvis C
 
 # =================================================================== MEMBERSHIP
 write("membership.html", "Membership", "Walvis Concierge membership: Personal Concierge for you and your family, and Corporate Concierge with terms tailored to your company.",
-  hero("lux-palace-salon.jpg", "Membership", "Membership", "A small circle, <em>known by name.</em>",
-    "Personal membership has one standard, the same care for every member. Corporate terms are tailored to each company.",
-    "Hello Walvis, I would like to know how membership works.", second=None)
+  f"""
+  <section class="wm" id="why-membership" aria-labelledby="why-title">
+    <div class="wm-wrap reveal">
+      <div class="wm-main">
+        <span class="wm-eyebrow">Membership</span>
+        <h1 id="why-title">Why choose <em>us.</em></h1>
+        <p class="wm-lead">Walvis is a small circle, known by name. One team learns your tastes, remembers your dates and handles the rest, so <strong>you only ever have to ask.</strong></p>
+        <p class="wm-found">Here you&rsquo;ll find:</p>
+        <ul class="wm-points">
+          <li><h3>One standard, for every member</h3><p>No paid tiers of service. Every personal member receives the same care.</p></li>
+          <li><h3>Options within 24 hours</h3><p>For special requests, two or three ways to do it arrive within a day.</p></li>
+          <li><h3>Your approval first</h3><p>Nothing is bought or booked until you have said a clear yes.</p></li>
+          <li><h3>A personal touch, always discreet</h3><p>Real people who know you, on WhatsApp or by phone. What you ask stays between us.</p></li>
+        </ul>
+        <a class="wm-btn" data-wa="{E('Hello Walvis, I would like to start my Walvis journey and learn about membership.')}" href="#">Start your Walvis journey <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <aside class="wm-side">
+        <div class="wm-card">
+          <img class="wm-seal" src="images/logo/walvis-seal-96.png" alt="Walvis Concierge seal" width="58" height="58">
+          <span class="wm-eyebrow">Memberships</span>
+          <div class="wm-limited">Limited members</div>
+          <nav class="wm-links" aria-label="Walvis Concierge services">
+            <a href="lifestyle.html">Personal Lifestyle</a><a href="travel.html">Travel</a><a href="retail.html">Retail</a><a href="experiences.html">Experiences</a>
+            <a href="foreigners.html">Discover Bangladesh</a><a href="expats.html">Probashi Concierge</a><a href="journal.html">The Journal</a>
+          </nav>
+        </div>
+      </aside>
+    </div>
+  </section>
+"""
   + f"""
   <section class="section mist">
     <div class="wrap">
@@ -503,14 +530,6 @@ write("membership.html", "Membership", "Walvis Concierge membership: Personal Co
     </div>
   </section>
 """
-  + principles("What membership means", "Every member is <em>the important one.</em>", [
-    ("No paid tiers of service", "Personal membership has one standard. Every personal member receives the same care."),
-    ("Options within 24 hours", "For special requests, you receive two or three ways to do it within a day."),
-    ("Your approval first", "Nothing is bought or booked until you have said a clear yes."),
-    ("A personal touch", "You talk to people who know you, on WhatsApp or by phone. No call centre, no ticket numbers."),
-    ("Honest effort", "We try properly for everything. If something cannot be done, we tell you early and offer the next best thing."),
-    ("Discretion, always", "Who you are and what you ask for stays between us."),
-  ], tone="light")
   + principles("Who it is for", "Different lives, <em>the same ease.</em>", [
     ("The busy and the young", "Big weeks, bigger weekends. You make the plans; we make them happen while you get on with things."),
     ("Established families", "Weddings, school holidays, parents&rsquo; birthdays, the house full of guests. One team keeps it all running smoothly."),
@@ -523,6 +542,10 @@ write("membership.html", "Membership", "Walvis Concierge membership: Personal Co
     ("Consider it done", "You approve, we handle every step and let you know when it is finished."),
   ])
   + closing("Membership", "Membership is <em>by enquiry.</em>", "Message us and we will walk you through how it works, what is included and whether it is the right fit.", "Hello Walvis, I would like to know how membership works."))
+
+# Membership opens on the "Why choose us" design (css/membership.css)
+mp = os.path.join(OUT, "membership.html"); mh = open(mp).read()
+open(mp, "w").write(mh.replace('<link rel="stylesheet" href="css/style.css">', '<link rel="stylesheet" href="css/style.css">\n  <link rel="stylesheet" href="css/membership.css">', 1))
 
 # =================================================================== WHAT WE OFFER
 areas = [
