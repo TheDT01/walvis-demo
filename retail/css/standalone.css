@@ -3,7 +3,7 @@
    Only for using retail/ on ANOTHER website that does not have the Walvis css/style.css.
    It carries the colours, fonts, buttons and base rules the Promenade needs.
    On the Walvis site itself this file is not loaded (css/style.css already has all of it).
-   Load it in place of css/style.css, before retail/css/mall.css.
+   Load it in place of css/style.css, before retail/css/retail.css.
    ========================================================= */
 :root {
   --plum: #3a1035;
@@ -84,11 +84,3 @@ h1 em, h2 em, h3 em { font-style: italic; color: var(--teal-dark); }
 .checks li { display: grid; grid-template-columns: 26px 1fr; gap: 10px; align-items: start; }
 .checks li::before { content: ""; width: 14px; height: 1px; background: var(--teal); margin-top: 13px; }
 
-/* the stand-alone header and footer (drawn by retail/js/core.js when the host site has none) */
-.mx-solo-head { position: fixed; inset: 0 0 auto 0; z-index: 40; height: 70px; display: flex; align-items: center; justify-content: space-between;
-  padding: 0 var(--gutter); background: rgba(26, 6, 22, .82); color: var(--snow); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
-.mx-solo-brand { display: flex; align-items: center; gap: 12px; font-family: var(--caps); letter-spacing: .26em; text-transform: uppercase; font-size: .78rem; }
-.mx-solo-head nav { display: flex; gap: 22px; font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; }
-.mx-solo-head nav a { display: inline-flex; align-items: center; gap: 8px; }
-.mx-solo-head nav a[aria-current] { color: var(--teal-light); }
-.mx-solo-foot { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; padding: 28px var(--gutter); background: var(--plum-ink); color: var(--on-dark); font-size: .8rem; }

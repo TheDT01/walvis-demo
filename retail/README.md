@@ -1,67 +1,47 @@
 # The Walvis Promenade (Retail)
 
-The Retail section is a walk-through mall in its own folder. `retail.html` in the main folder only forwards here, so every existing link to Retail keeps working. Everything the mall needs (scripts, styles, photos, brand marks and credits) lives inside `retail/`, so the folder can be moved to another website (see **Moving retail/ to another website** below).
+The Retail section of Walvis Concierge: a private collection of 75 pieces in six salons, presented like a great gallery or a private sale. It lives in its own folder; `retail.html` in the main folder only forwards here, so every existing link to Retail keeps working (old shop and lobby links included).
 
-## The floors
-
-| Level | Shops |
-|---|---|
-| 6 · Musicals | Piano, Violin, Artist-Owned Instruments, Recorded History |
-| 5 · Coinage | Coins, Banknotes, Medals |
-| 4 · Couture | Haute Couture, Handbags, Footwear, Furs & Capes |
-| 3 · Accessories | Jewelry, Watch, Bags, Traditional Bangladeshi Accessories |
-| 2 · Masterpieces | Paintings, Sculptures, Photographs |
-| 1 · Conveyance | Aircraft, Automobiles, Boat, Helicopters, RV, Cars, Jet ski |
-
-There are 25 shops with three pieces each (75 in all), chosen with Bangladesh in mind. Every piece is "Price on request"; add indicative prices in `js/data.js` when you have them.
-
-## The pages
+## How it is laid out
 
 | Page | What it is |
 |---|---|
-| `index.html` | The ground-floor lobby. The first time in a visit you arrive at the glass doors; they open and you walk in. All six floors rise around the atrium, with the glass lift in the middle. A directory sits below. |
-| `level.html?level=conveyance` | A floor's own lobby. You step out of the lift and its shops stand around you in a curve. Turn to a shop and walk in. |
-| `shop.html?shop=aircraft` | Inside a shop: the glass doors part, the pieces stand on lit plinths, and the full listing is below. |
-| `item.html?item=bell-407gx` | One piece in its vitrine, with its photo credit, details and the WhatsApp enquiry. |
-| `credits.html` | Every photo: what it shows, its author, its licence and its page on Wikimedia Commons. |
+| `index.html` | **The collection.** A few great photographs, one at a time; the promise (sourced privately, inspected first, delivered to your door, discreet); the six salons; the season's rarities; *Bangladesh, at its finest*; the full index of every piece (Nº 001 to Nº 075, by salon); how it works in four steps; and the private request. |
+| `level.html?level=couture` | **A salon.** Its photograph and story, then each of its rooms (the shops): the first piece large, the others beside it. A bar of room names stays at hand as you scroll. |
+| `item.html?item=hermes-birkin` | **A piece**, laid out like a private sale: the photograph (tap it for the viewing room: full screen, tap to look closer, ← → through the salon), its number, maker and title, why it is special, the details, what we do, where it lives, the photograph's credit, and *Arrange a private viewing* on WhatsApp. Previous and next pieces, and more from the salon. ← and → also step through the collection. |
+| `shop.html?shop=…` | Old shop links: forwards to that room in its salon. |
+| `credits.html` | Every photograph: what it shows, its author, its licence and its page on Wikimedia Commons. |
 
-The glass lift rides up and down the atrium past the other floors and opens onto the floor you chose. **Evening** (dark) is the default; the switch at the top right turns the lights up to **Daylight**, and the choice is remembered on that device. Every move ends in a soft glow and the next page starts from it, so there are no blank moments. Visitors who prefer reduced motion get the same pages without the walking and riding.
+Evening (dark) is the default; the switch at the bottom right turns on Daylight, a bright gallery, and remembers the choice on that device. Motion is quiet: photographs fade in, sections settle as you scroll, the opening photographs change slowly and wait while you look. Visitors who prefer reduced motion get the same pages, still.
+
+Every enquiry goes to WhatsApp with the message already written. There is no cart, checkout, login or form.
 
 ## The files
 
 | File | What it does |
 |---|---|
-| `js/data.js` | **Everything you edit**: floors, shops, pieces, prices and photo credits. Instructions are at the top. |
+| `js/data.js` | **Everything you edit**: salons, rooms, pieces, prices, photo credits, each piece's one-line note, each salon's cover piece, and the curation (opening photographs, rarities, Bangladesh). Instructions are at the top. |
 | `js/config.js` | Brand name, WhatsApp number, home link, and whether photos load from Commons or from `images/catalog/`. |
-| `js/core.js` | Shared helpers: prices in taka, WhatsApp messages, photos and credits, the 3D camera and smooth movement. |
-| `js/atrium.js`, `js/lift.js` | The atrium with every floor, and the glass lift. |
-| `js/lobby.js`, `js/level.js`, `js/shop.js`, `js/item.js`, `js/credits-page.js` | One script per page. |
-| `css/mall.css` | All of the mall's styles. |
+| `js/core.js` | Shared: numbering, prices in taka, WhatsApp messages, photos and credits, cards, the private request, the Day/Evening switch, the reveal on scroll, the viewing room. |
+| `js/home.js`, `js/salon.js`, `js/piece.js`, `js/credits-page.js` | One script per page. |
+| `css/retail.css` | All the styles. |
 | `css/standalone.css` | Only for another website: the colours, fonts and buttons that `css/style.css` gives on the Walvis site. |
-| `images/brand/` | The Walvis seal and icons used by the mall. |
-| `images/catalog/` | Downloaded copies of the piece photos (filled by `tools/fetch_images.py`). |
-| `tools/fetch_images.py` | Copies every piece photo from Wikimedia Commons into `images/catalog/`. |
+| `images/brand/` | The Walvis seal and icons. |
+| `images/catalog/` | Downloaded copies of the photographs (filled by `tools/fetch_images.py`). |
+| `tools/fetch_images.py` | Copies every photograph from Wikimedia Commons into `images/catalog/`. |
 
-## Photos
+## Photographs
 
-Every piece photo is a free-licence file on Wikimedia Commons, named in `js/data.js` with its author and licence and listed on `credits.html`. They show the kind of piece described, not the exact piece on offer. Some licences (CC BY-SA) require the credit to stay visible while a photo is used, so keep `credits.html` linked.
+Every photograph is a free-licence file on Wikimedia Commons, named in `js/data.js` with its author and licence, credited on each piece and listed on `credits.html`. They show the kind of piece described, not the exact piece offered. Some licences (CC BY-SA) require the credit to stay visible, so keep `credits.html` linked.
 
-By default (`images: 'remote'` in `js/config.js`) photos load straight from Wikimedia Commons. To serve them from your own site:
-
-1. From the main folder, run `python3 retail/tools/fetch_images.py`. It saves each photo to `retail/images/catalog/` and skips ones already there.
-2. Set `images: 'local'` in `retail/js/config.js`.
-
-If a local copy is missing, the page falls back to the Commons original. If that fails too, it shows a calm empty frame with the seal.
+By default (`images: 'remote'`) photographs load from Wikimedia Commons, at the size they are shown. To serve them from your own site: run `python3 retail/tools/fetch_images.py` from the main folder, then set `images: 'local'` in `retail/js/config.js`. A missing local copy falls back to the original; if that fails too, a calm frame with the seal is shown.
 
 ## Moving retail/ to another website
 
-1. Copy the whole `retail/` folder to the **root** of the other website, keeping the name `retail`. Every page has `<base href="../">`, so paths are written as `retail/...` from the site root.
-2. In each `retail/*.html` page:
-   - replace `css/style.css` with `retail/css/standalone.css` (or keep your own site's stylesheet, loaded before `retail/css/mall.css`);
-   - delete the `<script src="js/site.js">` line, or replace it with your own site's header script;
-   - change the icon links from `images/logo/walvis-icon-...` to `retail/images/brand/walvis-icon-...`.
+1. Copy the whole `retail/` folder to the **root** of the other website, keeping the name `retail` (every page has `<base href="../">`, so paths are written as `retail/...`).
+2. In each `retail/*.html` page: replace `css/style.css` with `retail/css/standalone.css` (or keep your own stylesheet, before `retail/css/retail.css`); delete the `<script src="js/site.js">` line, or replace it with your own header script; and change the icon links from `images/logo/walvis-icon-...` to `retail/images/brand/walvis-icon-...`.
 3. Set the brand, WhatsApp number and home link in `retail/js/config.js`.
 
-Without `js/site.js`, `core.js` draws a small header (brand, Retail, WhatsApp) and footer (with the photo credits link) and builds WhatsApp links from `config.js`. Every enquiry still goes to WhatsApp, with the same pre-filled message.
+Without `js/site.js`, `core.js` draws a small header (brand, Retail, WhatsApp) and footer (with the photo credits link), and builds WhatsApp links from `config.js`.
 
-On the Walvis site itself nothing changes: run `python3 tools/stamp.py` before publishing, as usual; it versions these pages too.
+On the Walvis site itself, run `python3 tools/stamp.py` before publishing, as usual.

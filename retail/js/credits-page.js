@@ -6,14 +6,15 @@
 (function () {
   'use strict';
   var M = window.Mall; if (!M) return;
-  var esc = M.esc, box = document.getElementById('mx-credits');
-  function known(v) { return v && !/^See /.test(v) ? esc(v) : '<span class="mx-muted">See the file page</span>'; }
-  box.innerHTML = '<header class="mx-below-head"><span class="mx-pill">The Walvis Promenade</span><h1>Photo <em>credits.</em></h1>' +
+  var esc = M.esc, box = document.getElementById('rx-main');
+  box.className = 'rx-wrap rx-credits';
+  function known(v) { return v && !/^See /.test(v) ? esc(v) : '<span class="rx-muted">See the file page</span>'; }
+  box.innerHTML = '<header class="rx-head"><span class="rx-kicker">The Walvis Promenade</span><h1>Photo <em>credits.</em></h1>' +
     '<p>Every photo in the Promenade is a free-licence file from Wikimedia Commons, shown here with its author and licence. ' +
     'Where a licence asks for it, the photo is shared under the same licence. Photos show the kind of piece described, not the exact piece on offer, ' +
     'and brand names describe the pieces only.</p></header>' +
     M.P.levels.map(function (l) {
-      return '<section class="mx-credit-floor"><h2>' + esc(M.levelLabel(l)) + '</h2><table class="mx-credit-table"><thead><tr><th scope="col">Piece</th><th scope="col">Photo shows</th><th scope="col">Author</th><th scope="col">Licence</th><th scope="col">Source</th></tr></thead><tbody>' +
+      return '<section class="rx-credit-floor"><h2>' + esc(M.levelLabel(l)) + '</h2><table class="rx-credit-table"><thead><tr><th scope="col">Piece</th><th scope="col">Photo shows</th><th scope="col">Author</th><th scope="col">Licence</th><th scope="col">Source</th></tr></thead><tbody>' +
         l.shops.map(function (s) {
           return s.items.filter(function (i) { return i.photo; }).map(function (i) {
             var p = i.photo;
@@ -22,5 +23,6 @@
           }).join('');
         }).join('') + '</tbody></table></section>';
     }).join('') +
-    '<p class="mx-404-act"><a class="btn btn-teal" href="retail/index.html">Back to the lobby</a></p>';
+    '<p class="rx-404-act"><a class="btn btn-teal" href="retail/index.html">Back to the collection</a></p>';
+  if (M.themeSwitch) M.themeSwitch();
 })();

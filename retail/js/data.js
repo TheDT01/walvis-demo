@@ -1,7 +1,7 @@
 /* =========================================================
    WALVIS CONCIERGE · retail/js/data.js
    The Walvis Promenade: every floor, shop and piece in the mall.
-   The pages in retail/ (lobby, floor, shop, piece) are all built from this file.
+   The pages in retail/ (the collection, each salon, each piece) are all built from this file.
    ========================================================= */
 
 /* Site-wide switches */
@@ -31,6 +31,12 @@ WALVIS.showTemplateNotes = false;
      every photo into retail/images/catalog/, then set "images" to "local" in
      retail/js/config.js. To use your own photo instead, put it in retail/images/
      and write  photo: { local: "retail/images/your-photo.jpg", author: "...", licence: "..." }.
+
+   NOTE AND CURATION
+     "note" is the one line that says why a piece is special (shown under its title).
+     A floor's "cover" is the piece whose photo leads its salon. "curation" at the end
+     picks the pieces for the opening photographs (hero), the season's rarities (picks)
+     and "Bangladesh, at its finest" (heritage), by piece id.
 
    OTHER FIELDS
      availability  "Available", "On request", "Made to order", "Charter" or "Reserved"
@@ -84,7 +90,8 @@ var WALVIS_PROMENADE = {
                 "Pre-purchase inspection and records review",
                 "Bangladesh (S2-) registration and CAAB paperwork arranged",
                 "Import duties, taxes, registration and delivery quoted separately"
-              ]
+              ],
+              "note": "Four separate living spaces, and the range to fly Dhaka to London non-stop."
             },
             {
               "id": "gulfstream-g650er",
@@ -114,7 +121,8 @@ var WALVIS_PROMENADE = {
                 "Pre-purchase inspection at an approved centre",
                 "Crew and management options on request",
                 "Import duties, taxes, registration and delivery quoted separately"
-              ]
+              ],
+              "note": "Among the fastest business jets flying, at Mach 0.925."
             },
             {
               "id": "embraer-phenom-300e",
@@ -144,7 +152,8 @@ var WALVIS_PROMENADE = {
                 "New or pre-owned, with inspection",
                 "Charter before you buy, on request",
                 "Import duties, taxes, registration and delivery quoted separately"
-              ]
+              ],
+              "note": "For years the world's best-selling light jet."
             }
           ],
           "image": ""
@@ -182,7 +191,8 @@ var WALVIS_PROMENADE = {
                 "Independent inspection before purchase",
                 "Bangladesh import duties are high on large engines: we quote them up front",
                 "Import duties, taxes, registration and delivery quoted separately"
-              ]
+              ],
+              "note": "The first SUV Rolls-Royce ever built."
             },
             {
               "id": "mercedes-maybach-s680",
@@ -211,7 +221,8 @@ var WALVIS_PROMENADE = {
                 "Chauffeur-ready specification on request",
                 "Independent inspection before purchase",
                 "Import duties, taxes, registration and delivery quoted separately"
-              ]
+              ],
+              "note": "The V12 Maybach, built for the back seat."
             },
             {
               "id": "toyota-land-cruiser-300",
@@ -240,7 +251,8 @@ var WALVIS_PROMENADE = {
                 "New or low-mileage examples sourced",
                 "Choice of trim and specification",
                 "Import duties, taxes, registration and delivery quoted separately"
-              ]
+              ],
+              "note": "The current generation of the Land Cruiser."
             }
           ],
           "image": ""
@@ -277,7 +289,8 @@ var WALVIS_PROMENADE = {
                 "Survey and sea trial before purchase",
                 "Shipping and berthing arranged",
                 "Import duties, taxes, registration and delivery quoted separately"
-              ]
+              ],
+              "note": "Italian yachts from a builder founded in 1969."
             },
             {
               "id": "riva-aquarama",
@@ -305,7 +318,8 @@ var WALVIS_PROMENADE = {
                 "Restored and original examples sourced",
                 "Marine survey and restoration history",
                 "Import duties, taxes, registration and delivery quoted separately"
-              ]
+              ],
+              "note": "Built by Riva from 1962 to 1996; restored examples are collected worldwide."
             },
             {
               "id": "bajra-houseboat",
@@ -333,7 +347,8 @@ var WALVIS_PROMENADE = {
                 "Commissioned to your design",
                 "Cabins, crew quarters and modern safety fittings",
                 "River permits and crew arranged"
-              ]
+              ],
+              "note": "The Bengali houseboat Tagore wrote aboard, built anew by hand."
             }
           ],
           "image": ""
@@ -369,7 +384,8 @@ var WALVIS_PROMENADE = {
                 "New or pre-owned, with logbooks",
                 "Bangladesh (S2-) registration and CAAB paperwork",
                 "Import duties, taxes, registration and delivery quoted separately"
-              ]
+              ],
+              "note": "The same type already flies on the Bangladesh register."
             },
             {
               "id": "airbus-h125",
@@ -397,7 +413,8 @@ var WALVIS_PROMENADE = {
                 "New or pre-owned",
                 "Pre-purchase inspection",
                 "Import duties, taxes, registration and delivery quoted separately"
-              ]
+              ],
+              "note": "An AS350 B3 of this line landed on the summit of Everest in 2005."
             },
             {
               "id": "robinson-r66",
@@ -425,7 +442,8 @@ var WALVIS_PROMENADE = {
                 "New or pre-owned",
                 "Pilot training can be arranged",
                 "Import duties, taxes, registration and delivery quoted separately"
-              ]
+              ],
+              "note": "Robinson's turbine helicopter: simple to own and to run."
             }
           ],
           "image": ""
@@ -461,7 +479,8 @@ var WALVIS_PROMENADE = {
                 "Restored vintage or new trailers",
                 "Bangladesh road and registration rules checked first",
                 "Import duties, taxes, registration and delivery quoted separately"
-              ]
+              ],
+              "note": "Riveted aluminium, built by Airstream since the 1930s."
             },
             {
               "id": "mercedes-sprinter-motorhome",
@@ -489,7 +508,8 @@ var WALVIS_PROMENADE = {
                 "Layout chosen with you",
                 "Registration rules in Bangladesh checked first",
                 "Import duties, taxes, registration and delivery quoted separately"
-              ]
+              ],
+              "note": "A compact motorhome laid out to your own plan."
             },
             {
               "id": "volkner-performance",
@@ -516,7 +536,8 @@ var WALVIS_PROMENADE = {
               "highlights": [
                 "Built to your specification",
                 "Shipping and registration quoted separately"
-              ]
+              ],
+              "note": "A motorhome with a garage for your car beneath the floor."
             }
           ],
           "image": ""
@@ -553,7 +574,8 @@ var WALVIS_PROMENADE = {
                 "New or low-mileage examples",
                 "Independent inspection",
                 "Import duties, taxes, registration and delivery quoted separately"
-              ]
+              ],
+              "note": "650 PS and four seats: the everyday supercar."
             },
             {
               "id": "ferrari-296-gtb",
@@ -582,7 +604,8 @@ var WALVIS_PROMENADE = {
                 "Specification and colour chosen with you",
                 "Independent inspection on pre-owned cars",
                 "Import duties, taxes, registration and delivery quoted separately"
-              ]
+              ],
+              "note": "Ferrari's plug-in hybrid V6 berlinetta, 830 cv combined."
             },
             {
               "id": "lamborghini-revuelto",
@@ -611,7 +634,8 @@ var WALVIS_PROMENADE = {
                 "Allocation or pre-owned examples sourced",
                 "Independent inspection",
                 "Import duties, taxes, registration and delivery quoted separately"
-              ]
+              ],
+              "note": "Lamborghini's first V12 plug-in hybrid."
             }
           ],
           "image": ""
@@ -647,7 +671,8 @@ var WALVIS_PROMENADE = {
                 "New units sourced",
                 "Trailer and safety kit on request",
                 "Import duties, taxes, registration and delivery quoted separately"
-              ]
+              ],
+              "note": "Yamaha's supercharged flagship WaveRunner."
             },
             {
               "id": "sea-doo-spark",
@@ -675,7 +700,8 @@ var WALVIS_PROMENADE = {
                 "New units sourced",
                 "Delivered with safety kit",
                 "Import duties, taxes, registration and delivery quoted separately"
-              ]
+              ],
+              "note": "The lightest way onto the water."
             },
             {
               "id": "kawasaki-js550",
@@ -703,13 +729,15 @@ var WALVIS_PROMENADE = {
                 "Restored examples sourced",
                 "Condition report before purchase",
                 "Import duties, taxes, registration and delivery quoted separately"
-              ]
+              ],
+              "note": "The stand-up original, now a collector's piece."
             }
           ],
           "image": ""
         }
       ],
-      "image": ""
+      "image": "",
+      "cover": "riva-aquarama"
     },
     {
       "id": "masterpieces",
@@ -749,7 +777,8 @@ var WALVIS_PROMENADE = {
                 "Works from private collections, when one is offered",
                 "Provenance and authenticity checked by experts",
                 "Export and cultural-property rules checked"
-              ]
+              ],
+              "note": "The father of modern art in Bangladesh."
             },
             {
               "id": "sm-sultan",
@@ -777,7 +806,8 @@ var WALVIS_PROMENADE = {
                 "Works from private collections, when one is offered",
                 "Provenance and authenticity checked by experts",
                 "Export and cultural-property rules checked"
-              ]
+              ],
+              "note": "The farmers of Bengal, painted as giants."
             },
             {
               "id": "mohammad-kibria",
@@ -804,7 +834,8 @@ var WALVIS_PROMENADE = {
               "highlights": [
                 "Works from private collections, when one is offered",
                 "Provenance and authenticity checked by experts"
-              ]
+              ],
+              "note": "A pioneer of abstraction in Bangladesh."
             }
           ],
           "image": ""
@@ -839,7 +870,8 @@ var WALVIS_PROMENADE = {
                 "Works from private collections, when one is offered",
                 "Provenance and condition checked",
                 "Crating and transport arranged"
-              ]
+              ],
+              "note": "The first modernist sculptor of Bangladesh."
             },
             {
               "id": "syed-abdullah-khalid",
@@ -866,7 +898,8 @@ var WALVIS_PROMENADE = {
                 "Works from private collections, when one is offered",
                 "Provenance checked",
                 "Crating and transport arranged"
-              ]
+              ],
+              "note": "The sculptor of Aparajeyo Bangla."
             },
             {
               "id": "nitun-kundu",
@@ -893,7 +926,8 @@ var WALVIS_PROMENADE = {
                 "Works from private collections, when one is offered",
                 "Provenance checked",
                 "Crating and transport arranged"
-              ]
+              ],
+              "note": "The sculptor of Shabash Bangladesh."
             }
           ],
           "image": ""
@@ -927,7 +961,8 @@ var WALVIS_PROMENADE = {
               "highlights": [
                 "Prints chosen with you",
                 "Framing and hanging arranged"
-              ]
+              ],
+              "note": "Signed, editioned prints from Dhaka's galleries."
             },
             {
               "id": "vintage-bengal-photographs",
@@ -953,7 +988,8 @@ var WALVIS_PROMENADE = {
               "highlights": [
                 "Condition and process checked",
                 "Conservation framing arranged"
-              ]
+              ],
+              "note": "Original 19th-century prints of Dhaka and Bengal."
             },
             {
               "id": "leica-m3",
@@ -980,13 +1016,15 @@ var WALVIS_PROMENADE = {
               "highlights": [
                 "Serviced, working examples",
                 "Lenses sourced on request"
-              ]
+              ],
+              "note": "Introduced in 1954, and still working."
             }
           ],
           "image": ""
         }
       ],
-      "image": ""
+      "image": "",
+      "cover": "syed-abdullah-khalid"
     },
     {
       "id": "accessories",
@@ -1024,7 +1062,8 @@ var WALVIS_PROMENADE = {
               "highlights": [
                 "Designed with you and made by hand",
                 "Weight and purity certified"
-              ]
+              ],
+              "note": "22 karat, made by hand in Dhaka."
             },
             {
               "id": "gold-jhumka-earrings",
@@ -1050,7 +1089,8 @@ var WALVIS_PROMENADE = {
               "highlights": [
                 "Made to your design",
                 "Weight and purity certified"
-              ]
+              ],
+              "note": "The bell-shaped earring of Bengali weddings, made to order."
             },
             {
               "id": "gold-pearl-choker",
@@ -1076,7 +1116,8 @@ var WALVIS_PROMENADE = {
               "highlights": [
                 "Pearls graded and certified",
                 "Made to measure"
-              ]
+              ],
+              "note": "Pearls graded and certified."
             }
           ],
           "image": ""
@@ -1111,7 +1152,8 @@ var WALVIS_PROMENADE = {
               "highlights": [
                 "New or pre-owned, with box and papers",
                 "Authenticity checked before purchase"
-              ]
+              ],
+              "note": "The dive watch Rolex introduced in 1953."
             },
             {
               "id": "patek-philippe-nautilus-5711",
@@ -1139,7 +1181,8 @@ var WALVIS_PROMENADE = {
               "highlights": [
                 "Pre-owned, with box and papers",
                 "Authenticity checked by an independent watchmaker"
-              ]
+              ],
+              "note": "Discontinued in 2021; every example is now pre-owned."
             },
             {
               "id": "audemars-piguet-royal-oak-15202",
@@ -1167,7 +1210,8 @@ var WALVIS_PROMENADE = {
               "highlights": [
                 "Pre-owned, with box and papers",
                 "Authenticity checked by an independent watchmaker"
-              ]
+              ],
+              "note": "Closest to Genta's 1972 original; replaced in 2022."
             }
           ],
           "image": ""
@@ -1201,7 +1245,8 @@ var WALVIS_PROMENADE = {
               "highlights": [
                 "New pieces sourced",
                 "Monogramming on request"
-              ]
+              ],
+              "note": "Rimowa's grooved aluminium, built to be repaired."
             },
             {
               "id": "vintage-rimowa",
@@ -1227,7 +1272,8 @@ var WALVIS_PROMENADE = {
               "highlights": [
                 "Condition report before purchase",
                 "Locks and wheels serviced"
-              ]
+              ],
+              "note": "Dented like passport stamps, and kept with care."
             },
             {
               "id": "jute-leather-travel-bag",
@@ -1253,7 +1299,8 @@ var WALVIS_PROMENADE = {
               "highlights": [
                 "Made to your size and colour",
                 "Initials stitched on request"
-              ]
+              ],
+              "note": "Bangladesh's golden fibre, made into a weekender."
             }
           ],
           "image": ""
@@ -1288,7 +1335,8 @@ var WALVIS_PROMENADE = {
               "highlights": [
                 "Commissioned straight from the artisans",
                 "Motifs and colours chosen with you"
-              ]
+              ],
+              "note": "A quilt of stories, stitched by hand over months."
             },
             {
               "id": "jamdani-sari",
@@ -1315,7 +1363,8 @@ var WALVIS_PROMENADE = {
               "highlights": [
                 "Commissioned from master weavers",
                 "Pattern and colours chosen with you"
-              ]
+              ],
+              "note": "A UNESCO-listed weaving tradition, from the banks of the Shitalakshya."
             },
             {
               "id": "tangail-sari",
@@ -1342,13 +1391,15 @@ var WALVIS_PROMENADE = {
               "highlights": [
                 "Commissioned from weaving families",
                 "Border and colours chosen with you"
-              ]
+              ],
+              "note": "Woven by the Basak families of Tangail."
             }
           ],
           "image": ""
         }
       ],
-      "image": ""
+      "image": "",
+      "cover": "patek-philippe-nautilus-5711"
     },
     {
       "id": "couture",
@@ -1387,7 +1438,8 @@ var WALVIS_PROMENADE = {
                 "Archival pieces through auction houses and specialist sellers",
                 "Condition and provenance checked",
                 "Conservation and display advice"
-              ]
+              ],
+              "note": "From Christian Dior's own years, 1947 to 1957."
             },
             {
               "id": "dior-evening-gown",
@@ -1413,7 +1465,8 @@ var WALVIS_PROMENADE = {
               "highlights": [
                 "Through specialist fashion sales",
                 "Condition and provenance checked"
-              ]
+              ],
+              "note": "Museum-grade Dior, offered through specialist sales."
             },
             {
               "id": "jamdani-bridal-couture",
@@ -1439,7 +1492,8 @@ var WALVIS_PROMENADE = {
               "highlights": [
                 "Designed with you",
                 "Woven and finished to order"
-              ]
+              ],
+              "note": "Bangladesh's own couture, woven for one wedding."
             }
           ],
           "image": ""
@@ -1474,7 +1528,8 @@ var WALVIS_PROMENADE = {
               "highlights": [
                 "New or pre-owned, authenticity checked",
                 "CITES paperwork for exotic skins"
-              ]
+              ],
+              "note": "In sizes from 25 to 40 cm, in calf, ostrich and exotic skins."
             },
             {
               "id": "hermes-kelly",
@@ -1500,7 +1555,8 @@ var WALVIS_PROMENADE = {
               "highlights": [
                 "New or pre-owned, authenticity checked",
                 "CITES paperwork for exotic skins"
-              ]
+              ],
+              "note": "Named after Grace Kelly."
             },
             {
               "id": "chanel-2-55",
@@ -1525,7 +1581,8 @@ var WALVIS_PROMENADE = {
               },
               "highlights": [
                 "New or pre-owned, authenticity checked"
-              ]
+              ],
+              "note": "Introduced in February 1955."
             }
           ],
           "image": ""
@@ -1559,7 +1616,8 @@ var WALVIS_PROMENADE = {
               "highlights": [
                 "New pairs in your size",
                 "Authenticity checked"
-              ]
+              ],
+              "note": "The red sole, since 1993."
             },
             {
               "id": "goodyear-welted-oxfords",
@@ -1585,7 +1643,8 @@ var WALVIS_PROMENADE = {
               "highlights": [
                 "Made-to-measure or ready-to-wear",
                 "Resoling service arranged"
-              ]
+              ],
+              "note": "Built to be resoled for decades."
             },
             {
               "id": "embroidered-nagra-khussa",
@@ -1611,7 +1670,8 @@ var WALVIS_PROMENADE = {
               "highlights": [
                 "Made to match your sherwani",
                 "Made by hand"
-              ]
+              ],
+              "note": "Made by hand to match your sherwani."
             }
           ],
           "image": ""
@@ -1645,7 +1705,8 @@ var WALVIS_PROMENADE = {
               "highlights": [
                 "Purity checked",
                 "Embroidery chosen with you"
-              ]
+              ],
+              "note": "Changthangi wool, embroidered by hand in Kashmir."
             },
             {
               "id": "antique-kashmir-shawl",
@@ -1671,7 +1732,8 @@ var WALVIS_PROMENADE = {
               "highlights": [
                 "Condition and age checked",
                 "Conservation advice"
-              ]
+              ],
+              "note": "19th-century textile art."
             },
             {
               "id": "vintage-mink-coat",
@@ -1697,13 +1759,15 @@ var WALVIS_PROMENADE = {
               "highlights": [
                 "Pre-owned pieces only",
                 "Import and wildlife rules checked first"
-              ]
+              ],
+              "note": "Pre-owned, with its paperwork."
             }
           ],
           "image": ""
         }
       ],
-      "image": ""
+      "image": "",
+      "cover": "dior-new-look-archival"
     },
     {
       "id": "coinage",
@@ -1742,7 +1806,8 @@ var WALVIS_PROMENADE = {
               "highlights": [
                 "Authenticity and grade checked",
                 "Export rules for antiquities checked"
-              ]
+              ],
+              "note": "Struck under the Sultans of Bengal, some five centuries ago."
             },
             {
               "id": "mughal-gold-mohur",
@@ -1769,7 +1834,8 @@ var WALVIS_PROMENADE = {
               "highlights": [
                 "Authenticity and grade checked",
                 "Export rules for antiquities checked"
-              ]
+              ],
+              "note": "Mughal gold, including issues from Jahangirnagar, today's Dhaka."
             },
             {
               "id": "early-bangladesh-poisha",
@@ -1795,7 +1861,8 @@ var WALVIS_PROMENADE = {
               },
               "highlights": [
                 "Graded sets assembled for you"
-              ]
+              ],
+              "note": "The first coins of a young republic."
             }
           ],
           "image": ""
@@ -1829,7 +1896,8 @@ var WALVIS_PROMENADE = {
               },
               "highlights": [
                 "Authenticity and grade checked"
-              ]
+              ],
+              "note": "Issued in Calcutta in 1857."
             },
             {
               "id": "british-india-10-rupees",
@@ -1854,7 +1922,8 @@ var WALVIS_PROMENADE = {
               },
               "highlights": [
                 "Authenticity and grade checked"
-              ]
+              ],
+              "note": "The money of Bengal before Partition."
             },
             {
               "id": "taka-notes",
@@ -1879,7 +1948,8 @@ var WALVIS_PROMENADE = {
               },
               "highlights": [
                 "Graded notes assembled for you"
-              ]
+              ],
+              "note": "In use since 4 March 1972."
             }
           ],
           "image": ""
@@ -1913,7 +1983,8 @@ var WALVIS_PROMENADE = {
               "highlights": [
                 "Authenticity checked",
                 "Research into the recipient where named"
-              ]
+              ],
+              "note": "For public service in India, from 1900."
             },
             {
               "id": "india-general-service-medal-1854",
@@ -1939,7 +2010,8 @@ var WALVIS_PROMENADE = {
               "highlights": [
                 "Authenticity and clasps checked",
                 "Research into the recipient where named"
-              ]
+              ],
+              "note": "Clasps for campaigns on Bengal's eastern frontier."
             },
             {
               "id": "indian-meritorious-service-medal",
@@ -1964,13 +2036,15 @@ var WALVIS_PROMENADE = {
               "highlights": [
                 "Authenticity checked",
                 "Research into the recipient where named"
-              ]
+              ],
+              "note": "For long and meritorious service."
             }
           ],
           "image": ""
         }
       ],
-      "image": ""
+      "image": "",
+      "cover": "mughal-gold-mohur"
     },
     {
       "id": "musicals",
@@ -2009,7 +2083,8 @@ var WALVIS_PROMENADE = {
                 "New or rebuilt instruments",
                 "Climate advice for Dhaka's humidity",
                 "Delivery, tuning and regulation arranged"
-              ]
+              ],
+              "note": "The concert grand of the world's great stages."
             },
             {
               "id": "yamaha-c7",
@@ -2035,7 +2110,8 @@ var WALVIS_PROMENADE = {
               "highlights": [
                 "New or pre-owned",
                 "Delivery, tuning and regulation arranged"
-              ]
+              ],
+              "note": "A favourite of recording studios around the world."
             },
             {
               "id": "bosendorfer-imperial",
@@ -2062,7 +2138,8 @@ var WALVIS_PROMENADE = {
               "highlights": [
                 "New or pre-owned",
                 "Delivery, tuning and regulation arranged"
-              ]
+              ],
+              "note": "97 keys: nine more than a standard piano."
             }
           ],
           "image": ""
@@ -2097,7 +2174,8 @@ var WALVIS_PROMENADE = {
                 "Only when one is offered",
                 "Certificates from recognised experts",
                 "Insurance and climate-controlled transport"
-              ]
+              ],
+              "note": "About 650 of Stradivari's instruments survive."
             },
             {
               "id": "guarneri-del-gesu-violin",
@@ -2123,7 +2201,8 @@ var WALVIS_PROMENADE = {
                 "Only when one is offered",
                 "Certificates from recognised experts",
                 "Insurance and climate-controlled transport"
-              ]
+              ],
+              "note": "The maker of Paganini's own violin."
             },
             {
               "id": "esraj",
@@ -2148,7 +2227,8 @@ var WALVIS_PROMENADE = {
               "highlights": [
                 "Made by hand by master makers",
                 "Set up for you"
-              ]
+              ],
+              "note": "The voice of Rabindra Sangeet."
             }
           ],
           "image": ""
@@ -2182,7 +2262,8 @@ var WALVIS_PROMENADE = {
               "highlights": [
                 "Instruments with documented provenance when available",
                 "Provenance checked with the artist's family or estate"
-              ]
+              ],
+              "note": "The instrument of Ustad Ali Akbar Khan, born in today's Brahmanbaria."
             },
             {
               "id": "dotara",
@@ -2208,7 +2289,8 @@ var WALVIS_PROMENADE = {
               "highlights": [
                 "Instruments played by known artists, when available",
                 "Provenance checked"
-              ]
+              ],
+              "note": "The sound of the Baul gatherings at Kushtia."
             },
             {
               "id": "harmonium",
@@ -2234,7 +2316,8 @@ var WALVIS_PROMENADE = {
                 "Instruments played by known artists, when available",
                 "Provenance checked",
                 "Reeds and bellows serviced"
-              ]
+              ],
+              "note": "At the heart of Nazrul Sangeet."
             }
           ],
           "image": ""
@@ -2268,7 +2351,8 @@ var WALVIS_PROMENADE = {
               "highlights": [
                 "Provenance and rights checked",
                 "Transfer to digital by specialists"
-              ]
+              ],
+              "note": "Rights checked before anything changes hands."
             },
             {
               "id": "concert-for-bangladesh-first-pressing",
@@ -2295,7 +2379,8 @@ var WALVIS_PROMENADE = {
               "highlights": [
                 "First pressings in collector condition",
                 "Grading of vinyl and box"
-              ]
+              ],
+              "note": "1 August 1971, Madison Square Garden."
             },
             {
               "id": "early-bengali-78s",
@@ -2321,13 +2406,41 @@ var WALVIS_PROMENADE = {
               "highlights": [
                 "Condition graded",
                 "Gramophones restored on request"
-              ]
+              ],
+              "note": "Shellac survivors from 1902 onwards."
             }
           ],
           "image": ""
         }
       ],
-      "image": ""
+      "image": "",
+      "cover": "steinway-model-d"
     }
-  ]
+  ],
+  "curation": {
+    "hero": [
+      "riva-aquarama",
+      "bombardier-global-7500",
+      "patek-philippe-nautilus-5711",
+      "jamdani-sari",
+      "steinway-model-d"
+    ],
+    "picks": [
+      "patek-philippe-nautilus-5711",
+      "stradivari-violin",
+      "bajra-houseboat",
+      "mughal-gold-mohur",
+      "hermes-birkin",
+      "zainul-abedin",
+      "lamborghini-revuelto"
+    ],
+    "heritage": [
+      "jamdani-sari",
+      "nakshi-kantha",
+      "zainul-abedin",
+      "bengal-sultanate-tanka",
+      "bajra-houseboat",
+      "dotara"
+    ]
+  }
 };

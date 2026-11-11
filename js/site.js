@@ -13,7 +13,7 @@ var SITE = {
   menu: [
     { label: 'Personal Lifestyle', href: 'lifestyle.html' },
     { label: 'Travel', href: 'travel.html' },
-    { label: 'Retail', href: 'retail.html' },
+    { label: 'Retail', href: 'retail/index.html' },
     { label: 'Experiences', href: 'experiences.html' },
     { label: 'Discover Bangladesh', href: 'foreigners.html' },
     { label: 'Concierge for Expats', href: 'expats.html' },
@@ -31,6 +31,7 @@ var ASSET_V = ((document.currentScript && document.currentScript.src.match(/\?v=
 
 (function () {
   var here = location.pathname.split('/').pop() || 'index.html';
+  if (/\/retail\//.test(location.pathname)) here = 'retail/index.html';   // every page of the mall counts as Retail
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* ---------- Icons ---------- */
