@@ -191,6 +191,8 @@ var ASSET_V = ((document.currentScript && document.currentScript.src.match(/\?v=
   }
 
   /* ---------- The ocean (js/ocean.js), only where a whale scene exists ---------- */
+  // only the home page whale and the Experiences fish run; the softer oceans on inner pages stay as still colour
+  document.querySelectorAll('canvas.sea').forEach(function (c) { if (c.getAttribute('data-mode') !== 'hero' && c.getAttribute('data-mode') !== 'fish-lite') c.remove(); });
   if (document.querySelector('canvas.sea')) {
     var oc = document.createElement('script'); oc.src = 'js/ocean.js' + ASSET_V; oc.defer = true; document.body.appendChild(oc);
   }

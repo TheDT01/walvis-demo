@@ -9,11 +9,11 @@
   <meta property="og:image" content="images/share/walvis-share.jpg">
   <link rel="icon" href="images/logo/walvis-icon-32.png">
   <link rel="apple-touch-icon" href="images/logo/walvis-icon-180.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="preload" href="fonts/cormorant-garamond.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/jost.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/fonts.css?v=202611111829">
   <script>document.documentElement.classList.add('veiled')</script>
-  <link rel="stylesheet" href="css/style.css?v=202611111825">
+  <link rel="stylesheet" href="css/style.css?v=202611111829">
 </head>
 <body>
   <div id="site-header"></div>
@@ -30,7 +30,7 @@
         <div class="btn-row reveal d3"><a class="btn btn-teal" data-wa="Hello Walvis, I would like help planning a trip to Bangladesh." href="#"><svg class="i"><use href="#i-chat"/></svg> Plan my trip</a><a class="btn btn-line" href="#journeys">Choose your journey <svg class="i"><use href="#i-arrow"/></svg></a></div>
         <p class="note-small reveal d3 db-guests">This section is exclusively for our foreign concierge guests.</p>
       </div>
-      <figure class="arch reveal"><img src="images/bd-ahsan-manzil.jpg" alt="" style="object-position:center"><span class="tint"></span><span class="ring"></span><figcaption>Old Dhaka, shown by people who live here.</figcaption></figure>
+      <figure class="arch reveal"><img src="images/bd-ahsan-manzil.jpg" alt="" style="object-position:center" srcset="images/sm/bd-ahsan-manzil.jpg 900w, images/bd-ahsan-manzil.jpg 1600w" sizes="100vw"><span class="tint"></span><span class="ring"></span><figcaption>Old Dhaka, shown by people who live here.</figcaption></figure>
     </div>
   </section>
 
@@ -53,16 +53,16 @@
       <div class="head reveal"><span class="kicker">Plan your trip</span><h2 class="t-1">Which kind of traveller <em>are you?</em></h2>
       <p class="lead">Pick the one that sounds like you. Every plan is a starting point, and we shape it around your dates, pace and budget.</p></div>
       <div class="worlds">
-        <article class="world reveal"><div class="ph"><img src="images/bd-coxs-bazar.jpg" alt="Cox's Bazar beach" loading="lazy"></div><span class="k">Sea and sand</span><h3>Are you a beach person?</h3><p>Cox&rsquo;s Bazar, Inani and Saint Martin&rsquo;s Island, with a sea-view resort as your base.</p><a class="link" href="#beach">See the beach plan <svg class="i"><use href="#i-arrow"/></svg></a></article>
-        <article class="world reveal d1"><div class="ph"><img src="images/travel-ref/travel-lodge.jpg" alt="A path through green hills" loading="lazy"></div><span class="k">Hills and clouds</span><h3>Are you a mountain person?</h3><p>Bandarban&rsquo;s sunrise viewpoints, lakes and indigenous villages, above the clouds.</p><a class="link" href="#mountain">See the mountain plan <svg class="i"><use href="#i-arrow"/></svg></a></article>
-        <article class="world reveal d2"><div class="ph"><img src="images/bd-lalbagh-fort.jpg" alt="Lalbagh Fort, Old Dhaka" loading="lazy"></div><span class="k">The full picture</span><h3>Are you a mixed person?</h3><p>Heritage, tea gardens, the sea and the hills, in one well-paced loop.</p><a class="link" href="#mixed">See the mixed plan <svg class="i"><use href="#i-arrow"/></svg></a></article>
+        <article class="world reveal"><div class="ph"><img src="images/bd-coxs-bazar.jpg" alt="Cox's Bazar beach" loading="lazy" srcset="images/sm/bd-coxs-bazar.jpg 900w, images/bd-coxs-bazar.jpg 1800w" sizes="100vw"></div><span class="k">Sea and sand</span><h3>Are you a beach person?</h3><p>Cox&rsquo;s Bazar, Inani and Saint Martin&rsquo;s Island, with a sea-view resort as your base.</p><a class="link" href="#beach">See the beach plan <svg class="i"><use href="#i-arrow"/></svg></a></article>
+        <article class="world reveal d1"><div class="ph"><img src="images/travel-ref/travel-lodge.jpg" alt="A path through green hills" loading="lazy" srcset="images/sm/travel-ref/travel-lodge.jpg 900w, images/travel-ref/travel-lodge.jpg 1400w" sizes="100vw"></div><span class="k">Hills and clouds</span><h3>Are you a mountain person?</h3><p>Bandarban&rsquo;s sunrise viewpoints, lakes and indigenous villages, above the clouds.</p><a class="link" href="#mountain">See the mountain plan <svg class="i"><use href="#i-arrow"/></svg></a></article>
+        <article class="world reveal d2"><div class="ph"><img src="images/bd-lalbagh-fort.jpg" alt="Lalbagh Fort, Old Dhaka" loading="lazy" srcset="images/sm/bd-lalbagh-fort.jpg 900w, images/bd-lalbagh-fort.jpg 1200w" sizes="100vw"></div><span class="k">The full picture</span><h3>Are you a mixed person?</h3><p>Heritage, tea gardens, the sea and the hills, in one well-paced loop.</p><a class="link" href="#mixed">See the mixed plan <svg class="i"><use href="#i-arrow"/></svg></a></article>
       </div>
     </div>
   </section>
 
   <section class="section light" id="beach" style="scroll-margin-top:70px">
     <div class="wrap split">
-      <div class="media reveal"><div class="mask"><img src="images/bd-kuakata-sunset.jpg" alt="A beach at sunset" loading="lazy"></div><span class="frame"></span></div>
+      <div class="media reveal"><div class="mask"><img src="images/bd-kuakata-sunset.jpg" alt="A beach at sunset" loading="lazy" srcset="images/sm/bd-kuakata-sunset.jpg 900w, images/bd-kuakata-sunset.jpg 1200w" sizes="100vw"></div><span class="frame"></span></div>
       <div class="copy">
         <span class="kicker reveal">Are you a beach person? &middot; 6 days</span>
         <h2 class="t-1 reveal d1">The longest sea beach, <em>unhurried.</em></h2>
@@ -76,7 +76,7 @@
 
   <section class="section mist" id="mountain" style="scroll-margin-top:70px">
     <div class="wrap split flip">
-      <div class="media reveal"><div class="mask"><img src="images/travel-ref/travel-lodge.jpg" alt="A path through green hills" loading="lazy"></div><span class="frame"></span></div>
+      <div class="media reveal"><div class="mask"><img src="images/travel-ref/travel-lodge.jpg" alt="A path through green hills" loading="lazy" srcset="images/sm/travel-ref/travel-lodge.jpg 900w, images/travel-ref/travel-lodge.jpg 1400w" sizes="100vw"></div><span class="frame"></span></div>
       <div class="copy">
         <span class="kicker reveal">Are you a mountain person? &middot; 6 days</span>
         <h2 class="t-1 reveal d1">Above the clouds, <em>among the hill people.</em></h2>
@@ -90,7 +90,7 @@
 
   <section class="section light" id="mixed" style="scroll-margin-top:70px">
     <div class="wrap split">
-      <div class="media reveal"><div class="mask"><img src="images/bd-river-boats-dusk.jpg" alt="Boats on a river at dusk" loading="lazy"></div><span class="frame"></span></div>
+      <div class="media reveal"><div class="mask"><img src="images/bd-river-boats-dusk.jpg" alt="Boats on a river at dusk" loading="lazy" srcset="images/sm/bd-river-boats-dusk.jpg 900w, images/bd-river-boats-dusk.jpg 1800w" sizes="100vw"></div><span class="frame"></span></div>
       <div class="copy">
         <span class="kicker reveal">Are you a mixed person? &middot; 8 days</span>
         <h2 class="t-1 reveal d1">Heritage, tea, sea <em>and hills.</em></h2>
@@ -157,6 +157,6 @@
 
   </main>
   <div id="site-footer"></div>
-  <script src="js/site.js?v=202611111825"></script>
+  <script src="js/site.js?v=202611111829"></script>
 </body>
 </html>

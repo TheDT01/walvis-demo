@@ -416,12 +416,34 @@
   };
 
   var n = 0;
-  window.JournalArt = function (motif, palette, seedText) {
+  function render(motif, palette, seedText) {
     var c = PAL[palette] || PAL.plum, draw = M[motif] || M.sunsea, r = rnd(hash(seedText || motif + palette));
     n++;
     return '<svg class="jx-svg" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice" role="presentation" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">' +
       draw(c, r) + '<rect x="14" y="14" width="772" height="572" fill="none" stroke="' + c.lt + '" stroke-opacity=".22" stroke-width="1"/></svg>';
+  }
+
+  /* Drawn only when needed: each illustration starts as a plain block in its own background colour and is
+     drawn as it comes within a screen of view, so a long page never builds hundreds of drawings at once. */
+  var io = 'IntersectionObserver' in window ? new IntersectionObserver(function (es) {
+    es.forEach(function (e) { if (e.isIntersecting) { io.unobserve(e.target); fill(e.target); } });
+  }, { rootMargin: '600px' }) : null;
+  function fill(el) {
+    var a = (el.getAttribute('data-art') || '').split('|');
+    if (el.parentNode) el.outerHTML = render(a[0], a[1], a[2]);
+  }
+  function watch(root) { (root || document).querySelectorAll('.jx-art-wait').forEach(function (el) { if (io) io.observe(el); else fill(el); }); }
+  if (window.MutationObserver) new MutationObserver(function (ms) {
+    ms.forEach(function (m) { m.addedNodes.forEach(function (nd) { if (nd.nodeType === 1) { if (nd.classList.contains('jx-art-wait')) watch(nd.parentNode); else watch(nd); } }); });
+  }).observe(document.documentElement, { childList: true, subtree: true });
+  document.addEventListener('DOMContentLoaded', function () { watch(); });
+
+  window.JournalArt = function (motif, palette, seedText) {
+    var c = PAL[palette] || PAL.plum;
+    function esc(t) { return String(t == null ? '' : t).replace(/[&"<>|]/g, ''); }
+    return '<span class="jx-svg jx-art-wait" style="display:block;width:100%;height:100%;background:' + c.bg + '" data-art="' + esc(motif) + '|' + esc(palette) + '|' + esc(seedText) + '"></span>';
   };
+  window.JournalArt.now = render;     // draw immediately, when a script needs the finished SVG
   window.JournalArt.motifs = Object.keys(M);
   window.JournalArt.palettes = Object.keys(PAL);
 })();

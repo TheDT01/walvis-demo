@@ -15,9 +15,9 @@ HEAD = """<!doctype html>
   <meta property="og:image" content="images/share/walvis-share.jpg">
   <link rel="icon" href="images/logo/walvis-icon-32.png">
   <link rel="apple-touch-icon" href="images/logo/walvis-icon-180.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="preload" href="fonts/cormorant-garamond.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/jost.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/fonts.css">
   <script>document.documentElement.classList.add(\'veiled\')</script>
   <link rel="stylesheet" href="css/style.css">
 </head>

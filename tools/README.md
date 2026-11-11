@@ -3,6 +3,7 @@
 Run from anywhere; both scripts find the site folder themselves.
 
 - `python3 tools/build.py` regenerates the inner pages (membership, lifestyle, travel tiles, about, contact, privacy, credits and others) from the content written in this file. `index.html`, `experiences.html`, `travel.html`, `journal.html` and the Retail mall in `retail/` are hand-made and are not touched (`retail.html` only forwards to `retail/`).
+- `python3 tools/images.py` makes phone-sized copies of the photos (images/sm/) and adds them to every page's photos with srcset. Run it after `build.py`.
 - `python3 tools/stamp.py` adds a version (`?v=...`) to every stylesheet and script link (including the pages in `retail/`) so browsers load fresh files. Run it after `build.py` and before every publish.
 
 Photo credits: add a line to `js/credits.js` for every new photo; `build.py` lists the ones in use on `credits.html`.

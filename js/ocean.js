@@ -26,7 +26,11 @@
   // performance", macOS "Reduce motion") still see the whale move, but slower and without following the
   // mouse or scroll. Everyone can pause it with the button on the scene (window.WalvisSea.paused).
   var calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var reduce = false;
+  // weak or data-saving devices get one still frame instead of a running scene
+  var nav = navigator, conn = nav.connection || {};
+  var reduce = !!((nav.deviceMemory && nav.deviceMemory <= 2) || (nav.hardwareConcurrency && nav.hardwareConcurrency <= 2) || conn.saveData);
+  // phones and tablets draw at about 30 frames a second: the whale is slow, so it looks the same and costs half
+  var FRAME_MS = matchMedia('(pointer: coarse)').matches ? 31 : 0;
   var SEA = window.WalvisSea = window.WalvisSea || { paused: false, engine: '', renderer: '', tier: 0, calm: calm };
   var RAD = Math.PI / 180;
   var small = innerWidth < 820;
@@ -450,6 +454,7 @@
 
     function frame(now) {
       if (!reduce) requestAnimationFrame(frame);
+      if (FRAME_MS && last && now - last < FRAME_MS) return;
       var dt = last ? Math.min(.05, (now - last) / 1000) : .016; last = now;
       if (SEA.paused && drawn) return;                     // paused: keep the last picture
       if (calm) dt *= .6;                                   // reduced motion: everything drifts slower

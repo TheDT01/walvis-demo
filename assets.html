@@ -9,11 +9,11 @@
   <meta property="og:image" content="images/share/walvis-share.jpg">
   <link rel="icon" href="images/logo/walvis-icon-32.png">
   <link rel="apple-touch-icon" href="images/logo/walvis-icon-180.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="preload" href="fonts/cormorant-garamond.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/jost.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/fonts.css?v=202611111829">
   <script>document.documentElement.classList.add('veiled')</script>
-  <link rel="stylesheet" href="css/style.css?v=202611111825">
+  <link rel="stylesheet" href="css/style.css?v=202611111829">
 </head>
 <body>
   <div id="site-header"></div>
@@ -29,13 +29,13 @@
         <p class="lead reveal d2">Your home, your cars, your renewals and your staff. For members who live abroad, we are your eyes, hands and keys in Dhaka, with updates on WhatsApp.</p>
         <div class="btn-row reveal d3"><a class="btn btn-teal" data-wa="Hello Walvis, I would like help looking after my property." href="#"><svg class="i"><use href="#i-chat"/></svg> Enquire on WhatsApp</a><a class="btn btn-line" href="membership.html">View membership <svg class="i"><use href="#i-arrow"/></svg></a></div>
       </div>
-      <figure class="arch reveal"><img src="images/lux-villa-evening.jpg" alt="" style="object-position:center"><span class="tint"></span><span class="ring"></span><figcaption>Home, kept exactly as you left it.</figcaption></figure>
+      <figure class="arch reveal"><img src="images/lux-villa-evening.jpg" alt="" style="object-position:center" srcset="images/sm/lux-villa-evening.jpg 900w, images/lux-villa-evening.jpg 1600w" sizes="100vw"><span class="tint"></span><span class="ring"></span><figcaption>Home, kept exactly as you left it.</figcaption></figure>
     </div>
   </section>
 
   <section class="section light">
     <div class="wrap split">
-      <div class="media reveal"><div class="mask"><img src="images/lux-ocean-lounge.jpg" alt="A calm living room" loading="lazy"></div><span class="frame"></span></div>
+      <div class="media reveal"><div class="mask"><img src="images/lux-ocean-lounge.jpg" alt="A calm living room" loading="lazy" srcset="images/sm/lux-ocean-lounge.jpg 900w, images/lux-ocean-lounge.jpg 1600w" sizes="100vw"></div><span class="frame"></span></div>
       <div class="copy">
         <span class="kicker reveal">Bangladeshis abroad</span>
         <h2 class="t-1 reveal d1">Far from home, <em>still on top of it.</em></h2>
@@ -70,6 +70,6 @@
 
   </main>
   <div id="site-footer"></div>
-  <script src="js/site.js?v=202611111825"></script>
+  <script src="js/site.js?v=202611111829"></script>
 </body>
 </html>

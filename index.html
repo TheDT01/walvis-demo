@@ -10,11 +10,11 @@
   <meta property="og:image" content="images/share/walvis-share.jpg">
   <link rel="icon" href="images/logo/walvis-icon-32.png">
   <link rel="apple-touch-icon" href="images/logo/walvis-icon-180.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="preload" href="fonts/cormorant-garamond.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/jost.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/fonts.css?v=202611111829">
   <script>document.documentElement.classList.add('veiled')</script>
-  <link rel="stylesheet" href="css/style.css?v=202611111825">
+  <link rel="stylesheet" href="css/style.css?v=202611111829">
 </head>
 <body>
   <div id="site-header"></div>
@@ -60,19 +60,19 @@
         <a class="btn btn-line reveal light" href="what-we-offer.html" style="color:var(--plum);border-color:rgba(58,16,53,.35)">Everything we do <svg class="i"><use href="#i-arrow"/></svg></a>
       </div>
       <div class="mosaic">
-        <a class="tile m-a reveal" href="travel.html"><img src="images/lux-private-jet.jpg" alt="Private jet on approach" loading="lazy"><span class="go"><svg class="i"><use href="#i-arrow"/></svg></span><span class="k">Travel</span><h3>You pack. We plan.</h3><p>Private skies, open seas, grand hotels and the finest corners of Bangladesh.</p></a>
-        <a class="tile m-b reveal d1" href="experiences.html"><img src="images/lux-place-setting.jpg" alt="An elegant table setting" loading="lazy"><span class="go"><svg class="i"><use href="#i-arrow"/></svg></span><span class="k">Experiences</span><h3>Beyond the expected</h3><p>Private celebrations, exceptional journeys, the private table and rare access.</p></a>
-        <a class="tile m-c reveal d2" href="retail.html"><img src="images/lux-pocket-watch.jpg" alt="A vintage pocket watch" loading="lazy"><span class="go"><svg class="i"><use href="#i-arrow"/></svg></span><span class="k">Retail · The Collection</span><h3>Rare pieces, found</h3><p>Jewellery, timepieces, jamdani and oud.</p></a>
-        <a class="tile m-d reveal" href="assets.html"><img src="images/lux-villa-evening.jpg" alt="A villa pool at evening" loading="lazy"><span class="go"><svg class="i"><use href="#i-arrow"/></svg></span><span class="k">Assets</span><h3>What you own, looked after</h3></a>
-        <a class="tile m-e reveal d1" href="foreigners.html"><img src="images/bd-ahsan-manzil.jpg" alt="Ahsan Manzil, Old Dhaka" loading="lazy"><span class="go"><svg class="i"><use href="#i-arrow"/></svg></span><span class="k">Discover Bangladesh</span><h3>Bangladesh, made easy</h3></a>
-        <a class="tile m-f reveal d2" href="expats.html"><img src="images/bd-hatirjheel-night.jpg" alt="Hatirjheel, Dhaka at night" loading="lazy"><span class="go"><svg class="i"><use href="#i-arrow"/></svg></span><span class="k">Concierge for Expats</span><h3>While you are away</h3></a>
+        <a class="tile m-a reveal" href="travel.html"><img src="images/lux-private-jet.jpg" alt="Private jet on approach" loading="lazy" srcset="images/sm/lux-private-jet.jpg 900w, images/lux-private-jet.jpg 1600w" sizes="100vw"><span class="go"><svg class="i"><use href="#i-arrow"/></svg></span><span class="k">Travel</span><h3>You pack. We plan.</h3><p>Private skies, open seas, grand hotels and the finest corners of Bangladesh.</p></a>
+        <a class="tile m-b reveal d1" href="experiences.html"><img src="images/lux-place-setting.jpg" alt="An elegant table setting" loading="lazy" srcset="images/sm/lux-place-setting.jpg 900w, images/lux-place-setting.jpg 1600w" sizes="100vw"><span class="go"><svg class="i"><use href="#i-arrow"/></svg></span><span class="k">Experiences</span><h3>Beyond the expected</h3><p>Private celebrations, exceptional journeys, the private table and rare access.</p></a>
+        <a class="tile m-c reveal d2" href="retail.html"><img src="images/lux-pocket-watch.jpg" alt="A vintage pocket watch" loading="lazy" srcset="images/sm/lux-pocket-watch.jpg 900w, images/lux-pocket-watch.jpg 1600w" sizes="100vw"><span class="go"><svg class="i"><use href="#i-arrow"/></svg></span><span class="k">Retail · The Collection</span><h3>Rare pieces, found</h3><p>Jewellery, timepieces, jamdani and oud.</p></a>
+        <a class="tile m-d reveal" href="assets.html"><img src="images/lux-villa-evening.jpg" alt="A villa pool at evening" loading="lazy" srcset="images/sm/lux-villa-evening.jpg 900w, images/lux-villa-evening.jpg 1600w" sizes="100vw"><span class="go"><svg class="i"><use href="#i-arrow"/></svg></span><span class="k">Assets</span><h3>What you own, looked after</h3></a>
+        <a class="tile m-e reveal d1" href="foreigners.html"><img src="images/bd-ahsan-manzil.jpg" alt="Ahsan Manzil, Old Dhaka" loading="lazy" srcset="images/sm/bd-ahsan-manzil.jpg 900w, images/bd-ahsan-manzil.jpg 1600w" sizes="100vw"><span class="go"><svg class="i"><use href="#i-arrow"/></svg></span><span class="k">Discover Bangladesh</span><h3>Bangladesh, made easy</h3></a>
+        <a class="tile m-f reveal d2" href="expats.html"><img src="images/bd-hatirjheel-night.jpg" alt="Hatirjheel, Dhaka at night" loading="lazy" srcset="images/sm/bd-hatirjheel-night.jpg 900w, images/bd-hatirjheel-night.jpg 1600w" sizes="100vw"><span class="go"><svg class="i"><use href="#i-arrow"/></svg></span><span class="k">Concierge for Expats</span><h3>While you are away</h3></a>
       </div>
     </div>
   </section>
 
   <!-- ================= BANGLADESH BAND ================= -->
   <section class="band">
-    <img src="images/bd-river-boats-dusk.jpg" alt="Fishing boats on a river at dusk, Bangladesh" loading="lazy">
+    <img src="images/bd-river-boats-dusk.jpg" alt="Fishing boats on a river at dusk, Bangladesh" loading="lazy" srcset="images/sm/bd-river-boats-dusk.jpg 900w, images/bd-river-boats-dusk.jpg 1800w" sizes="100vw">
     <div class="wrap">
       <div class="copy on-dark">
         <span class="kicker reveal">From seas to mountains</span>
@@ -131,7 +131,7 @@
       </div>
       <div class="tiers">
         <article class="tier reveal">
-          <div class="ph mask"><img src="images/lux-candlelight.jpg" alt="Candlelit room" loading="lazy" style="object-position:50% 40%"></div>
+          <div class="ph mask"><img src="images/lux-candlelight.jpg" alt="Candlelit room" loading="lazy" style="object-position:50% 40%" srcset="images/sm/lux-candlelight.jpg 900w, images/lux-candlelight.jpg 1200w" sizes="100vw"></div>
           <div class="body">
             <span class="kicker">Personal</span>
             <h3>Personal <em>Concierge</em></h3>
@@ -140,7 +140,7 @@
           </div>
         </article>
         <article class="tier reveal d1">
-          <div class="ph mask"><img src="images/lux-skyline-night.jpg" alt="City skyline at night" loading="lazy"></div>
+          <div class="ph mask"><img src="images/lux-skyline-night.jpg" alt="City skyline at night" loading="lazy" srcset="images/sm/lux-skyline-night.jpg 900w, images/lux-skyline-night.jpg 1600w" sizes="100vw"></div>
           <div class="body">
             <span class="kicker">Corporate</span>
             <h3>Corporate <em>Concierge</em></h3>
@@ -155,7 +155,7 @@
   <!-- ================= DISCOVER BANGLADESH ================= -->
   <section class="section light">
     <div class="wrap split flip">
-      <div class="media reveal"><div class="mask"><img src="images/lux-jet-window.jpg" alt="View from an aircraft window" loading="lazy"></div><span class="frame"></span></div>
+      <div class="media reveal"><div class="mask"><img src="images/lux-jet-window.jpg" alt="View from an aircraft window" loading="lazy" srcset="images/sm/lux-jet-window.jpg 900w, images/lux-jet-window.jpg 1600w" sizes="100vw"></div><span class="frame"></span></div>
       <div class="copy">
         <span class="kicker reveal">Discover Bangladesh</span>
         <h2 class="t-1 reveal d1">Arriving in Bangladesh? <em>We will be waiting.</em></h2>
@@ -203,9 +203,9 @@
 
   </main>
   <div id="site-footer"></div>
-  <script src="js/journal-data.js?v=202611111825"></script>
-  <script src="js/journal-art.js?v=202611111825"></script>
-  <script src="js/journal-latest.js?v=202611111825"></script>
-  <script src="js/site.js?v=202611111825"></script>
+  <script src="js/journal-data.js?v=202611111829"></script>
+  <script src="js/journal-art.js?v=202611111829"></script>
+  <script src="js/journal-latest.js?v=202611111829"></script>
+  <script src="js/site.js?v=202611111829"></script>
 </body>
 </html>
