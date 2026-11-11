@@ -1032,3 +1032,7 @@ html.calm-glass .hero .btn-line { -webkit-backdrop-filter: none !important; back
 .world .ph.jx-home-art { display: block; }
 .world .ph.jx-home-art svg { display: block; width: 100%; height: 100%; transition: transform 1.6s var(--ease-out); }
 .world:hover .ph.jx-home-art svg { transform: scale(1.05); }
+
+/* v16 · Discover Bangladesh: day-by-day plans and the guest note */
+.db-days li b { font-weight: 500; color: var(--teal-light); margin-right: 4px; }
+.db-guests { margin-top: 18px; font-size: .88rem; color: rgba(255, 250, 250, .65); }

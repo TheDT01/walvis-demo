@@ -283,30 +283,155 @@ write("assets.html", "Assets", "Homes, vehicles, paperwork and household staff i
   ], tone="mist")
   + closing("Assets", "Leave it <em>with us.</em>", "Tell us what needs looking after. We will suggest a simple routine.", "Hello Walvis, I would like help looking after my property."))
 
-# =================================================================== FOREIGNERS
-write("foreigners.html", "Discover Bangladesh", "For visitors and executives arriving in Bangladesh: airport reception, stays, car and driver, business visits and guided trips.",
-  hero("bd-ahsan-manzil.jpg", "Discover Bangladesh", "Discover Bangladesh", "Bangladesh, <em>made easy.</em>",
-    "For visitors and executives. A local team on your side from the moment you land, in English and with patience.",
-    "Hello Walvis, I am visiting Bangladesh and would like concierge support.")
-  + intro("lux-jet-window.jpg", "A friend in the city", "Someone who <em>knows everyone.</em>",
-    ["A new country is easier with someone who knows how things work. Whether you are here for three days or three weeks, we are the people you call.",
-     "We arrange it, explain it, and come along if you would like us to."],
-    ["Met at the airport and taken to your door", "Somewhere good to stay", "A trusted car and driver", "Where to eat, shop and spend a free day"], alt="Aircraft window view")
-  + svc("What we handle", "From arrival <em>to departure.</em>", "", [
-    ("Airport reception", "Someone waiting when you land, help with luggage and a local SIM, and a car to your door."),
-    ("Your stay", "Hotels and serviced apartments chosen for the area, the length of stay and the way you like to live."),
-    ("Car and driver", "Reliable cars and careful drivers, by the day or the week."),
-    ("Business visits", "Meeting rooms, interpreters, schedules and dinners for working trips that need to go smoothly."),
-    ("Guided trips", "Day trips and longer journeys, from Old Dhaka to the tea gardens and the coast, with a good guide."),
-    ("Everyday help", "Shopping, deliveries, reservations, and the questions a search engine cannot answer."),
-  ], tone="mist")
-  + steps("How it works", "Ready <em>before you land.</em>", [
-    ("Send your dates", "Tell us when you arrive, how long you are staying and what the trip is for."),
-    ("We prepare", "A short plan with options for your stay, transport and anything else you need."),
-    ("You approve", "Nothing is booked until you are happy with it."),
-    ("We stay close", "One message away for the whole of your stay."),
-  ])
-  + closing("Visitors", "Arriving <em>soon?</em>", "Send us your dates and what you need. We will have a plan ready before you land.", "Hello Walvis, I am visiting Bangladesh and would like concierge support."))
+# =================================================================== DISCOVER BANGLADESH
+# Built from the Discover Bangladesh framework (discover-bangladesh-preview.html), in the site's own sections.
+DB_WA = "Hello Walvis, I would like help planning a trip to Bangladesh."
+DB_CARE = [
+  ("On arrival", "Met at the airport.", "A dedicated host, a private car and a calm start to your trip."),
+  ("Every day", "One personal concierge.", "One real person, reachable on WhatsApp, for your whole stay."),
+  ("On the road", "Drivers and guides you can trust.", "English-speaking guides and vetted drivers who know the roads and the stories."),
+  ("At any hour", "Support, day and night.", "Medical help, lost documents, a missed flight. Message us and we act."),
+]
+DB_CARDS = [
+  ("bd-coxs-bazar.jpg", "Cox's Bazar beach", "Sea and sand", "Are you a beach person?", "Cox&rsquo;s Bazar, Inani and Saint Martin&rsquo;s Island, with a sea-view resort as your base.", "#beach", "See the beach plan"),
+  ("travel-ref/travel-lodge.jpg", "A path through green hills", "Hills and clouds", "Are you a mountain person?", "Bandarban&rsquo;s sunrise viewpoints, lakes and indigenous villages, above the clouds.", "#mountain", "See the mountain plan"),
+  ("bd-lalbagh-fort.jpg", "Lalbagh Fort, Old Dhaka", "The full picture", "Are you a mixed person?", "Heritage, tea gardens, the sea and the hills, in one well-paced loop.", "#mixed", "See the mixed plan"),
+]
+DB_PLANS = [
+  ("beach", "light", "bd-kuakata-sunset.jpg", "A beach at sunset", "Are you a beach person? &middot; 6 days", "The longest sea beach, <em>unhurried.</em>",
+   "Sunsets, fresh seafood and a coral island, with a sea-view resort as your base.",
+   ["Arrive in Dhaka. Airport welcome, private transfer, hotel check-in and a short briefing.",
+    "Fly to Cox&rsquo;s Bazar, settle into a sea-view resort, sunset at Laboni Beach.",
+    "Inani Beach and Himchari National Park, then a seafood dinner.",
+    "Saint Martin&rsquo;s Island, a day trip or overnight stay on the only coral island.",
+    "A slow day. Spa, free time and optional shopping for local crafts.",
+    "Fly back to Dhaka and on to your onward flight."],
+   "Saint Martin&rsquo;s is seasonal, usually November to March. We confirm ferry timings before you travel.",
+   "Hello Walvis, I would like to plan the 6-day beach journey in Bangladesh."),
+  ("mountain", "mist", "travel-ref/travel-lodge.jpg", "A path through green hills", "Are you a mountain person? &middot; 6 days", "Above the clouds, <em>among the hill people.</em>",
+   "Sunrise viewpoints, lakes and village visits in the green hills of the south-east.",
+   ["Arrive in Dhaka. Airport welcome, private transfer and a short briefing.",
+    "Scenic journey into the hills of Bandarban and hotel check-in.",
+    "Sunrise above the clouds at Nilgiri, then the Nilachal viewpoint.",
+    "Boga Lake or Sajek Valley, with a visit to an indigenous village.",
+    "A relaxed day with local cuisine and a cultural evening.",
+    "Return to Dhaka and fly onward."],
+   "Many hill areas need a permit for foreign visitors. Your concierge arranges this for you.",
+   "Hello Walvis, I would like to plan the 6-day mountain journey in Bangladesh."),
+  ("mixed", "light", "bd-river-boats-dusk.jpg", "Boats on a river at dusk", "Are you a mixed person? &middot; 8 days", "Heritage, tea, sea <em>and hills.</em>",
+   "For the traveller who wants a little of everything, in one well-paced loop.",
+   ["Arrive in Dhaka, then a heritage evening through Old Dhaka.",
+    "Sylhet, with rolling tea gardens and the blue water of Lalakhal.",
+    "Ratargul Swamp Forest and Jaflong.",
+    "Fly to Cox&rsquo;s Bazar, sunset on the beach.",
+    "Inani, Himchari and a seaside dinner.",
+    "Travel into the hills of Bandarban.",
+    "Nilgiri or Boga Lake, then a farewell dinner.",
+    "Return to Dhaka and fly onward."],
+   "",
+   "Hello Walvis, I would like to plan the 8-day mixed journey in Bangladesh."),
+]
+DB_CHAT = [
+  ("me", "I land in Dhaka on the 12th and I&rsquo;m not sure whether to do beach or hills.", "21:05"),
+  ("them", "Leave it with us. How many days do you have, and do you prefer a slow pace or an active one?", "21:07"),
+  ("me", "Seven days, slow pace. I love the sea, but I would like to see something green too.", "21:09"),
+  ("them", "Then we suggest the sea first, with one night in the hills. We will arrange the permit, the car and the hotels, and send you the plan tonight.", "21:12"),
+  ("them", "Your plan is ready. Your host will meet you at arrivals.", "Sat 09:30"),
+]
+DB_SERVICES = [
+  ("Visa &amp; documents", ["Visa guidance and invitation letters", "Arrival and registration support", "Permits for restricted areas", "Document copies and translations"]),
+  ("Travel &amp; transport", ["International and domestic flights", "Private cars with trusted drivers", "Train, launch and ferry bookings", "Airport pickup and drop-off"]),
+  ("Stays", ["Hotels and resorts, hand-picked", "Serviced apartments for longer stays", "Homestays and village stays", "Early check-in and late checkout"]),
+  ("Tours &amp; experiences", ["Guided heritage and nature tours", "Cultural evenings and festivals", "Photography and wildlife trips", "Private and small-group journeys"]),
+  ("Food &amp; dining", ["Tables at the best restaurants", "Street-food and local cuisine tours", "Dietary and halal arrangements", "Cooking classes"]),
+  ("Health &amp; safety", ["Doctor and hospital appointments", "Travel insurance guidance", "Pharmacy pick-ups", "24/7 emergency assistance"]),
+  ("Business support", ["Meeting and venue arrangements", "Interpreters and local introductions", "Office and co-working access", "Corporate travel planning"]),
+  ("Local essentials", ["SIM card and internet", "Currency exchange guidance", "Shopping, gifts and special occasions", "Laundry, errands and deliveries"]),
+]
+db_care = "".join(f"""
+        <article class="pl-moment reveal{d(i)}"><time>{t}</time><h3>{a}</h3><p>{b}</p></article>""" for i, (t, a, b) in enumerate(DB_CARE))
+db_cards = "".join(f"""
+        <article class="world reveal{d(i)}"><div class="ph"><img src="images/{img}" alt="{alt}" loading="lazy"></div><span class="k">{k}</span><h3>{t}</h3><p>{x}</p><a class="link" href="{href}">{lbl} {ARROW}</a></article>""" for i, (img, alt, k, t, x, href, lbl) in enumerate(DB_CARDS))
+db_plans = "".join(f"""
+  <section class="section {tone}" id="{pid}" style="scroll-margin-top:70px">
+    <div class="wrap split{' flip' if pid == 'mountain' else ''}">
+      <div class="media reveal"><div class="mask"><img src="images/{img}" alt="{alt}" loading="lazy"></div><span class="frame"></span></div>
+      <div class="copy">
+        <span class="kicker reveal">{k}</span>
+        <h2 class="t-1 reveal d1">{h2}</h2>
+        <p class="lead reveal d2">{lead}</p>
+        <ul class="checks db-days reveal d3">{''.join(f'<li><span><b>Day {n + 1}.</b> {x}</span></li>' for n, x in enumerate(days))}</ul>
+        {f'<p class="note-small reveal d3">{note}</p>' if note else ''}
+        <div class="btn-row reveal d3"><a class="btn btn-teal" data-wa="{E(wa)}" href="#">{CHAT} Plan this with my concierge</a></div>
+      </div>
+    </div>
+  </section>
+""" for pid, tone, img, alt, k, h2, lead, days, note, wa in DB_PLANS)
+db_chat = "".join(f'<div class="msg {w}">{m}<time>{t}</time></div>' for w, m, t in DB_CHAT)
+db_services = "".join(f"""
+        <div class="pl-col reveal{d(i)}"><h3>{h}</h3><ul class="checks">{''.join(f'<li>{x}</li>' for x in xs)}</ul></div>""" for i, (h, xs) in enumerate(DB_SERVICES))
+
+write("foreigners.html", "Discover Bangladesh", "Discover Bangladesh with Walvis Concierge: visa, travel, stays and guided beach, mountain and mixed journeys, planned end to end for our international guests.",
+  hero("bd-ahsan-manzil.jpg", "Discover Bangladesh", "Discover Bangladesh", "Arrive as a guest. <em>Leave as a friend.</em>",
+    "Visas, flights, stays and journeys, planned end to end. From the moment you land to the moment you leave, our concierge team looks after every detail, so you only have to enjoy it.",
+    DB_WA, cta="Plan my trip", second=("#journeys", "Choose your journey"))
+  + f"""
+  <section class="section dark on-dark">
+    <div class="wrap">
+      <div class="head reveal"><span class="kicker">Our special care</span><h2 class="t-1">A new country should feel easy. <em>We make sure it does.</em></h2>
+      <p class="lead">These are the things we do for every guest, without being asked, so nothing about your trip is left to chance.</p></div>
+      <div class="pl-moments">{db_care}
+      </div>
+      <p class="pl-answer reveal">Hand-picked stays, a local SIM, a short cultural orientation. <em>All handled.</em></p>
+    </div>
+  </section>
+
+  <section class="section mist" id="journeys" style="scroll-margin-top:70px">
+    <div class="wrap">
+      <div class="head reveal"><span class="kicker">Plan your trip</span><h2 class="t-1">Which kind of traveller <em>are you?</em></h2>
+      <p class="lead">Pick the one that sounds like you. Every plan is a starting point, and we shape it around your dates, pace and budget.</p></div>
+      <div class="worlds">{db_cards}
+      </div>
+    </div>
+  </section>
+{db_plans}
+  <section class="section mist">
+    <div class="wrap split">
+      <div class="media reveal">
+        <div class="phone">
+          <div class="screen">
+            <div class="chat-top"><img src="images/logo/walvis-seal-96.png" alt=""><div><b>Walvis Concierge</b><small>online</small></div></div>
+            <div class="chat-body">{db_chat}</div>
+          </div>
+        </div>
+        <p class="note-small">A sample conversation, for illustration</p>
+      </div>
+      <div class="copy">
+        <span class="kicker reveal">Still deciding?</span>
+        <h2 class="t-1 reveal d1">Confused? <em>Contact your concierge.</em></h2>
+        <p class="lead reveal d2">Tell us your dates, who is travelling and what you enjoy. A real person replies, suggests the right journey and takes care of the rest.</p>
+        <div class="btn-row reveal d3"><a class="btn btn-teal" data-wa="{E('Hello Walvis, I am not sure which journey in Bangladesh suits me.')}" href="#">{CHAT} Message your concierge</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section light">
+    <div class="wrap">
+      <div class="head reveal"><span class="kicker">List of services</span><h2 class="t-1">How we <em>can help you.</em></h2>
+      <p class="lead">Everything a visitor needs, in one place and in one conversation.</p></div>
+      <div class="pl-handle">{db_services}
+      </div>
+    </div>
+  </section>
+"""
+  + closing("Discover Bangladesh", "Planning a visit <em>to Bangladesh?</em>", "Tell us when you arrive and what you would love to see. We will send you a few ideas.", "Hello Walvis, I am planning a visit to Bangladesh and would like some ideas."))
+
+# the guest note under the hero buttons
+fp = os.path.join(OUT, "foreigners.html"); fh = open(fp).read()
+mk = '<a class="btn btn-line" href="#journeys">'
+i = fh.index(mk); j = fh.index("</div>", i) + 6
+fh = fh[:j] + '\n        <p class="note-small reveal d3 db-guests">This section is exclusively for our foreign concierge guests.</p>' + fh[j:]
+open(fp, "w").write(fh)
 
 # =================================================================== CONCIERGE FOR EXPATS
 # Section by section and word for word from the "Concierge for Expats" design (tools/sources/concierge-for-expats.html),
@@ -566,7 +691,7 @@ areas = [
   ("travel.html", "lux-private-jet.jpg", "Travel", "You pack. We plan.", "Private aviation, yachts, grand hotels, honeymoons, Umrah and Hajj, Bangladesh privately and the great cities."),
   ("retail.html", "lux-pocket-watch.jpg", "Retail", "The Collection", "Jewellery, timepieces, heritage crafts, fragrance, home and art, found for you."),
   ("assets.html", "lux-villa-evening.jpg", "Assets", "What you own, looked after", "Homes, vehicles, renewals and staff, especially when you live abroad."),
-  ("foreigners.html", "bd-ahsan-manzil.jpg", "Discover Bangladesh", "Bangladesh, made easy", "Airport reception, stays, car and driver, business visits and guided trips."),
+  ("foreigners.html", "bd-ahsan-manzil.jpg", "Discover Bangladesh", "Arrive as a guest", "Visas, stays and beach, mountain or mixed journeys, planned end to end."),
   ("expats.html", "bd-hatirjheel-night.jpg", "Concierge for Expats", "While you are away", "Caring for your loved ones in Bangladesh: occasions, gifts, parents’ care and visits home."),
   ("special-requests.html", "lux-superyacht.jpg", "Special requests", "If it&rsquo;s legal, ask", "The unusual, the last-minute and everything in between. For members."),
   ("membership.html", "lux-candlelight.jpg", "Membership", "Personal &amp; Corporate", "One standard for every personal member. Terms tailored for companies."),
