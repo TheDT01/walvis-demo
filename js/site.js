@@ -85,7 +85,7 @@ var ASSET_V = ((document.currentScript && document.currentScript.src.match(/\?v=
         '<div class="foot-top">' +
           '<div class="foot-brand"><img src="' + SITE.logo + '" alt="" width="74" height="74"><span class="caps">Walvis</span><p>From seas to mountains,<br>consider it done.</p></div>' +
           '<div><h4>Services</h4><nav>' + SITE.menu.filter(function (m) { return m.href !== 'about.html' && m.href !== 'journal.html'; }).map(function (m) { return '<a href="' + m.href + '">' + m.label + '</a>'; }).join('') + '</nav></div>' +
-          '<div><h4>Walvis</h4><nav><a href="membership.html">Membership</a><a href="what-we-offer.html">What we offer</a><a href="assets.html">Assets</a><a href="special-requests.html">Special Requests</a><a href="journal.html">The Journal</a><a href="about.html">About us</a><a href="contact.html">Contact</a></nav></div>' +
+          '<div><h4>Walvis</h4><nav><a href="membership.html">Membership</a><a href="what-we-offer.html">What we offer</a><a href="special-requests.html">Special Requests</a><a href="journal.html">The Journal</a><a href="about.html">About us</a><a href="contact.html">Contact</a></nav></div>' +
           '<div class="contact"><h4>Reach us</h4>' +
             '<a href="' + waLink() + '" target="_blank" rel="noopener">' + ic('chat') + ' WhatsApp</a>' +
             '<a href="tel:' + SITE.phone.replace(/[^+\d]/g, '') + '">' + ic('phone') + ' ' + SITE.phone + '</a>' +
