@@ -34,6 +34,7 @@ FOOT = """
 """
 ARROW = '<svg class="i"><use href="#i-arrow"/></svg>'
 CHAT = '<svg class="i"><use href="#i-chat"/></svg>'
+INV = "Request an invitation"   # the membership button wording, everywhere
 GHOST = '<svg class="ghost-whale" viewBox="0 0 200 600" aria-hidden="true"><path d="M100,14 C116,14 128,40 132,82 C136,124 137,170 137,214 C136,300 126,404 108,500 C110,520 130,530 170,546 C178,550 177,560 168,562 C140,566 112,571 100,558 C88,571 60,566 32,562 C23,560 22,550 30,546 C70,530 90,520 92,500 C74,404 64,300 63,214 C63,170 64,124 68,82 C72,40 84,14 100,14 Z M137,190 C160,215 185,265 199,320 C200,330 195,335 189,329 C170,290 150,250 136,226 Z M63,190 C40,215 15,265 1,320 C0,330 5,335 11,329 C30,290 50,250 64,226 Z"/></svg>'
 def d(i): return f" d{i%3}" if i % 3 else ""
 
@@ -54,7 +55,7 @@ CAPTIONS = {
   "Contact": "One message away.",
   "Privacy": "Discretion is part of what we do.",
 }
-def hero(img, crumb, kicker, h1, lead, wa, cta="Enquire on WhatsApp", second=("membership.html", "View membership"), pos="center"):
+def hero(img, crumb, kicker, h1, lead, wa, cta="Message us on WhatsApp", second=("membership.html", "View membership"), pos="center"):
     sec = f'<a class="btn btn-line" href="{second[0]}">{second[1]} {ARROW}</a>' if second else ""
     cap = CAPTIONS.get(crumb, "")
     return f"""
@@ -146,7 +147,7 @@ def band(img, kicker, h2, lead, link=None):
   </section>
 """
 
-def closing(kicker, h2, lead, wa, small=""):
+def closing(kicker, h2, lead, wa, small="", cta="Message us on WhatsApp"):
     sm = f'<p class="small-print reveal">{small}</p>' if small else ""
     return f"""
   <section class="section closing dark">
@@ -158,7 +159,7 @@ def closing(kicker, h2, lead, wa, small=""):
       <h2 class="t-1 reveal d1">{h2}</h2>
       <p class="lead reveal d2">{lead}</p>
       <div class="btn-row reveal d3" style="justify-content:center">
-        <a class="btn btn-teal" data-wa="{E(U(wa))}" href="#">{CHAT} Enquire on WhatsApp</a>
+        <a class="btn btn-teal" data-wa="{E(U(wa))}" href="#">{CHAT} {cta}</a>
         <a class="btn btn-line" href="contact.html" style="color:#fffafa;border-color:rgba(255,250,250,.45)">Other ways to reach us</a>
       </div>
       {sm}
@@ -686,12 +687,12 @@ write("special-requests.html", "Special Requests", "Special requests at Walvis C
 """
   + intro("balloons.jpg", "For members", "A members&rsquo; <em>privilege.</em>",
     ["Special requests are part of membership. It is how we keep the attention where it belongs, and the answers fast.",
-     "Not a member yet? Message us. We will explain how membership works and what it includes."], tone="light", flip=True, alt="Balloons in the sky")
-  + closing("Special Requests", "Go on. <em>Try us.</em>", "Tell us what you are after. The stranger, the better.", "Hello Walvis, I have a special request.", "Special requests are for members."))
+     "Not a member yet? Request an invitation. We will explain how membership works and what it includes."], tone="light", flip=True, alt="Balloons in the sky")
+  + closing("Special Requests", "Go on. <em>Try us.</em>", "Tell us what you are after. The stranger, the better.", "Hello Walvis, I have a special request.", "Special requests are for members. Not a member yet? Request an invitation on WhatsApp."))
 
 # =================================================================== MEMBERSHIP
 # What membership is, what it costs (agreed on WhatsApp), what members get, personal and corporate, and how to join.
-WM_WA = "Hello Walvis, I would like to know how membership works and what it would cost for me."
+WM_WA = "Hello Walvis, I would like to request an invitation to Walvis membership."
 write("membership.html", "Membership", "How Walvis Concierge membership works: a monthly or annual membership agreed on WhatsApp, 24/7 service anywhere in Bangladesh, personal and corporate membership, and how to join.",
   f"""
   <section class="section dark on-dark wm-page" id="why-membership">
@@ -707,7 +708,7 @@ write("membership.html", "Membership", "How Walvis Concierge membership works: a
           <li class="reveal d2"><h3>Your approval first</h3><p>Nothing is bought or booked until you have said a clear yes.</p></li>
           <li class="reveal"><h3>A personal touch, always discreet</h3><p>Real people who know you, on WhatsApp or by phone. What you ask stays between us.</p></li>
         </ul>
-        <div class="btn-row reveal"><a class="btn btn-teal" data-wa="{E(WM_WA)}" href="#">{CHAT} Ask about membership</a></div>
+        <div class="btn-row reveal"><a class="btn btn-teal" data-wa="{E(WM_WA)}" href="#">{CHAT} Request an invitation</a></div>
       </div>
       <aside class="wm-side reveal d1">
         <div class="wm-card">
@@ -716,7 +717,7 @@ write("membership.html", "Membership", "How Walvis Concierge membership works: a
           <p class="wm-limited"><span class="dot"></span> Limited members</p>
           <nav class="wm-links" aria-label="On this page">
             <a href="#how">How it works {ARROW}</a><a href="#members">What members get {ARROW}</a><a href="#personal">Personal {ARROW}</a>
-            <a href="#corporate">Corporate {ARROW}</a><a href="#join">How to join {ARROW}</a><a href="terms.html">Terms {ARROW}</a>
+            <a href="#corporate">Corporate {ARROW}</a><a href="#join">Request an invitation {ARROW}</a><a href="terms.html">Terms {ARROW}</a>
           </nav>
         </div>
       </aside>
@@ -751,7 +752,7 @@ write("membership.html", "Membership", "How Walvis Concierge membership works: a
         <h2 class="t-1 reveal d1">For you <em>and your family.</em></h2>
         <p class="lead reveal d2">At home or abroad. One small team learns your tastes, remembers your dates and handles the rest, from a table tonight to your parents&rsquo; doctor visits.</p>
         <ul class="checks reveal d3"><li>Monthly or annual, one standard of care</li><li>Covers you and the family members you name</li><li>Works the same from Dhaka, Dubai or London</li></ul>
-        <div class="btn-row reveal d3"><a class="btn btn-teal" data-wa="{E('Hello Walvis, I would like to ask about personal membership.')}" href="#">{CHAT} Ask about personal membership</a></div>
+        <div class="btn-row reveal d3"><a class="btn btn-teal" data-wa="{E('Hello Walvis, I would like to request an invitation to personal membership.')}" href="#">{CHAT} Request a personal invitation</a></div>
       </div>
     </div>
   </section>
@@ -764,25 +765,25 @@ write("membership.html", "Membership", "How Walvis Concierge membership works: a
         <h2 class="t-1 reveal d1">For companies that care <em>how they are remembered.</em></h2>
         <p class="lead reveal d2">A monthly or annual membership for your company, with terms shaped around how many people we look after and what you need.</p>
         <ul class="checks reveal d3"><li>Executive support and visiting guests</li><li>Corporate gifting at Eid and year end</li><li>Travel, client dinners and staff rewards</li><li>One point of contact for your company</li></ul>
-        <div class="btn-row reveal d3"><a class="btn btn-teal" data-wa="{E('Hello Walvis, I would like to ask about corporate membership for my company.')}" href="#">{CHAT} Ask about corporate membership</a></div>
+        <div class="btn-row reveal d3"><a class="btn btn-teal" data-wa="{E('Hello Walvis, I would like to request an invitation to corporate membership for my company.')}" href="#">{CHAT} Request a corporate invitation</a></div>
       </div>
     </div>
   </section>
 
   <section class="section light" id="join" style="scroll-margin-top:70px">
     <div class="wrap">
-      <div class="head reveal"><span class="kicker">How to join</span><h2 class="t-1">Four steps, <em>all on WhatsApp.</em></h2>
-      <p class="lead">Anyone can apply, in Bangladesh or abroad. We keep the number of members small so the care stays personal, so now and then there may be a short wait.</p></div>
+      <div class="head reveal"><span class="kicker">Membership by invitation</span><h2 class="t-1">Request your <em>invitation.</em></h2>
+      <p class="lead">Membership is by invitation, and anyone can request one, in Bangladesh or abroad. We keep the circle small so the care stays personal, so now and then there may be a short wait. Four steps, all on WhatsApp.</p></div>
       <ol class="steps">
-        <li class="reveal"><h3>Message us</h3><p>Tell us who the membership is for and what you would like help with.</p></li>
+        <li class="reveal"><h3>Request an invitation</h3><p>Message us with who the membership is for and what you would like help with.</p></li>
         <li class="reveal d1"><h3>Talk it through</h3><p>A short conversation, so we understand what you need.</p></li>
         <li class="reveal d2"><h3>Your proposal</h3><p>Your monthly and annual fee, and what it covers, in writing.</p></li>
-        <li class="reveal d3"><h3>Welcome</h3><p>Once you agree and the first payment is made, your team is ready.</p></li>
+        <li class="reveal d3"><h3>Your invitation</h3><p>Once you accept and the first payment is made, you are a member and your team is ready.</p></li>
       </ol>
     </div>
   </section>
 """
-  + closing("Membership", "Ready when <em>you are.</em>", "Ask us anything about membership. A real person replies, at any hour.", WM_WA, "Membership fees are agreed on WhatsApp. See our <a href=\"terms.html\" style=\"color:inherit\">terms</a>."))
+  + closing("Membership", "Ready when <em>you are.</em>", "Request your invitation, or ask us anything about membership. A real person replies, at any hour.", WM_WA, cta=INV, small="Membership is by invitation. Fees are agreed on WhatsApp. See our <a href=\"terms.html\" style=\"color:inherit\">terms</a>."))
 
 # Membership opens on the "Why choose us" design (css/membership.css)
 mp = os.path.join(OUT, "membership.html"); mh = open(mp).read()
@@ -883,7 +884,7 @@ write("about.html", "About us", "Walvis Concierge was started in Dhaka by four f
     ("Honest about limits", "We try for everything, and say so plainly when something cannot be done."),
     ("Discretion, always", "What you ask us for stays between us."),
   ])
-  + closing("Walvis Concierge", "We would like to <em>hear from you.</em>", "Questions about membership, or about anything on this site? Message us.", "Hello Walvis, I would like to know more about membership."))
+  + closing("Walvis Concierge", "We would like to <em>hear from you.</em>", "Would you like to become a member, or have a question about anything on this site? Message us.", "Hello Walvis, I would like to request an invitation to Walvis membership.", cta=INV))
 
 # =================================================================== CONTACT
 write("contact.html", "Contact", "Contact Walvis Concierge by WhatsApp, phone or email, 24 hours a day, 7 days a week. Based in Dhaka, serving clients anywhere in Bangladesh and abroad. A real person replies.",
