@@ -72,8 +72,8 @@
   };
   M.wa = function (msg) { return typeof waLink === 'function' ? waLink(msg) : 'https://wa.me/' + (C.whatsapp || '') + '?text=' + encodeURIComponent(msg); };
   M.waAttrs = function (msg) { return 'href="' + esc(M.wa(msg)) + '" target="_blank" rel="noopener"'; };
-  M.SOURCING = 'Every piece is sourced on request through our trusted network. Walvis Concierge is not an authorised dealer of the brands shown. Prices are indicative, confirmed with you before anything is bought, and exclude import duties, taxes, registration and delivery, which we quote separately.';
-  M.sourcing = function () { return '<p class="rx-sourcing">' + esc(M.SOURCING) + '</p>'; };
+  M.SOURCING = 'Every piece is sourced on request through our trusted network. Walvis Concierge is not an authorised dealer of the brands shown. Prices are indicative, confirmed with you before anything is bought, and exclude import duties, taxes, registration and delivery, which we quote separately. Antiques, artworks, precious metals, wildlife products, aircraft, boats and vehicles may need import, export or ownership permits: we only proceed where the purchase and delivery are lawful, and permits are part of the quote. See our terms.';
+  M.sourcing = function () { return '<p class="rx-sourcing">' + esc(M.SOURCING).replace('See our terms.', '<a href="terms.html">See our terms</a>.') + '</p>'; };
   M.chat = '<svg class="i" aria-hidden="true"><use href="#i-chat"/></svg>';
   M.arrow = '<svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg>';
 

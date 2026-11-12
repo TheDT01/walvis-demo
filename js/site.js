@@ -6,7 +6,8 @@ var SITE = {
   whatsapp: '8801411267007',            // digits only, with country code
   phone: '+880 1411-267007',
   email: 'info@walvisconcierge.com',
-  city: 'Dhaka, Bangladesh',
+  city: 'Dhaka · serving all of Bangladesh',
+  hours: 'Open 24/7',
   social: { instagram: 'https://www.instagram.com/walvis_concierge/', facebook: 'https://www.facebook.com/profile.php?id=61596093557108', linkedin: 'https://www.linkedin.com/company/walvis-concierge/' },
   logo: 'images/logo/walvis-seal-160.png',
   // the menu (icon bar), in this order
@@ -15,10 +16,12 @@ var SITE = {
     { label: 'Travel', href: 'travel.html' },
     { label: 'Retail', href: 'retail/index.html' },
     { label: 'Experiences', href: 'experiences.html' },
-    { label: 'Discover Bangladesh', href: 'foreigners.html' },
-    { label: 'Concierge for Expats', href: 'expats.html' },
+    { label: 'Discover Bangladesh', href: 'discover-bangladesh.html' },
+    { label: 'Family Back Home', href: 'family-back-home.html' },
+    { label: 'Membership', href: 'membership.html' },
     { label: 'The Journal', href: 'journal.html' },
-    { label: 'About Us', href: 'about.html' }
+    { label: 'About Us', href: 'about.html' },
+    { label: 'Contact', href: 'contact.html' }
   ]
 };
 
@@ -91,18 +94,19 @@ var ASSET_V = ((document.currentScript && document.currentScript.src.match(/\?v=
       '<footer class="footer"><div class="meander" style="max-width:var(--wrap);margin:0 auto 70px"></div>' +
         '<div class="foot-top">' +
           '<div class="foot-brand"><img src="' + SITE.logo + '" alt="" width="74" height="74"><span class="caps">Walvis</span><p>From seas to mountains,<br>consider it done.</p></div>' +
-          '<div><h4>Services</h4><nav>' + SITE.menu.filter(function (m) { return m.href !== 'about.html' && m.href !== 'journal.html'; }).map(function (m) { return '<a href="' + m.href + '">' + m.label + '</a>'; }).join('') + '</nav></div>' +
+          '<div><h4>Services</h4><nav>' + SITE.menu.filter(function (m) { return !/^(about|journal|membership|contact)\.html$/.test(m.href); }).map(function (m) { return '<a href="' + m.href + '">' + m.label + '</a>'; }).join('') + '</nav></div>' +
           '<div><h4>Walvis</h4><nav><a href="membership.html">Membership</a><a href="what-we-offer.html">What we offer</a><a href="special-requests.html">Special Requests</a><a href="journal.html">The Journal</a><a href="about.html">About us</a><a href="contact.html">Contact</a></nav></div>' +
           '<div class="contact"><h4>Reach us</h4>' +
             '<a href="' + waLink() + '" target="_blank" rel="noopener">' + ic('chat') + ' WhatsApp</a>' +
             '<a href="tel:' + SITE.phone.replace(/[^+\d]/g, '') + '">' + ic('phone') + ' ' + SITE.phone + '</a>' +
             '<a href="mailto:' + SITE.email + '">' + ic('mail') + ' ' + SITE.email + '</a>' +
+            '<span>' + ic('clock') + ' ' + SITE.hours + '</span>' +
             '<span>' + ic('pin') + ' ' + SITE.city + '</span>' +
             '<div class="social">' + socials() + '</div>' +
           '</div>' +
         '</div>' +
         '<div class="foot-base"><span>© ' + new Date().getFullYear() + ' Walvis Concierge. If It’s Legal, It’s Possible.</span>' +
-          '<nav><a href="privacy.html">Privacy</a><a href="credits.html">Photo credits</a></nav></div>' +
+          '<nav><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a><a href="credits.html">Photo credits</a></nav></div>' +
       '</footer>' +
       '<a class="wa" href="' + waLink() + '" target="_blank" rel="noopener" aria-label="Message Walvis on WhatsApp">' + ic('chat') + '<span>Message us</span></a>';
   }

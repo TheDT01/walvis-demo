@@ -1,4 +1,4 @@
-/* Concierge for Expats: the statement whose letters grow as you scroll, the steps line that fills,
+/* Family Back Home: the statement whose letters grow as you scroll, the steps line that fills,
    and the trust cards that tilt under the mouse. Scroll reveals come from js/site.js. */
 (function () {
   'use strict';

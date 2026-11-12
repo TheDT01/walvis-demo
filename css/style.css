@@ -1041,3 +1041,26 @@ html.calm-glass .hero .btn-line { -webkit-backdrop-filter: none !important; back
 .contact-social { margin-top: 56px; display: grid; justify-items: center; gap: 6px; text-align: center; }
 .contact-social .social { justify-content: center; margin-top: 4px; }
 .contact-social .social a { width: auto !important; height: 46px; border-radius: 999px; padding: 0 20px 0 16px !important; display: inline-flex !important; gap: 10px; align-items: center; font-size: .8rem; letter-spacing: .14em; text-transform: uppercase; }
+
+/* =========================================================
+   v18 · review fixes
+   ========================================================= */
+/* homepage hero: say what Walvis is */
+.hero-what { margin: -4px 0 0; max-width: 34ch; font-size: clamp(.95rem, 1.5vw, 1.08rem); line-height: 1.55; color: rgba(255, 250, 250, .86); text-shadow: 0 1px 14px rgba(26, 6, 22, .6); }
+.hero .hero-what.reveal { transition-delay: .8s; }
+/* two columns: open to everyone / for members */
+.pl-handle.pl-handle-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 900px; }
+@media (max-width: 600px) { .pl-handle.pl-handle-2 { grid-template-columns: 1fr; } }
+/* readable header text on phones (at least 11px) */
+.topbar .member-btn, .member-btn { font-size: max(.7rem, 11px) !important; letter-spacing: .12em !important; }
+.menu-btn .lbl { font-size: max(.75rem, 12px); }
+@media (max-width: 380px) { .topbar .member-btn, .member-btn { padding: 0 10px !important; letter-spacing: .08em !important; } }
+/* Contact page social row wraps instead of running off a small screen */
+.contact-social .social { flex-wrap: wrap; max-width: 100%; }
+@media (max-width: 480px) { .contact-social .social a { padding: 0 14px 0 12px !important; gap: 8px; font-size: .72rem; letter-spacing: .08em; } }
+/* Journal coming soon */
+.jr-soon { display: grid; align-items: center; overflow: hidden; }
+.jr-soon .wrap { padding-top: 40px; }
+/* footer links shown only if JavaScript does not run (js/site.js replaces them with the full footer) */
+.foot-fallback { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 22px; padding: 50px 16px; background: var(--plum, #3a1035); }
+.foot-fallback a { color: #fffafa; font-size: .9rem; }

@@ -44,7 +44,8 @@ CAPTIONS = {
   "Retail": "Found, checked, and quietly delivered.",
   "Assets": "Home, kept exactly as you left it.",
   "Discover Bangladesh": "Old Dhaka, shown by people who live here.",
-  "Concierge for Expats": "The city at night, waiting for you to come home.",
+  "Family Back Home": "The city at night, waiting for you to come home.",
+  "Terms": "Clear terms, agreed before we begin.",
   "The Journal": "Every story starts with a blank page.",
   "Special Requests": "The stranger the request, the better.",
   "Membership": "A small circle, by design.",
@@ -290,7 +291,7 @@ DB_CARE = [
   ("On arrival", "Met at the airport.", "A dedicated host, a private car and a calm start to your trip."),
   ("Every day", "One personal concierge.", "One real person, reachable on WhatsApp, for your whole stay."),
   ("On the road", "Drivers and guides you can trust.", "English-speaking guides and vetted drivers who know the roads and the stories."),
-  ("At any hour", "Support, day and night.", "Medical help, lost documents, a missed flight. Message us and we act."),
+  ("24/7", "Support, day and night.", "Medical help, lost documents, a missed flight. Message us at any hour and we act."),
 ]
 DB_CARDS = [
   ("bd-coxs-bazar.jpg", "Cox's Bazar beach", "Sea and sand", "Are you a beach person?", "Cox&rsquo;s Bazar, Inani and Saint Martin&rsquo;s Island, with a sea-view resort as your base.", "#beach", "See the beach plan"),
@@ -371,14 +372,14 @@ db_chat = "".join(f'<div class="msg {w}">{m}<time>{t}</time></div>' for w, m, t 
 db_services = "".join(f"""
         <div class="pl-col reveal{d(i)}"><h3>{h}</h3><ul class="checks">{''.join(f'<li>{x}</li>' for x in xs)}</ul></div>""" for i, (h, xs) in enumerate(DB_SERVICES))
 
-write("foreigners.html", "Discover Bangladesh", "Discover Bangladesh with Walvis Concierge: visa, travel, stays and guided beach, mountain and mixed journeys, planned end to end for our international guests.",
+write("discover-bangladesh.html", "Discover Bangladesh", "Discover Bangladesh with Walvis Concierge: visas, travel, stays and guided beach, mountain and mixed journeys, planned end to end for visitors, business travellers and Bangladeshis coming home.",
   hero("bd-ahsan-manzil.jpg", "Discover Bangladesh", "Discover Bangladesh", "Arrive as a guest. <em>Leave as a friend.</em>",
     "Visas, flights, stays and journeys, planned end to end. From the moment you land to the moment you leave, our concierge team looks after every detail, so you only have to enjoy it.",
     DB_WA, cta="Plan my trip", second=("#journeys", "Choose your journey"))
   + f"""
   <section class="section dark on-dark">
     <div class="wrap">
-      <div class="head reveal"><span class="kicker">Our special care</span><h2 class="t-1">A new country should feel easy. <em>We make sure it does.</em></h2>
+      <div class="head reveal"><span class="kicker">Our special care</span><h2 class="t-1">Arriving should feel easy. <em>We make sure it does.</em></h2>
       <p class="lead">These are the things we do for every guest, without being asked, so nothing about your trip is left to chance.</p></div>
       <div class="pl-moments">{db_care}
       </div>
@@ -427,13 +428,13 @@ write("foreigners.html", "Discover Bangladesh", "Discover Bangladesh with Walvis
   + closing("Discover Bangladesh", "Planning a visit <em>to Bangladesh?</em>", "Tell us when you arrive and what you would love to see. We will send you a few ideas.", "Hello Walvis, I am planning a visit to Bangladesh and would like some ideas."))
 
 # the guest note under the hero buttons
-fp = os.path.join(OUT, "foreigners.html"); fh = open(fp).read()
+fp = os.path.join(OUT, "discover-bangladesh.html"); fh = open(fp).read()
 mk = '<a class="btn btn-line" href="#journeys">'
 i = fh.index(mk); j = fh.index("</div>", i) + 6
-fh = fh[:j] + '\n        <p class="note-small reveal d3 db-guests">This section is exclusively for our foreign concierge guests.</p>' + fh[j:]
+fh = fh[:j] + '\n        <p class="note-small reveal d3 db-guests">For international visitors, business travellers and Bangladeshis coming home.</p>' + fh[j:]
 open(fp, "w").write(fh)
 
-# =================================================================== CONCIERGE FOR EXPATS
+# =================================================================== FAMILY BACK HOME (was "Concierge for Expats", expats.html)
 # Section by section and word for word from the "Concierge for Expats" design (tools/sources/concierge-for-expats.html),
 # in the site's own theme. Page styles: css/expats.css; scroll effects: js/expats.js.
 XP_WA = "Hello Walvis, I live abroad and would like help for my family in Bangladesh."
@@ -449,7 +450,7 @@ XP_ARRANGE = [
   ("Special occasions", ["Surprise birthdays and anniversaries", "Eid and Pohela Boishakh celebrations", "Aqiqah and graduations", "Small weddings and family gatherings"]),
   ("Gifting", ["Curated gifts, wrapped and delivered", "Flowers and sweets from trusted shops", "Iftar hampers and Eid clothing", "Qurbani coordination through a trusted source"]),
   ("Parents&rsquo; care", ["Regular check-in visits", "Escort to doctor appointments", "Pharmacy delivery", "Coordination with hospitals and caregivers (we coordinate; we do not give medical advice)"]),
-  ("Family trips", ["Private-car packages", "Our Sundarbans plan", "Our Sylhet plan", "Designed for families and solo travelers"]),
+  ("Family trips", ["Private-car trips anywhere in Bangladesh", "Sundarbans and Sylhet journeys, planned around your family", "Hotels, guides and drivers arranged", "For families and solo travellers"]),
   ("Visits home", ["VIP airport pickup", "SIM card and a driver", "Hotel or home preparation", "A custom itinerary"]),
   ("Errands", ["Document pickup and delivery", "Bill payments", "Home repairs", "Household tasks through trusted partners"]),
 ]
@@ -463,16 +464,16 @@ XP_WHY = [
   ("Trust", "We vet every vendor, driver and guide, and keep the same team on a family&rsquo;s requests."),
   ("Proof of delivery", "Photos, short videos or a live video call, so you see the moment."),
   ("One point of contact", "One WhatsApp number instead of chasing ten people."),
-  ("Time-zone friendly", "Updates timed for your evening, with urgent requests handled fast."),
+  ("Open 24/7", "Message us at any hour, from any time zone. Someone is always there to answer."),
   ("Luxury and care", "Elegant presentation, thoughtful details and respect for elderly family members."),
   ("Backup plans", "A second option ready if a vendor, car or venue falls through."),
-  ("Privacy", "Family details stay confidential and are used only to deliver your request."),
-  ("Transparent pricing", "A clear quote before any work starts, with no surprise add-ons."),
+  ("Privacy", "Family details, including health and medicine details, stay confidential and are used only for your request."),
+  ("Clear pricing", "A monthly membership agreed before you start, and every purchase quoted and approved first."),
 ]
 XP_STEPS = [
   ("Request", "Send a message with the occasion, date, budget and your loved one&rsquo;s details."),
-  ("Plan", "We reply within an agreed time with a plan and a price."),
-  ("Approve", "You confirm and pay by the agreed method."),
+  ("Plan", "We reply with a plan and a price, at any hour."),
+  ("Approve", "You confirm and pay, from wherever you live."),
   ("Deliver", "Our team runs it on the ground, with photos or video."),
   ("Follow-up", "We check how it went and save the family&rsquo;s preferences for next time."),
 ]
@@ -486,9 +487,9 @@ xp_why = "".join(f"""
 xp_steps = "".join(f"""
         <li class="xp-step reveal"><span class="xp-num" aria-hidden="true">{i + 1}</span><div><h3>{t}</h3><p>{x}</p></div></li>""" for i, (t, x) in enumerate(XP_STEPS))
 
-write("expats.html", "Concierge for Expats", "Concierge services for expats: caring for your loved ones in Bangladesh, while you are away. Special occasions, gifting, parents' care, family trips, visits home and errands.",
-  hero("bd-hatirjheel-night.jpg", "Concierge for Expats", "Concierge services | Bangladesh", "Concierge Services <em>for Expats.</em>",
-    "Caring for your loved ones in Bangladesh, while you are away.",
+write("family-back-home.html", "Family Back Home", "Family Back Home by Walvis Concierge: for Bangladeshis living abroad. Special occasions, gifting, parents' care, family trips, visits home and errands, anywhere in Bangladesh, 24/7.",
+  hero("bd-hatirjheel-night.jpg", "Family Back Home", "For Bangladeshis living abroad", "Your family back home, <em>looked after.</em>",
+    "Caring for your loved ones anywhere in Bangladesh while you live abroad. One WhatsApp message, answered 24/7.",
     XP_WA, cta="Send your first request", second=("#how", "See how it works"))
   + f"""
   <section class="section light" id="about">
@@ -532,13 +533,13 @@ write("expats.html", "Concierge for Expats", "Concierge services for expats: car
       <div class="copy">
         <span class="kicker reveal">How it feels</span>
         <h2 class="t-1 reveal d1">One message. <em>Then it&rsquo;s done.</em></h2>
-        <p class="lead reveal d2">No forms, no phone tag across time zones. Write to us the way you would write to a friend at home, and we reply with a plan and proof.</p>
+        <p class="lead reveal d2">No forms, no phone tag across time zones, and someone answers at any hour. Write to us the way you would write to a friend at home, and we reply with a plan and proof.</p>
         <div class="btn-row reveal d3"><a class="btn btn-teal" data-wa="{E(XP_WA)}" href="#">{CHAT} Send your first request</a></div>
       </div>
       <div class="media reveal">
         <div class="phone">
           <div class="screen">
-            <div class="chat-top"><img src="images/logo/walvis-seal-96.png" alt=""><div><b>Walvis Concierge</b><small>Usually replies within the hour</small></div></div>
+            <div class="chat-top"><img src="images/logo/walvis-seal-96.png" alt=""><div><b>Walvis Concierge</b><small>Available 24/7</small></div></div>
             <div class="chat-body">{xp_chat}</div>
           </div>
         </div>
@@ -568,7 +569,7 @@ write("expats.html", "Concierge for Expats", "Concierge services for expats: car
     <div class="wrap"><div class="copy on-dark">
       <span class="kicker reveal">A special touch</span>
       <h2 class="t-1 reveal d1">The Occasion <em>Calendar.</em></h2>
-      <p class="lead reveal d2">We remind you of birthdays, anniversaries and Eid dates in advance and offer a ready-made package for each, so you never miss a moment.</p>
+      <p class="lead reveal d2">We remind you of birthdays, anniversaries and Eid dates in advance and suggest a gift or a plan for each, ready for you to approve, so you never miss a moment.</p>
       <div class="xp-chips reveal d3"><span>Birthdays</span><span>Anniversaries</span><span>Eid dates</span></div>
     </div></div>
   </section>
@@ -577,15 +578,14 @@ write("expats.html", "Concierge for Expats", "Concierge services for expats: car
     <div class="ocean faint" aria-hidden="true"><canvas class="sea" data-mode="faint"></canvas></div>
     <div class="wrap xp-summary">
       <div class="xp-split">
-        <h2 class="t-1 reveal">In <em>summary.</em></h2>
+        <h2 class="t-1 reveal">Stay close, <em>from anywhere.</em></h2>
         <div class="reveal d1">
-          <p class="xp-big">Expats should not have to choose between a busy life abroad and caring for family at home. Our concierge service gives you one trusted team that plans, delivers and proves every special moment, from birthdays and Eid gifts to parents&rsquo; care and family trips.</p>
-          <p>With vetted partners, clear pricing, backup plans and updates timed to your day, we remove the stress and uncertainty of long-distance arrangements. Let us handle the rest.</p>
-          <p>Send us your first request, and we will take care of the people you love as if they were our own.</p>
+          <p class="xp-big">One trusted team in Bangladesh plans, delivers and shows you every special moment, from birthdays and Eid gifts to parents&rsquo; care and family trips.</p>
+          <p>Send us your first request. We will look after the people you love as if they were our own.</p>
         </div>
       </div>
       <dl class="xp-contact reveal">
-        <div><dt>Concierge</dt><dd>Walvis Concierge, Dhaka</dd></div>
+        <div><dt>Concierge</dt><dd>Walvis Concierge, Dhaka &middot; serving all of Bangladesh, 24/7</dd></div>
         <div><dt>Phone / WhatsApp</dt><dd><a data-wa="{E(XP_WA)}" href="#">+880 1411-267007</a></dd></div>
         <div><dt>Email</dt><dd><a href="mailto:info@walvisconcierge.com">info@walvisconcierge.com</a></dd></div>
       </dl>
@@ -593,14 +593,29 @@ write("expats.html", "Concierge for Expats", "Concierge services for expats: car
     </div>
   </section>
 """)
-xp = os.path.join(OUT, "expats.html"); xh = open(xp).read()
+xp = os.path.join(OUT, "family-back-home.html"); xh = open(xp).read()
 xh = xh.replace('<link rel="stylesheet" href="css/style.css">', '<link rel="stylesheet" href="css/style.css">\n  <link rel="stylesheet" href="css/expats.css">', 1)
 xh = xh.replace('<script src="js/site.js"></script>', '<script src="js/site.js"></script>\n  <script src="js/expats.js"></script>', 1)
 open(xp, "w").write(xh)
 
 # =================================================================== THE JOURNAL
-# journal.html is hand-made (css/journal.css, js/journal.js, js/journal-front.js) and is not generated here.
-# Its stories, sections and calendar live in js/journal-data.js.
+# Until real stories are written, journal.html is a short "coming soon" page.
+# The full Journal design is kept in tools/sources/journal-full.html (with css/journal.css and the js/journal-*.js files);
+# to bring it back, copy that file over journal.html and stop writing the page below.
+write("journal.html", "The Journal", "The Walvis Journal is coming soon: stories on travel, collecting, food, style and life in Bangladesh, written by the Walvis team.",
+  f"""
+  <section class="section dark on-dark wm-page jr-soon">
+    <div class="ocean faint" aria-hidden="true"><canvas class="sea" data-mode="faint"></canvas></div>
+    <div class="wrap narrow" style="text-align:center;position:relative">
+      <img class="seal reveal" src="images/logo/walvis-seal-180.png" alt="" width="92" height="92" style="margin:0 auto 26px">
+      <span class="kicker reveal">The Journal</span>
+      <h1 class="t-1 reveal d1">Coming <em>soon.</em></h1>
+      <p class="lead reveal d2" style="margin-left:auto;margin-right:auto">We are writing our first stories on travel, collecting, food, style and life in Bangladesh. Follow us on Instagram, Facebook or LinkedIn to read them first.</p>
+      <div class="contact-social reveal d3" style="margin-top:30px"><div class="social" data-socials></div></div>
+      <div class="btn-row reveal d3" style="justify-content:center;margin-top:34px"><a class="btn btn-teal" data-wa="{E('Hello Walvis, please tell me when The Journal is published.')}" href="#">{CHAT} Tell me when it&rsquo;s out</a><a class="btn btn-line" href="index.html" style="color:#fffafa;border-color:rgba(255,250,250,.45)">Back to home</a></div>
+    </div>
+  </section>
+""")
 
 # old Portal links forward to The Journal
 open(os.path.join(OUT, "portal.html"), "w").write("""<!doctype html>
@@ -622,7 +637,7 @@ write("special-requests.html", "Special Requests", "Special requests at Walvis C
   </section>
 """
   + principles("Our promise", "Straight answers, <em>real options.</em>", [
-    ("Options within 24 hours", "Two or three ways to do it, each clearly explained, so you can choose with confidence."),
+    ("Answered 24/7, options within 24 hours", "Someone replies at any hour. Two or three ways to do it follow within a day, each clearly explained."),
     ("Your approval first", "Nothing is bought, booked or paid for until you have said yes."),
     ("An honest effort", "We cannot promise the impossible. We can promise to try properly and tell you exactly where things stand."),
   ])
@@ -647,57 +662,158 @@ write("special-requests.html", "Special Requests", "Special requests at Walvis C
   + closing("Special Requests", "Go on. <em>Try us.</em>", "Tell us what you are after. The stranger, the better.", "Hello Walvis, I have a special request.", "Special requests are for members."))
 
 # =================================================================== MEMBERSHIP
-write("membership.html", "Membership", "Why choose Walvis Concierge: one standard for every member, options within 24 hours, your approval first and a personal, discreet touch.",
+# What membership is, what it costs (agreed on WhatsApp), what members get, personal and corporate, and how to join.
+WM_WA = "Hello Walvis, I would like to know how membership works and what it would cost for me."
+write("membership.html", "Membership", "How Walvis Concierge membership works: a monthly or annual membership agreed on WhatsApp, 24/7 service anywhere in Bangladesh, personal and corporate membership, and how to join.",
   f"""
   <section class="section dark on-dark wm-page" id="why-membership">
     <div class="wrap wm-grid">
       <div class="wm-main">
         <span class="kicker reveal">Membership</span>
-        <h1 class="t-1 reveal d1">Why choose <em>us.</em></h1>
-        <p class="lead reveal d2">Walvis is a small circle, known by name. One team learns your tastes, remembers your dates and handles the rest, so <strong>you only ever have to ask.</strong></p>
-        <p class="wm-found reveal">Here you&rsquo;ll find:</p>
+        <h1 class="t-1 reveal d1">One team, <em>on call for you.</em></h1>
+        <p class="lead reveal d2">Walvis works on a <strong>monthly membership</strong>, paid each month or once a year. Your fee depends on what you need from us, so we agree it with you on WhatsApp before you join. Then a small team looks after you, 24/7, anywhere in Bangladesh.</p>
+        <p class="wm-found reveal">Why members choose us:</p>
         <ul class="wm-points">
           <li class="reveal"><h3>One standard, for every member</h3><p>No paid tiers of service. Every personal member receives the same care.</p></li>
-          <li class="reveal d1"><h3>Options within 24 hours</h3><p>For special requests, two or three ways to do it arrive within a day.</p></li>
+          <li class="reveal d1"><h3>Open 24/7</h3><p>Someone answers at any hour. For special requests, two or three options arrive within a day.</p></li>
           <li class="reveal d2"><h3>Your approval first</h3><p>Nothing is bought or booked until you have said a clear yes.</p></li>
           <li class="reveal"><h3>A personal touch, always discreet</h3><p>Real people who know you, on WhatsApp or by phone. What you ask stays between us.</p></li>
         </ul>
-        <div class="btn-row reveal"><a class="btn btn-teal" data-wa="{E('Hello Walvis, I would like to start my Walvis journey and learn about membership.')}" href="#">{CHAT} Start your Walvis journey</a></div>
+        <div class="btn-row reveal"><a class="btn btn-teal" data-wa="{E(WM_WA)}" href="#">{CHAT} Ask about membership</a></div>
       </div>
       <aside class="wm-side reveal d1">
         <div class="wm-card">
           <img class="wm-seal" src="images/logo/walvis-seal-96.png" alt="" width="54" height="54">
-          <span class="kicker">Memberships</span>
+          <span class="kicker">On this page</span>
           <p class="wm-limited"><span class="dot"></span> Limited members</p>
-          <nav class="wm-links" aria-label="Walvis Concierge services">
-            <a href="lifestyle.html">Personal Lifestyle {ARROW}</a><a href="travel.html">Travel {ARROW}</a><a href="retail.html">Retail {ARROW}</a><a href="experiences.html">Experiences {ARROW}</a>
-            <a href="foreigners.html">Discover Bangladesh {ARROW}</a><a href="expats.html">Concierge for Expats {ARROW}</a><a href="journal.html">The Journal {ARROW}</a>
+          <nav class="wm-links" aria-label="On this page">
+            <a href="#how">How it works {ARROW}</a><a href="#members">What members get {ARROW}</a><a href="#personal">Personal {ARROW}</a>
+            <a href="#corporate">Corporate {ARROW}</a><a href="#join">How to join {ARROW}</a><a href="terms.html">Terms {ARROW}</a>
           </nav>
         </div>
       </aside>
     </div>
   </section>
 """
-)
+  + principles("How it works", "Membership, <em>simply explained.</em>", [
+    ("A monthly membership", "Paid each month, or once a year if you prefer. There are no paid tiers: every personal member gets the same care."),
+    ("A fee agreed with you", "Your fee depends on who we look after and what you need. We talk it through on WhatsApp and confirm it in writing before you join."),
+    ("Purchases approved first", "Anything we buy or book for you, such as tickets, gifts, hotels or pieces, is quoted separately. Nothing is paid until you say yes."),
+    ("Pay from anywhere", "When you join, we agree how you pay, whether you live in Bangladesh or abroad."),
+    ("Anywhere in Bangladesh", "Dhaka is our base. We also look after members and their families across the country, through people we trust."),
+    ("Stop when you like", "Membership ends at the close of any paid month or year. Fees already paid are not refunded. Our <a class=\"link\" style=\"padding:0;border:0\" href=\"terms.html\">terms</a> explain the details."),
+  ], tone="light")
+  + f"""
+  <section class="section mist" id="members" style="scroll-margin-top:70px">
+    <div class="wrap">
+      <div class="head reveal"><span class="kicker">What members get</span><h2 class="t-1">Open to everyone, <em>and more for members.</em></h2>
+      <p class="lead">Anyone can ask us to plan a journey, find a piece or send a gift. Members get a team that knows them, and the requests that need one.</p></div>
+      <div class="pl-handle pl-handle-2">
+        <div class="pl-col reveal"><h3>Open to everyone</h3><ul class="checks"><li>Travel planning and bookings</li><li>Experiences and celebrations</li><li>Pieces from The Walvis Promenade</li><li>Gifts and flowers</li><li>Discover Bangladesh, for visitors</li></ul></div>
+        <div class="pl-col reveal d1"><h3>For members</h3><ul class="checks"><li>Special requests, however unusual</li><li>One small team that knows you by name</li><li>Your dates, tastes and preferences remembered</li><li>Reminders before every birthday, anniversary and Eid</li><li>Care for your family back home, if you live abroad</li></ul></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section light" id="personal" style="scroll-margin-top:70px">
+    <div class="wrap split">
+      <div class="media reveal"><div class="mask"><img src="images/lux-candlelight.jpg" alt="Candlelit room" loading="lazy"></div><span class="frame"></span></div>
+      <div class="copy">
+        <span class="kicker reveal">Personal membership</span>
+        <h2 class="t-1 reveal d1">For you <em>and your family.</em></h2>
+        <p class="lead reveal d2">At home or abroad. One small team learns your tastes, remembers your dates and handles the rest, from a table tonight to your parents&rsquo; doctor visits.</p>
+        <ul class="checks reveal d3"><li>Monthly or annual, one standard of care</li><li>Covers you and the family members you name</li><li>Works the same from Dhaka, Dubai or London</li></ul>
+        <div class="btn-row reveal d3"><a class="btn btn-teal" data-wa="{E('Hello Walvis, I would like to ask about personal membership.')}" href="#">{CHAT} Ask about personal membership</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section mist" id="corporate" style="scroll-margin-top:70px">
+    <div class="wrap split flip">
+      <div class="media reveal"><div class="mask"><img src="images/lux-skyline-night.jpg" alt="City skyline at night" loading="lazy"></div><span class="frame"></span></div>
+      <div class="copy">
+        <span class="kicker reveal">Corporate membership</span>
+        <h2 class="t-1 reveal d1">For companies that care <em>how they are remembered.</em></h2>
+        <p class="lead reveal d2">A monthly or annual membership for your company, with terms shaped around how many people we look after and what you need.</p>
+        <ul class="checks reveal d3"><li>Executive support and visiting guests</li><li>Corporate gifting at Eid and year end</li><li>Travel, client dinners and staff rewards</li><li>One point of contact for your company</li></ul>
+        <div class="btn-row reveal d3"><a class="btn btn-teal" data-wa="{E('Hello Walvis, I would like to ask about corporate membership for my company.')}" href="#">{CHAT} Ask about corporate membership</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section light" id="join" style="scroll-margin-top:70px">
+    <div class="wrap">
+      <div class="head reveal"><span class="kicker">How to join</span><h2 class="t-1">Four steps, <em>all on WhatsApp.</em></h2>
+      <p class="lead">Anyone can apply, in Bangladesh or abroad. We keep the number of members small so the care stays personal, so now and then there may be a short wait.</p></div>
+      <ol class="steps">
+        <li class="reveal"><h3>Message us</h3><p>Tell us who the membership is for and what you would like help with.</p></li>
+        <li class="reveal d1"><h3>Talk it through</h3><p>A short conversation, so we understand what you need.</p></li>
+        <li class="reveal d2"><h3>Your proposal</h3><p>Your monthly and annual fee, and what it covers, in writing.</p></li>
+        <li class="reveal d3"><h3>Welcome</h3><p>Once you agree and the first payment is made, your team is ready.</p></li>
+      </ol>
+    </div>
+  </section>
+"""
+  + closing("Membership", "Ready when <em>you are.</em>", "Ask us anything about membership. A real person replies, at any hour.", WM_WA, "Membership fees are agreed on WhatsApp. See our <a href=\"terms.html\" style=\"color:inherit\">terms</a>."))
 
 # Membership opens on the "Why choose us" design (css/membership.css)
 mp = os.path.join(OUT, "membership.html"); mh = open(mp).read()
 open(mp, "w").write(mh.replace('<link rel="stylesheet" href="css/style.css">', '<link rel="stylesheet" href="css/style.css">\n  <link rel="stylesheet" href="css/membership.css">', 1))
+
+# =================================================================== TERMS
+# Plain-language terms of service. Draft: to be checked by a lawyer in Bangladesh before relying on it.
+TERMS = [
+  ("About these terms", ["These terms apply whenever Walvis Concierge (&ldquo;Walvis&rdquo;, &ldquo;we&rdquo;) arranges something for you, whether you are a member or not. By asking us to go ahead with a request, you agree to them. Walvis is based in Dhaka and serves clients across Bangladesh and abroad."]),
+  ("Membership and fees", ["Membership is paid monthly or annually, in advance. Your fee is agreed with you on WhatsApp and confirmed in writing before you join.",
+    "Membership fees are not refundable once a month or year has started. You can stop at any time, and your membership ends at the close of the period you have paid for.",
+    "We may change a fee for future periods. We will tell you at least 30 days before, and you can stop before the new fee applies."]),
+  ("Quotes and your approval", ["For anything we buy or book on your behalf, we send you a quote first. Nothing is bought, booked or paid for until you have clearly approved it.",
+    "Quotes can change with availability, exchange rates, duties and taxes. If a price changes before we commit, we ask you again."]),
+  ("Payment, deposits and third-party costs", ["The cost of goods and services from hotels, airlines, shops and other providers is separate from your membership fee and is usually paid in advance.",
+    "Deposits we pay for you are held by the provider under their own terms. Many are non-refundable. We tell you before you approve if a deposit cannot be returned."]),
+  ("Cancellations and refunds", ["If you cancel something we have booked, the provider&rsquo;s own cancellation rules apply. Any refund the provider gives is passed on to you in full.",
+    "Work we have already done on a request, and membership fees already paid, are not refunded."]),
+  ("When a provider lets you down", ["We choose providers carefully and keep a second option ready where we can. If a provider fails, we work to put it right quickly: a replacement, a refund claim on your behalf, or the next best thing.",
+    "Providers are responsible for their own goods and services. To the extent the law allows, Walvis is not liable for a provider&rsquo;s failure, delay or loss, and our total liability for any request is limited to the fees you paid us for it. Nothing in these terms limits liability that cannot be limited by law."]),
+  ("If it&rsquo;s legal, it&rsquo;s possible", ["We only arrange what is legal in Bangladesh and wherever the request is carried out. We may decline any request, and we will tell you why where we can.",
+    "Some items, such as antiques, artworks, precious metals, wildlife products, aircraft, boats and vehicles, need import, export or ownership permits. We only proceed where the purchase and delivery are lawful, and duties, taxes and permits are part of the quote."]),
+  ("The Walvis Promenade", ["Pieces shown in The Walvis Promenade are examples of what we can source on request. Walvis is not an authorised dealer of the brands shown. Prices are indicative and confirmed with you before anything is bought."]),
+  ("Your part", ["Please give us accurate details and documents, and tell us about anything that matters, such as allergies, health needs or access needs. We cannot be responsible for problems caused by incorrect information."]),
+  ("Your information", ["We handle your information as our <a class=\"link\" style=\"padding:0;border:0\" href=\"privacy.html\">privacy policy</a> explains."]),
+  ("Law and changes", ["These terms are governed by the laws of Bangladesh. We may update them; the date below shows the latest version, and the version in force when you approved a request applies to it."]),
+  ("Questions", ["Message us on WhatsApp, call +880 1411-267007 or email <a class=\"link\" style=\"padding:0;border:0\" href=\"mailto:info@walvisconcierge.com\">info@walvisconcierge.com</a>."]),
+]
+terms_body = "".join(f'<h3 class="t-3" style="margin:44px 0 12px">{h}</h3>' + "".join(f'<p style="color:var(--ink-soft)">{p}</p>' for p in ps) for h, ps in TERMS)
+write("terms.html", "Terms", "Walvis Concierge terms of service: membership fees, quotes and approval, deposits, cancellations and refunds, provider failures and liability.",
+  hero("handwritten-note.jpg", "Terms", "Terms of service", "Clear terms, <em>simply put.</em>",
+    "How membership, payments, cancellations and refunds work, in plain language.", "Hello Walvis, I have a question about your terms.", cta="Ask us", second=None)
+  + f'\n  <section class="section light"><div class="wrap narrow"><p class="note-small" style="text-align:left">Last updated: November 2026</p>{terms_body}</div></section>\n')
+
+# old addresses forward to the new ones
+def forward(old, new, label):
+    open(os.path.join(OUT, old), "w").write(f"""<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>{label} · Walvis Concierge</title>
+<meta http-equiv="refresh" content="0; url={new}"><link rel="canonical" href="https://walvisconcierge.com/{new}">
+<script>location.replace('{new}' + location.hash)</script></head>
+<body><p><a href="{new}">{label}</a></p></body></html>
+""")
+forward("expats.html", "family-back-home.html", "Family Back Home")
+forward("foreigners.html", "discover-bangladesh.html", "Discover Bangladesh")
 
 # =================================================================== WHAT WE OFFER
 areas = [
   ("lifestyle.html", "pl-flowers-hero.jpg", "Personal Lifestyle", "Your life, lighter", "Flowers, cakes and gifts sent in your name, dates remembered and errands handled."),
   ("experiences.html", "lux-place-setting.jpg", "Experiences", "Beyond the expected", "Private celebrations, exceptional journeys, the private table, rare access, retreats and collections."),
   ("travel.html", "lux-private-jet.jpg", "Travel", "You pack. We plan.", "Private aviation, yachts, grand hotels, honeymoons, Umrah and Hajj, Bangladesh privately and the great cities."),
-  ("retail.html", "lux-pocket-watch.jpg", "Retail", "The Collection", "Jewellery, timepieces, heritage crafts, fragrance, home and art, found for you."),
+  ("retail/index.html", "lux-pocket-watch.jpg", "Retail", "The Walvis Promenade", "Jets, cars and yachts, art, timepieces, jewellery and heritage crafts, sourced on request."),
   ("assets.html", "lux-villa-evening.jpg", "Assets", "What you own, looked after", "Homes, vehicles, renewals and staff, especially when you live abroad."),
-  ("foreigners.html", "bd-ahsan-manzil.jpg", "Discover Bangladesh", "Arrive as a guest", "Visas, stays and beach, mountain or mixed journeys, planned end to end."),
-  ("expats.html", "bd-hatirjheel-night.jpg", "Concierge for Expats", "While you are away", "Caring for your loved ones in Bangladesh: occasions, gifts, parents’ care and visits home."),
+  ("discover-bangladesh.html", "bd-ahsan-manzil.jpg", "Discover Bangladesh", "Arrive as a guest", "Visas, stays and beach, mountain or mixed journeys, for visitors and Bangladeshis coming home."),
+  ("family-back-home.html", "bd-hatirjheel-night.jpg", "Family Back Home", "While you are away", "For Bangladeshis abroad: occasions, gifts, parents’ care and visits home, anywhere in Bangladesh."),
   ("special-requests.html", "lux-superyacht.jpg", "Special requests", "If it&rsquo;s legal, ask", "The unusual, the last-minute and everything in between. For members."),
-  ("membership.html", "lux-candlelight.jpg", "Membership", "Personal &amp; Corporate", "One standard for every personal member. Terms tailored for companies."),
+  ("membership.html", "lux-candlelight.jpg", "Membership", "Personal &amp; Corporate", "A monthly or annual membership, agreed on WhatsApp. One standard of care, 24/7."),
 ]
 tiles = "".join(f'<a class="tile reveal{d(i)}" href="{h}" style="aspect-ratio:4/5"><img src="images/{img}" alt="" loading="lazy"><span class="go">{ARROW}</span><span class="k">{k}</span><h3>{t}</h3><p>{x}</p></a>' for i, (h, img, k, t, x) in enumerate(areas))
-write("what-we-offer.html", "What we offer", "Everything Walvis Concierge arranges: lifestyle, travel, The Collection, assets, Discover Bangladesh, Concierge for Expats, special requests and membership.",
+write("what-we-offer.html", "What we offer", "Everything Walvis Concierge arranges, 24/7 and anywhere in Bangladesh: lifestyle, travel, The Walvis Promenade, assets, Discover Bangladesh, Family Back Home, special requests and membership.",
   hero("lux-glass-dome.jpg", "What we offer", "What we offer", "One message <em>covers it all.</em>",
     "The finest of Bangladesh, thoughtful gifting, evenings to remember and travel planned end to end. Choose where to begin, or simply tell us what is on your mind.",
     "Hello Walvis, I would like to know more about what you offer.", second=("membership.html", "View membership"))
@@ -742,19 +858,19 @@ write("about.html", "About us", "Walvis Concierge was started in Dhaka by four f
   + closing("Walvis Concierge", "We would like to <em>hear from you.</em>", "Questions about membership, or about anything on this site? Message us.", "Hello Walvis, I would like to know more about membership."))
 
 # =================================================================== CONTACT
-write("contact.html", "Contact", "Contact Walvis Concierge in Dhaka by WhatsApp, phone or email. A real person replies.",
+write("contact.html", "Contact", "Contact Walvis Concierge by WhatsApp, phone or email, 24 hours a day, 7 days a week. Based in Dhaka, serving clients anywhere in Bangladesh and abroad. A real person replies.",
   hero("handwritten-note.jpg", "Contact", "Contact", "A real person <em>replies.</em>",
-    "WhatsApp is the quickest way to reach us. Prefer a call or an email? Those work too.", "Hello Walvis, I would like to get in touch.", cta="WhatsApp us", second=None)
+    "We are open 24/7. WhatsApp is the quickest way to reach us. Prefer a call or an email? Those work too.", "Hello Walvis, I would like to get in touch.", cta="WhatsApp us", second=None)
   + f"""
   <section class="section light">
     <div class="wrap">
       <div class="principles">
-        <div class="reveal"><span class="kicker">WhatsApp</span><h3><a data-wa="Hello Walvis, I would like to get in touch." href="#">Message us</a></h3><p>The quickest way to reach us, for anything at all.</p></div>
+        <div class="reveal"><span class="kicker">WhatsApp</span><h3><a data-wa="Hello Walvis, I would like to get in touch." href="#">Message us</a></h3><p>The quickest way to reach us, for anything at all, 24/7.</p></div>
         <div class="reveal d1"><span class="kicker">Phone</span><h3><a href="tel:+8801411267007">+880 1411-267007</a></h3><p>Call or leave a voice note on WhatsApp.</p></div>
         <div class="reveal d2"><span class="kicker">Email</span><h3><a href="mailto:info@walvisconcierge.com" style="word-break:break-all">info@walvisconcierge.com</a></h3><p>For introductions, companies and anything long.</p></div>
       </div>
       <div class="contact-social reveal"><span class="kicker">Follow Walvis</span><div class="social" data-socials></div></div>
-      <p class="limited reveal" style="margin-top:60px"><span class="dot"></span> Based in Dhaka, Bangladesh. Working wherever our members travel.</p>
+      <p class="limited reveal" style="margin-top:60px"><span class="dot"></span> Open 24/7. Based in Dhaka, serving clients anywhere in Bangladesh and abroad.</p>
     </div>
   </section>
 """)
@@ -785,14 +901,13 @@ for fn in os.listdir(OUT):
     if fn.endswith(".html"): used |= set(re.findall(r'images/([a-z0-9-]+\.jpg)', open(os.path.join(OUT, fn)).read()))
 for fn in ["js/travel-refresh.js", "css/experiences.css"]:
     if os.path.exists(os.path.join(OUT, fn)): used |= set(re.findall(r'images/([a-z0-9-]+\.jpg)', open(os.path.join(OUT, fn)).read()))
-# The Journal names its photos in js/journal-data.js (img: 'file.jpg', or 'travel-ref/file.jpg')
-used |= set(re.findall(r"img: '([a-z0-9/-]+\.jpg)'", open(os.path.join(OUT, "js/journal-data.js")).read()))
+# The Journal is "coming soon": its photos (named in js/journal-data.js) are credited again when it returns
 # The Walvis Promenade (retail/) credits its own photos on retail/credits.html
 # the Travel page keeps its own photos in images/travel-ref/
 for fn in ["travel.html", "js/travel-refresh.js"]:
     used |= {"travel-ref/" + f for f in re.findall(r'images/travel-ref/([a-z0-9-]+\.jpg)', open(os.path.join(OUT, fn)).read())}
 rows = "".join(f'<tr><td>{E(f)}</td><td>{E(t) or "&mdash;"}</td><td>{E(c.replace("%20"," ").replace("%u0144","ń"))}</td><td>{E(l)}</td><td><a class="link" style="padding:0;border:0" href="{E(s)}" target="_blank" rel="noopener">Source</a></td></tr>' for f, t, c, l, s in creds if f in used)
-write("credits.html", "Photo credits", "Photo credits for the Walvis Concierge website.",
+write("credits.html", "Photo credits", "Photo credits for the Walvis Concierge website: the photographers, titles and licences of the images used across our pages.",
   f"""
   <section class="section dark" style="padding-top:170px">
     <div class="wrap">

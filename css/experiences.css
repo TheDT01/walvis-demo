@@ -140,3 +140,9 @@ html.js .exp-discover [data-discover-period] { display: inline-block; opacity: 0
 .page-click-fish .click-fish-tail { transform-box: fill-box; transform-origin: right center; animation: fish-tail-beat .55s ease-in-out infinite alternate; }
 @keyframes fish-tail-beat { from { transform: rotate(-13deg); } to { transform: rotate(13deg); } }
 @media (prefers-reduced-motion: reduce) { .page-click-fish { animation: none; display: none; } }
+/* v18 · review fixes: brand font for "Discover", a shorter scroll scene, readable card lines */
+.exp-discover__title { font-family: var(--caps), var(--serif); font-weight: 600; }
+.exp-discover { min-height: 170svh; }
+.exp-approach { margin-top: -45svh; }
+@media (max-width: 680px) { .exp-discover { min-height: 140svh; } .exp-approach { margin-top: -30svh; } }
+.exp-item summary > small { font-size: .95rem; letter-spacing: .02em; color: #7fd6d2; }

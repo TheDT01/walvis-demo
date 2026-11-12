@@ -8,16 +8,16 @@
   // Increasing a start value makes that part begin later; increasing a duration
   // makes it take longer. Word start values are staggered by WORD_STAGGER.
   var TIMING = {
-    WORD_START: 0.05,             // First word: Discover
-    WORD_STAGGER: 0.12,           // Delay between Discover / the / Extraordinary
+    WORD_START: 0.02,             // First word: Discover
+    WORD_STAGGER: 0.08,           // Delay between Discover / the / Extraordinary
     WORD_REVEAL_DURATION: 0.075,  // Scroll distance used to lift each word into view
     PERIOD_REVEAL_OFFSET: 0.035,  // Delay before the final punctuation appears
     PERIOD_REVEAL_DURATION: 0.035, // Scroll distance for the punctuation pop
-    TITLE_FADE_START: 0.52,       // When the full title starts fading away
+    TITLE_FADE_START: 0.74,       // When the full title starts fading away
     TITLE_FADE_DURATION: 0.1,     // Longer duration = slower title fade
-    MOTTO_FADE_IN_START: 0.36,    // “Rare by nature. Personal by design.” fade-in start
+    MOTTO_FADE_IN_START: 0.3,    // “Rare by nature. Personal by design.” fade-in start
     MOTTO_FADE_IN_DURATION: 0.09, // Longer duration = slower motto fade-in
-    MOTTO_FADE_OUT_START: 0.6,    // Motto fade-out start
+    MOTTO_FADE_OUT_START: 0.8,    // Motto fade-out start
     MOTTO_FADE_OUT_DURATION: 0.08, // Longer duration = slower motto fade-out
     APPROACH_CENTER_PROGRESS: 0.98, // Scroll progress where the approach reaches the middle
     APPROACH_HIGHLIGHT_TRANSITION_MS: 450, // Highlight-in/out transition; keep in sync with CSS
