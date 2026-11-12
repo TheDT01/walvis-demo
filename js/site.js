@@ -7,8 +7,7 @@ var SITE = {
   phone: '+880 1411-267007',
   email: 'info@walvisconcierge.com',
   city: 'Dhaka, Bangladesh',
-  // Instagram and Facebook point at the launch posts until the page links are sent; swap in the profile URLs then
-  social: { instagram: 'https://www.instagram.com/p/DfnOOoegbOk/', facebook: 'https://www.facebook.com/share/p/1EuhQ2nfgj/', linkedin: 'https://www.linkedin.com/company/walvis-concierge/' },
+  social: { instagram: 'https://www.instagram.com/walvis_concierge/', facebook: 'https://www.facebook.com/profile.php?id=61596093557108', linkedin: 'https://www.linkedin.com/company/walvis-concierge/' },
   logo: 'images/logo/walvis-seal-160.png',
   // the menu (icon bar), in this order
   menu: [
