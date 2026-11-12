@@ -1036,3 +1036,8 @@ html.calm-glass .hero .btn-line { -webkit-backdrop-filter: none !important; back
 /* v16 · Discover Bangladesh: day-by-day plans and the guest note */
 .db-days li b { font-weight: 500; color: var(--teal-light); margin-right: 4px; }
 .db-guests { margin-top: 18px; font-size: .88rem; color: rgba(255, 250, 250, .65); }
+
+/* v17 · Contact page: follow Walvis */
+.contact-social { margin-top: 56px; display: grid; justify-items: center; gap: 6px; text-align: center; }
+.contact-social .social { justify-content: center; margin-top: 4px; }
+.contact-social .social a { width: auto !important; height: 46px; border-radius: 999px; padding: 0 20px 0 16px !important; display: inline-flex !important; gap: 10px; align-items: center; font-size: .8rem; letter-spacing: .14em; text-transform: uppercase; }

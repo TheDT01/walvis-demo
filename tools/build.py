@@ -587,7 +587,7 @@ write("expats.html", "Concierge for Expats", "Concierge services for expats: car
       <dl class="xp-contact reveal">
         <div><dt>Concierge</dt><dd>Walvis Concierge, Dhaka</dd></div>
         <div><dt>Phone / WhatsApp</dt><dd><a data-wa="{E(XP_WA)}" href="#">+880 1411-267007</a></dd></div>
-        <div><dt>Email</dt><dd><a href="mailto:walvisconcierge@gmail.com">walvisconcierge@gmail.com</a></dd></div>
+        <div><dt>Email</dt><dd><a href="mailto:info@walvisconcierge.com">info@walvisconcierge.com</a></dd></div>
       </dl>
       <div class="btn-row reveal" style="justify-content:center"><a class="btn btn-teal" data-wa="{E(XP_WA)}" href="#">{CHAT} Send your first request</a><a class="btn btn-line" href="contact.html" style="color:#fffafa;border-color:rgba(255,250,250,.45)">Other ways to reach us</a></div>
     </div>
@@ -751,8 +751,9 @@ write("contact.html", "Contact", "Contact Walvis Concierge in Dhaka by WhatsApp,
       <div class="principles">
         <div class="reveal"><span class="kicker">WhatsApp</span><h3><a data-wa="Hello Walvis, I would like to get in touch." href="#">Message us</a></h3><p>The quickest way to reach us, for anything at all.</p></div>
         <div class="reveal d1"><span class="kicker">Phone</span><h3><a href="tel:+8801411267007">+880 1411-267007</a></h3><p>Call or leave a voice note on WhatsApp.</p></div>
-        <div class="reveal d2"><span class="kicker">Email</span><h3><a href="mailto:walvisconcierge@gmail.com" style="word-break:break-all">walvisconcierge@gmail.com</a></h3><p>For introductions, companies and anything long.</p></div>
+        <div class="reveal d2"><span class="kicker">Email</span><h3><a href="mailto:info@walvisconcierge.com" style="word-break:break-all">info@walvisconcierge.com</a></h3><p>For introductions, companies and anything long.</p></div>
       </div>
+      <div class="contact-social reveal"><span class="kicker">Follow Walvis</span><div class="social" data-socials></div></div>
       <p class="limited reveal" style="margin-top:60px"><span class="dot"></span> Based in Dhaka, Bangladesh. Working wherever our members travel.</p>
     </div>
   </section>

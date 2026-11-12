@@ -5,9 +5,10 @@
 var SITE = {
   whatsapp: '8801411267007',            // digits only, with country code
   phone: '+880 1411-267007',
-  email: 'walvisconcierge@gmail.com',
+  email: 'info@walvisconcierge.com',
   city: 'Dhaka, Bangladesh',
-  social: { instagram: '#', facebook: '#', linkedin: '#' },   // PLACEHOLDERS
+  // Instagram and Facebook point at the launch posts until the page links are sent; swap in the profile URLs then
+  social: { instagram: 'https://www.instagram.com/p/DfnOOoegbOk/', facebook: 'https://www.facebook.com/share/p/1EuhQ2nfgj/', linkedin: 'https://www.linkedin.com/company/walvis-concierge/' },
   logo: 'images/logo/walvis-seal-160.png',
   // the menu (icon bar), in this order
   menu: [
@@ -53,6 +54,13 @@ var ASSET_V = ((document.currentScript && document.currentScript.src.match(/\?v=
   document.body.insertAdjacentHTML('afterbegin', sprite + '</svg>');
   function ic(n) { return '<svg class="i" aria-hidden="true"><use href="#i-' + n + '"/></svg>'; }
 
+  /* ---------- Social links (footer and Contact page) ---------- */
+  function socials(withNames) {
+    return [['instagram', 'Instagram', 'ig'], ['facebook', 'Facebook', 'fb'], ['linkedin', 'LinkedIn', 'li']].filter(function (n) { return SITE.social[n[0]] && SITE.social[n[0]] !== '#'; }).map(function (n) {
+      return '<a href="' + SITE.social[n[0]] + '" target="_blank" rel="noopener" aria-label="Walvis Concierge on ' + n[1] + '">' + ic(n[2]) + (withNames ? '<span>' + n[1] + '</span>' : '') + '</a>';
+    }).join('');
+  }
+
   /* ---------- Header + drawer ---------- */
   var h = document.getElementById('site-header');
   if (h) {
@@ -91,7 +99,7 @@ var ASSET_V = ((document.currentScript && document.currentScript.src.match(/\?v=
             '<a href="tel:' + SITE.phone.replace(/[^+\d]/g, '') + '">' + ic('phone') + ' ' + SITE.phone + '</a>' +
             '<a href="mailto:' + SITE.email + '">' + ic('mail') + ' ' + SITE.email + '</a>' +
             '<span>' + ic('pin') + ' ' + SITE.city + '</span>' +
-            '<div class="social"><a href="' + SITE.social.instagram + '" aria-label="Instagram">' + ic('ig') + '</a><a href="' + SITE.social.facebook + '" aria-label="Facebook">' + ic('fb') + '</a><a href="' + SITE.social.linkedin + '" aria-label="LinkedIn">' + ic('li') + '</a></div>' +
+            '<div class="social">' + socials() + '</div>' +
           '</div>' +
         '</div>' +
         '<div class="foot-base"><span>© ' + new Date().getFullYear() + ' Walvis Concierge. If It’s Legal, It’s Possible.</span>' +
@@ -101,6 +109,8 @@ var ASSET_V = ((document.currentScript && document.currentScript.src.match(/\?v=
   }
 
   document.querySelectorAll('img').forEach(function (im) { im.decoding = 'async'; });
+
+  document.querySelectorAll('[data-socials]').forEach(function (el) { el.innerHTML = socials(true); });
 
   /* ---------- WhatsApp links: <a data-wa="message"> ---------- */
   document.querySelectorAll('[data-wa]').forEach(function (a) {
