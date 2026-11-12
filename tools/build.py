@@ -625,6 +625,34 @@ open(os.path.join(OUT, "portal.html"), "w").write("""<!doctype html>
 <body><p><a href="journal.html">The Portal is now The Journal.</a></p></body></html>
 """)
 
+# =================================================================== RETAIL: COMING SOON
+# Until The Walvis Promenade opens, retail/index.html is a short "coming soon" page and the mall's other pages forward to it.
+# The full mall is kept in tools/sources/retail-full/ (its css and js stay in retail/css and retail/js);
+# to bring it back, copy those pages into retail/ and stop writing the pages below.
+write("retail/index.html", "The Walvis Promenade", "The Walvis Promenade, the Walvis Concierge collection of rare pieces, is coming soon. Until then, we source jewellery, timepieces, art, cars and more on request.",
+  f"""
+  <section class="section dark on-dark wm-page jr-soon">
+    <div class="ocean faint" aria-hidden="true"><canvas class="sea" data-mode="faint"></canvas></div>
+    <div class="wrap narrow" style="text-align:center;position:relative">
+      <img class="seal reveal" src="images/logo/walvis-seal-180.png" alt="" width="92" height="92" style="margin:0 auto 26px">
+      <span class="kicker reveal">Retail &middot; The Walvis Promenade</span>
+      <h1 class="t-1 reveal d1">Coming <em>soon.</em></h1>
+      <p class="lead reveal d2" style="margin-left:auto;margin-right:auto">Our collection of rare pieces is being prepared. Until it opens, tell us what you are looking for, from jewellery and timepieces to art and cars, and we will source it for you.</p>
+      <div class="btn-row reveal d3" style="justify-content:center;margin-top:34px"><a class="btn btn-teal" data-wa="{E('Hello Walvis, I am looking for something special. Can you source it for me?')}" href="#">{CHAT} Ask us to find something</a><a class="btn btn-line" href="index.html" style="color:#fffafa;border-color:rgba(255,250,250,.45)">Back to home</a></div>
+      <div class="contact-social reveal d3" style="margin-top:40px"><span class="kicker">Follow Walvis for the opening</span><div class="social" data-socials></div></div>
+    </div>
+  </section>
+""")
+rp = os.path.join(OUT, "retail/index.html"); rh = open(rp).read()
+open(rp, "w").write(rh.replace("<head>", '<head>\n  <base href="../">', 1))
+for old in ["shop.html", "level.html", "item.html", "credits.html"]:
+    open(os.path.join(OUT, "retail", old), "w").write("""<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>The Walvis Promenade · Walvis Concierge</title>
+<meta http-equiv="refresh" content="0; url=index.html"><link rel="canonical" href="https://walvisconcierge.com/retail/index.html">
+<script>location.replace('index.html')</script></head>
+<body><p><a href="index.html">The Walvis Promenade is coming soon.</a></p></body></html>
+""")
+
 # =================================================================== SPECIAL REQUESTS
 write("special-requests.html", "Special Requests", "Special requests at Walvis Concierge: the unusual, the last-minute and the things you would not know where to begin with. If it's legal, ask.",
   hero("lux-superyacht.jpg", "Special Requests", "Special Requests", "If it&rsquo;s legal, <em>ask.</em>",
@@ -912,7 +940,7 @@ write("credits.html", "Photo credits", "Photo credits for the Walvis Concierge w
   <section class="section dark" style="padding-top:170px">
     <div class="wrap">
       <div class="head reveal"><span class="kicker">Photo credits</span><h1 class="t-1">With thanks to <em>the photographers.</em></h1>
-      <p class="lead">Photos licensed under CC BY-SA must stay credited while they are in use. Photos without a line here are our own or CC0. The photos in The Walvis Promenade are credited on <a class="link" style="padding:0;border:0" href="retail/credits.html">their own credits page</a>.</p></div>
+      <p class="lead">Photos licensed under CC BY-SA must stay credited while they are in use. Photos without a line here are our own or CC0.</p></div>
       <div style="overflow-x:auto"><table class="credits">
         <thead><tr><th>File</th><th>Title</th><th>Creator</th><th>Licence</th><th></th></tr></thead>
         <tbody>{rows}</tbody></table></div>
